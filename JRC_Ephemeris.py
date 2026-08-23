@@ -2047,7 +2047,9 @@ class UnifiedCoordinateTransformer:
         return self.cache.get_or_compute('coordinate', cache_key, compute)
     
     def get_sunrise_sunset(self, jd_utc: float, lat: float, lon: float,
-                          pressure: float = 1010.0, temperature: float = 25.0,
+                          pressure: float = 952.5,
+                          temperature: float = 22.9,
+                          humidity: float = 0.728,
                           sun_data: Dict[str, Any] = None) -> Dict[str, Any]:
         """Calculate sunrise and sunset times for Jolotundo - COMPLETELY FIXED"""
         # Inisialisasi time_sys di sini untuk menghindari dependensi circular
@@ -2151,7 +2153,7 @@ class UnifiedCoordinateTransformer:
         
         # Calculate Sun position at transit
         sun_altaz = self.equatorial_to_altaz(
-            ra_val, dec_val, jd_utc, lat, lon, pressure, temperature, 0.5
+            ra_val, dec_val, jd_utc, lat, lon, pressure, temperature, humidity
         )
         
         return {
@@ -2427,9 +2429,9 @@ class JPLStyleTopocentricCorrections:
                                    distance_au: float, jd_utc: float,
                                    observer_lat_deg: float, observer_lon_deg: float,
                                    observer_elevation_m: float = 0.0,
-                                   pressure_hPa: float = 1013.25,
-                                   temperature_c: float = 15.0,
-                                   humidity: float = 0.5) -> Dict[str, Any]:
+                                   pressure_hPa: float = 952.5,
+                                   temperature_c: float = 22.9,
+                                   humidity: float = 0.728) -> Dict[str, Any]:
         """
         Complete transformation chain from J2000 coordinates to observed coordinates.
         
