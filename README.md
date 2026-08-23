@@ -183,7 +183,7 @@ The Jolotundo Research Consortium (JRC) is an independent, non‑institutional r
 
 👥 Author
 
-Rakawi
+Rakawi:
 Jolotundo Research Consortium
 
 ---
@@ -212,5 +212,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 ---
 
 Last updated: 2026‑08‑24
-OSS — Oldjavanese Saka Stellaris
+OSS
 Jolotundo Research Consortium
