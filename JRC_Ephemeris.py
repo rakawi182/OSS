@@ -26,6 +26,21 @@ warnings.filterwarnings('ignore', category=RuntimeWarning)
 from VSOP87D import VSOP87D_Earth
 from ELP82B import ELP82B
 
+# -----------------------------------------------------------------------------
+# Kontrol verbositas nutasi – setel False untuk menyembunyikan pesan
+# -----------------------------------------------------------------------------
+NUTATION_VERBOSE = False   # Ubah ke True jika ingin melihat log pemuatan
+
+# -----------------------------------------------------------------------------
+# Full precision nutation from precession_nutation module (IERS 2010)
+# -----------------------------------------------------------------------------
+try:
+    from precession_nutation import load_table, compute_nutation, fundamental_args
+    HAVE_PRECESSION_NUTATION = True
+except ImportError:
+    HAVE_PRECESSION_NUTATION = False
+    if NUTATION_VERBOSE:
+        print("WARNING: precession_nutation module not found. Using simplified 25-term nutation.")
 
 # -----------------------------------------------------------------------------
 # ΔT (Delta T) data and functions
@@ -2188,65 +2203,109 @@ class UnifiedCoordinateTransformer:
 
 class HighPrecisionNutation:
     """
-    Implementasi Nutasi IAU 2000A Selektif (Top 25 Terms).
-    Sangat ringan untuk mobile, namun memberikan presisi ~0.001 arcsec.
-    Penting untuk akurasi Ayanamsa dan Nakshatra periode 700-1300 M.
+    Nutasi IAU 2000A_R06 dengan presisi penuh (1320+ suku) jika file IERS tersedia.
+    Fallback ke 25 terms jika tidak.
     """
     def __init__(self):
-        # [l, l', F, D, Omega, Psi_coef(0.1nas), Eps_coef(0.1nas)]
-        self.TERMS = [[0, 0, 0, 0, 1, -172064161, 92052331], [0, 0, 2, -2, 2, -13170906, 5730336], [0, 0, 2, 0, 2, -2276413, 977981], [0, 0, 0, 0, 2, 2074554, -897492], [0, 1, 0, 0, 0, 1475877, 73871], [0, 1, 2, -2, 2, -516821, 224386], [1, 0, 0, 0, 0, 711159, -6750], [0, 0, 2, 0, 1, -387298, 200725], [1, 0, 2, 0, 2, -301461, 129025], [0, -1, 2, -2, 2, 215829, -95929], [0, 0, 2, -2, 1, 128227, -68969], [-1, 0, 2, 0, 2, 123457, -53311], [-1, 0, 0, 2, 0, 156994, -1235], [1, 0, 0, 0, 1, 63110, -33228], [-1, 0, 0, 0, 1, -57976, 31429], [-1, 0, 2, 2, 2, -59641, 25543], [1, 0, 2, 0, 1, -51613, 26366], [-2, 0, 2, 0, 1, 45893, -24236], [0, 0, 0, 2, 0, 63384, -1220], [0, 0, 2, 2, 2, -38571, 16452], [0, -1, 0, 0, 1, 51025, -142088], [2, 2, 0, -2, 2, -584167, 87400], [0, 1, -2, -2, 0, 66548, -122530], [-1, 0, 2, 1, -1, -386433, -70939], [2, -1, 1, 1, -1, -483088, -54590]]
+        self.use_full = False
+        self.nut_long_data = {}
+        self.nut_obl_data = {}
+        self.model_type = 'full' if HAVE_PRECESSION_NUTATION else 'simplified'
 
-    def compute(self, T):
+        if HAVE_PRECESSION_NUTATION:
+            try:
+                self.nut_long_data = load_table('tab5.3a.txt')
+                self.nut_obl_data = load_table('tab5.3b.txt')
+                if self.nut_long_data and self.nut_obl_data:
+                    self.use_full = True
+                    if NUTATION_VERBOSE:
+                        print("Full IERS nutation tables loaded (IAU 2000A_R06).")
+                else:
+                    if NUTATION_VERBOSE:
+                        print("IERS nutation tables empty. Using simplified 25-term nutation.")
+            except Exception as e:
+                if NUTATION_VERBOSE:
+                    print(f"Error loading IERS nutation tables: {e}")
+                    print("Using simplified 25-term nutation.")
+
+        # Jika fallback, tetap gunakan 25 terms seperti sebelumnya.
+        if not self.use_full:
+            self._init_simplified_terms()
+
+    def _init_simplified_terms(self):
+        """25-term simplified nutation (digunakan jika file tidak tersedia)."""
+        self.TERMS = [
+            [0,0,0,0,1, -172064161, 92052331],
+            [0,0,2,-2,2, -13170906, 5730336],
+            [0,0,2,0,2, -2276413, 977981],
+            [0,0,0,0,2, 2074554, -897492],
+            [0,1,0,0,0, 1475877, 73871],
+            [0,1,2,-2,2, -516821, 224386],
+            [1,0,0,0,0, 711159, -6750],
+            [0,0,2,0,1, -387298, 200725],
+            [1,0,2,0,2, -301461, 129025],
+            [0,-1,2,-2,2, 215829, -95929],
+            [0,0,2,-2,1, 128227, -68969],
+            [-1,0,2,0,2, 123457, -53311],
+            [-1,0,0,2,0, 156994, -1235],
+            [1,0,0,0,1, 63110, -33228],
+            [-1,0,0,0,1, -57976, 31429],
+            [-1,0,2,2,2, -59641, 25543],
+            [1,0,2,0,1, -51613, 26366],
+            [-2,0,2,0,1, 45893, -24236],
+            [0,0,0,2,0, 63384, -1220],
+            [0,0,2,2,2, -38571, 16452],
+            [0,-1,0,0,1, 51025, -142088],
+            [2,2,0,-2,2, -584167, 87400],
+            [0,1,-2,-2,0, 66548, -122530],
+            [-1,0,2,1,-1, -386433, -70939],
+            [2,-1,1,1,-1, -483088, -54590]
+        ]
+
+    def compute(self, T: float) -> Tuple[float, float]:
         """
-        Hitung nutasi dalam longitude (dPsi) dan obliquity (dEps).
-        T: Julian Centuries dari J2000.0
-        Return: (dPsi, dEps) dalam derajat
+        Hitung nutasi dalam longitude (dPsi) dan obliquity (dEps) dalam DERAJAT.
+        T: Julian centuries from J2000.0.
         """
-        # Argument Fundamental (IERS 2003 / IAU 2000) - Derajat
-        l  = (134.96340251 + 477198.8675605 * T) % 360
-        lp = (357.52910918 + 35999.0502909 * T) % 360
-        F  = (93.27209062 + 483202.0175273 * T) % 360
-        D  = (297.85019547 + 445267.1114469 * T) % 360
-        Om = (125.04452222 - 1934.1362608 * T) % 360
+        if self.use_full:
+            # Gunakan full precision dari precession_nutation
+            # compute_nutation mengembalikan (Δψ, Δε) dalam arcseconds
+            dpsi_arcsec, deps_arcsec = compute_nutation(
+                T,
+                self.nut_long_data,
+                self.nut_obl_data,
+                mean=False   # apparent nutation
+            )
+            # Konversi arcsec -> derajat (karena JRC mengharapkan derajat)
+            return dpsi_arcsec / 3600.0, deps_arcsec / 3600.0
+        else:
+            # Fallback ke 25 terms (seperti sebelumnya)
+            l  = (134.96340251 + 477198.8675605 * T) % 360
+            lp = (357.52910918 + 35999.0502909 * T) % 360
+            F  = (93.27209062 + 483202.0175273 * T) % 360
+            D  = (297.85019547 + 445267.1114469 * T) % 360
+            Om = (125.04452222 - 1934.1362608 * T) % 360
 
-        # Konversi ke radian
-        l_r, lp_r, F_r, D_r, Om_r = map(math.radians, [l, lp, F, D, Om])
+            l_r, lp_r, F_r, D_r, Om_r = map(math.radians, [l, lp, F, D, Om])
 
-        sum_psi = 0.0
-        sum_eps = 0.0
+            sum_psi = 0.0
+            sum_eps = 0.0
+            for term in self.TERMS:
+                arg = (term[0] * l_r + term[1] * lp_r +
+                       term[2] * F_r + term[3] * D_r + term[4] * Om_r)
+                sin_arg = math.sin(arg)
+                cos_arg = math.cos(arg)
+                sum_psi += term[5] * sin_arg
+                sum_eps += term[6] * cos_arg
 
-        for term in self.TERMS:
-            # Kombinasi argumen
-            arg = (term[0] * l_r + 
-                   term[1] * lp_r + 
-                   term[2] * F_r + 
-                   term[3] * D_r + 
-                   term[4] * Om_r)
-            
-            # Hitung sin/cos
-            sin_arg = math.sin(arg)
-            cos_arg = math.cos(arg)
+            # 0.1 microarcsec -> derajat
+            factor = 1e-7 / 3600.0
+            return sum_psi * factor, sum_eps * factor
 
-            # Akumulasi (unit masih 0.1 mikro-arcsecond)
-            sum_psi += (term[5] * sin_arg)
-            sum_eps += (term[6] * cos_arg)
-
-        # Konversi 0.1 mikro-arcsecond ke derajat
-        # 1 arcsec = 1/3600 derajat
-        # 1 microarcsec = 1e-6 arcsec
-        # 0.1 microarcsec = 1e-7 arcsec
-        factor = 1e-7 / 3600.0
-        
-        dPsi = sum_psi * factor
-        dEps = sum_eps * factor
-        
-        return dPsi, dEps
-    
     def compute_with_cache(self, T: float) -> Tuple[float, float]:
-        """Compute nutation with caching"""
+        """Compute nutation with caching (menggunakan cache global)."""
         cache = GlobalCacheManager.get_instance()
         cache_key = f"nutation_{self.model_type}_{T:.10f}"
-        
         return cache.get_or_compute('nutation', cache_key, self.compute, T)
 
 # ============================================================================

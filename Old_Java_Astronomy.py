@@ -103,10 +103,10 @@ class AtmosphericConstants:
             "latitude": JOLOTUNDO['coordinates']['latitude'],
             "longitude": JOLOTUNDO['coordinates']['longitude'],
             "elevation": JOLOTUNDO['elevation']['orthometric'],
-            "temperature": 25.0,
-            "pressure": 1010.0,
-            "humidity": 0.75,
-            "turbidity": 0.08,
+            "temperature": 24.0,
+            "pressure": 952.5,
+            "humidity": 0.728,
+            "turbidity": 0.05,
             "wavelength": 0.55,
         },
         "REFRACTION_MODELS": {
@@ -139,9 +139,9 @@ class AtmosphericConstants:
             "latitude": -7.609444,
             "longitude": 112.595556,
             "elevation": 554.509,
-            "temperature": 25.0,
-            "pressure": 1010.0,
-            "humidity": 0.75
+            "temperature": 24.0,
+            "pressure": 952.5,
+            "humidity": 0.728,
         }
 
 # ============================================================================
@@ -278,8 +278,8 @@ class ΩConstants:
     LOC_ELEV = 554.509
     LOC_NAME = "Jolotundo Obsv"
     LOC_TZ_OFFSET = 7.744
-    LOC_PRESSURE = 1010.0
-    LOC_TEMPERATURE = 25.0
+    LOC_PRESSURE = 952.5
+    LOC_TEMPERATURE = 24.0
 
     # OBLIQUITY J2000
     OBLIQUITY = JRC.OBLIQUITY_J2000
@@ -623,7 +623,7 @@ class AstronomicalEngine:
         """Ayanamsa berdasarkan J2000 dan nutasi"""
         T = (jd_tt - 2451545.0) / 36525.0
         mean_ayanamsa = 23.856858 + 0.013969712777777778 * T * 100
-        # Nutasi sederhana
+        # Nutasi
         dPsi_deg, _ = self.nutation.compute(T)
         true_ayanamsa = mean_ayanamsa + dPsi_deg
         return self.math.normalize_angle(true_ayanamsa)
