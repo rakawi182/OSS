@@ -7,7 +7,7 @@
 import sys
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -134,6 +134,23 @@ st.markdown("""
         letter-spacing: 1px;
         border: 1px solid #3a4050;
     }
+    .global-footer {
+        text-align: center;
+        color: #556688;
+        font-size: 0.75rem;
+        padding: 20px 0 10px 0;
+        border-top: 1px solid #1a1e2a;
+        margin-top: 40px;
+        width: 100%;
+    }
+    .global-footer a {
+        color: #8899bb;
+        text-decoration: none;
+    }
+    .global-footer a:hover {
+        color: #d4b896;
+        text-decoration: underline;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -142,10 +159,12 @@ st.markdown("""
 # ============================================================================
 if "initialized" not in st.session_state:
     st.session_state.initialized = True
-    st.session_state.current_year = datetime.now().year
-    st.session_state.current_month = datetime.now().month
-    st.session_state.current_day = datetime.now().day
-    st.session_state.current_hour = datetime.now().hour + datetime.now().minute / 60.0
+    wib_tz = timezone(timedelta(hours=7))
+    now_wib = datetime.now(wib_tz)
+    st.session_state.current_year = now_wib.year
+    st.session_state.current_month = now_wib.month
+    st.session_state.current_day = now_wib.day
+    st.session_state.current_hour = now_wib.hour + now_wib.minute / 60.0
 
 # ============================================================================
 # CACHE LOADER
@@ -270,7 +289,9 @@ nav = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.caption(f"v301.5.Ω • {datetime.now().strftime('%Y-%m-%d')}")
+wib_tz = timezone(timedelta(hours=7))
+now_wib = datetime.now(wib_tz)
+st.sidebar.caption(f"v301.5.Ω • {now_wib.strftime('%Y-%m-%d')}")
 st.sidebar.caption("Open Source • Jolotundo Research Consortium")
 st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
@@ -396,7 +417,8 @@ elif nav == "🌞 Real-time":
     if st.button("🔄 Refresh Sekarang", use_container_width=True):
         st.rerun()
 
-    now = datetime.now()
+    wib_tz = timezone(timedelta(hours=7))
+    now = datetime.now(wib_tz)
     year, month, day = now.year, now.month, now.day
     hour = now.hour + now.minute / 60.0 + now.second / 3600.0
 
@@ -1023,25 +1045,6 @@ elif nav == "⏱️ Offset Waktu":
 # GLOBAL FOOTER – tampil di semua halaman
 # ============================================================================
 st.markdown("""
-<style>
-    .global-footer {
-        text-align: center;
-        color: #556688;
-        font-size: 0.75rem;
-        padding: 20px 0 10px 0;
-        border-top: 1px solid #1a1e2a;
-        margin-top: 40px;
-        width: 100%;
-    }
-    .global-footer a {
-        color: #8899bb;
-        text-decoration: none;
-    }
-    .global-footer a:hover {
-        color: #d4b896;
-        text-decoration: underline;
-    }
-</style>
 <div class="global-footer">
     <b>OSS OLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
     Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
