@@ -1174,7 +1174,7 @@ elif nav == "⏱️ Offset Waktu":
 # ============================================================================
 st.markdown("""
 <div class="global-footer">
-    <b>OSS ΩLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
+    <b>OSS ΩLDJAVA-astro</b> &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
     Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
     <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
     Jolotundo Research Consortium
