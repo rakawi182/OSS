@@ -7,11 +7,20 @@
 import sys
 import os
 import time
+import re
 from datetime import datetime, timezone, timedelta
 import warnings
 warnings.filterwarnings("ignore")
 
 import streamlit as st
+
+# ============================================================================
+# FUNGSI PEMBERSIH ANSI
+# ============================================================================
+def clean_ansi(text):
+    """Hapus semua escape sequence ANSI dari teks."""
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
 
 # ============================================================================
 # PAGE CONFIG
@@ -641,7 +650,7 @@ elif nav == "📅 Tanggal Spesifik":
                     st.metric("Iluminasi", f"{moon['phase']['illumination_fraction']*100:.1f}%")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-                # Old Java details
+                # Old Java details with ANSI cleaning
                 with st.expander("📖 Pancanga & Vedic Time (Old Java Astronomy)", expanded=True):
                     try:
                         import io
@@ -649,7 +658,9 @@ elif nav == "📅 Tanggal Spesifik":
                         f = io.StringIO()
                         with contextlib.redirect_stdout(f):
                             display_info(year, month, day, hour)
-                        st.text(f.getvalue())
+                        raw_output = f.getvalue()
+                        clean_output = clean_ansi(raw_output)
+                        st.code(clean_output, language="text")
                     except Exception as e:
                         st.warning(f"Detail Old Java: {str(e)}")
 
@@ -891,7 +902,9 @@ elif nav == "📜 Konversi Prasasti":
                                 f = io.StringIO()
                                 with contextlib.redirect_stdout(f):
                                     sthapati.display_main_components_evaluation(results)
-                                st.text(f.getvalue())
+                                raw_eval = f.getvalue()
+                                clean_eval = clean_ansi(raw_eval)
+                                st.code(clean_eval, language="text")
                             except Exception as e:
                                 st.warning(f"Tidak dapat menampilkan evaluasi: {str(e)}")
 
