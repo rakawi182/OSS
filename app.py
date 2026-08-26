@@ -812,18 +812,20 @@ elif nav == "📜 Konversi Prasasti":
                         best = results[0]
                         cand = best["candidate"]
                         y, m, d = cand["date"]
+                        ka = cand["ka"]
+                        w_info = mech_engine.get_wuku_by_ka(ka)  # info wuku lengkap dari sistem wuku
 
                         st.markdown(f"""
                         <div style="background: #1a1e2a; border-radius: 12px; padding: 20px; border: 1px solid #d4b896; margin: 12px 0;">
                             <h3 style="color: #d4b896; margin-top: 0;">✨ Kandidat Terbaik</h3>
                             <p style="color: #f0e6d0; font-size: 1.2rem;">
                                 <b>{int(y)}-{int(m):02d}-{int(d):02d}</b>
-                                &nbsp;·&nbsp; KA: <b>{format_ka(cand['ka'])}</b>
-                                &nbsp;·&nbsp; Wuku: <b>{cand['wuku_info']['wuku_name']}</b>
+                                &nbsp;·&nbsp; KA: <b>{format_ka(ka)}</b>
+                                &nbsp;·&nbsp; Wuku: <b>{w_info['wuku_name']}</b>
                             </p>
                             <p style="color: #8899bb;">
                                 Skor: {best['score']:.3f} &nbsp;·&nbsp; Confidence: {best['confidence']}
-                                &nbsp;·&nbsp; Wara: {cand['wuku_info']['wara_triple_full']}
+                                &nbsp;·&nbsp; Wara: {w_info['wara_triple_full']}
                             </p>
                         </div>
                         """, unsafe_allow_html=True)
@@ -833,12 +835,13 @@ elif nav == "📜 Konversi Prasasti":
                         for i, res in enumerate(results[:5]):
                             c = res["candidate"]
                             yy, mm, dd = c["date"]
+                            w_info_tbl = mech_engine.get_wuku_by_ka(c["ka"])
                             table_data.append({
                                 "Rank": i + 1,
                                 "Tanggal": f"{int(yy)}-{int(mm):02d}-{int(dd):02d}",
                                 "KA": format_ka(c["ka"]),
-                                "Wuku": c["wuku_info"]["wuku_name"],
-                                "Wara": c["wuku_info"]["wara_triple"],
+                                "Wuku": w_info_tbl["wuku_name"],
+                                "Wara": w_info_tbl["wara_triple"],
                                 "Skor": f"{res['score']:.3f}",
                                 "Confidence": res["confidence"]
                             })
