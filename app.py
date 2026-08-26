@@ -348,7 +348,7 @@ nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 wib_tz = timezone(timedelta(hours=7))
 now_wib = datetime.now(wib_tz)
-st.sidebar.caption(f"RAKAWI.Ω • {now_wib.strftime('%Y-%m-%d')}")
+st.sidebar.caption(f"v301.5.Ω • {now_wib.strftime('%Y-%m-%d')}")
 st.sidebar.caption("Open Source • Jolotundo Research Consortium")
 st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
@@ -425,7 +425,7 @@ if nav == "🏠 Beranda":
         <div style="margin-top: 12px;">
             <span class="oss-badge">🌍 OPEN SOURCE</span>
             <span class="oss-badge" style="margin-left: 8px;">🔓 PUBLIC</span>
-            <span class="oss-badge" style="margin-left: 8px;">⚡ OSS</span>
+            <span class="oss-badge" style="margin-left: 8px;">⚡ v301.5.Ω</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -466,7 +466,7 @@ if nav == "🏠 Beranda":
         <b>📆 WUKU SYSTEM (210-HARI) – SUMBER EPIGRAFI</b><br>
         Berdasarkan penelitian <b>Louis-Charles Damais (1955)</b> tentang 
         kalender Jawa kuno, serta katalog prasasti dan wuku dalam 
-        <b><i>Javaanese Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
+        <b><i>Javaanse Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
         Sistem ini menggunakan epoch absolut <b>8 Februari 1 SM</b> 
         (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.
         <br><br>
@@ -516,13 +516,13 @@ if nav == "🏠 Beranda":
         st.markdown("""
         <div class="jae-card">
             <h3>📜 Prasasti</h3>
-            <p>Ω-STHAPATI<br>Damais + Proudfoot + (smart parsing) Rakawi</p>
+            <p>Ω-STHAPATI<br>Damais + Proudfoot + Rakawi</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="footer">
-        OSS ΩLDJAVA-astro • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Obsv
+        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Observatory
     </div>
     """, unsafe_allow_html=True)
 
@@ -865,8 +865,8 @@ elif nav == "📜 Konversi Prasasti":
         - **Tahun Śaka:** tahun dalam penanggalan Saka
         - **Bulan Śaka:** Caitra, Vaisakha, Jyestha, Asadha, Sravana, Bhadrapada,
           Asvini, Kartika, Margasira, Pausa, Magha, Phalguna
-        - **Tithi:** 1-30
-        - **Paksa:** Sukla atau Krsna
+        - **Tithi:** 1-15 (hari dalam paksa, misal Sukla 5 atau Krsna 12)
+        - **Paksa:** Sukla (paruh terang/waxing) atau Krsna (paruh gelap/waning)
         - **Wuku:** (opsional) nama wuku
         - **Wara:** (opsional) bisa lengkap (Tungleh-Pahing-Aditya) atau parsial (Jumat-Wage)
 
@@ -888,8 +888,8 @@ elif nav == "📜 Konversi Prasasti":
             ],
             index=8
         )
-        tithi = st.number_input("Tithi (1-30)", value=12, min_value=1, max_value=30, step=1)
-        paksa = st.selectbox("Paksa", ["Sukla", "Krsna"], index=0)
+        tithi = st.number_input("Tithi dalam Paksa (1-15)", value=1, min_value=1, max_value=15, step=1)
+        paksa = st.selectbox("Paksa (Sukla = waxing, Krsna = waning)", ["Sukla", "Krsna"], index=0)
 
     with col2:
         wuku = st.text_input("Wuku (opsional)", placeholder="Contoh: Wugu")
@@ -1174,7 +1174,7 @@ elif nav == "⏱️ Offset Waktu":
 # ============================================================================
 st.markdown("""
 <div class="global-footer">
-    <b>OSS ΩLDJAVA-astro</b> &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
+    <b>OSS ΩLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
     Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
     <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
     Jolotundo Research Consortium
