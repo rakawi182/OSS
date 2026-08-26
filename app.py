@@ -3,21 +3,14 @@
 # Open Source System for Old Javanese Archaeoastronomy
 # Streamlit Cloud Deployment Ready
 # ============================================================================
-"""
-OSS OLDJAVA-astro – Open Source System for Old Javanese Archaeoastronomy
-Akses publik melalui browser cloud (Streamlit Cloud / Hugging Face Spaces)
-"""
 
 import sys
 import os
 import time
 from datetime import datetime
 import warnings
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
-# ============================================================================
-# STREAMLIT IMPORTS
-# ============================================================================
 import streamlit as st
 
 # ============================================================================
@@ -31,24 +24,20 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CUSTOM CSS – dark theme professional
+# CUSTOM CSS
 # ============================================================================
 st.markdown("""
 <style>
-    /* Main background */
     .stApp {
         background-color: #0e1117;
     }
-    /* Headers */
     h1, h2, h3, h4, h5, h6 {
         color: #f0e6d0 !important;
         font-family: 'Georgia', serif;
     }
-    /* Sidebar */
     .css-1d391kg, .css-12oz5g7 {
         background-color: #1a1e2a;
     }
-    /* Cards */
     .jae-card {
         background: linear-gradient(145deg, #1e2230, #151926);
         border-radius: 12px;
@@ -63,7 +52,6 @@ st.markdown("""
         padding-bottom: 8px;
         margin-bottom: 12px;
     }
-    /* Metric boxes */
     .metric-box {
         background: #1a1e2a;
         border-radius: 8px;
@@ -83,7 +71,6 @@ st.markdown("""
         font-weight: 600;
         font-family: 'Courier New', monospace;
     }
-    /* Tables */
     .dataframe {
         background: #1a1e2a !important;
         border-radius: 8px !important;
@@ -97,7 +84,6 @@ st.markdown("""
     .dataframe td {
         color: #c0c8d8 !important;
     }
-    /* Buttons */
     .stButton button {
         background: #2a3040 !important;
         color: #f0e6d0 !important;
@@ -109,13 +95,11 @@ st.markdown("""
         background: #3a4050 !important;
         border-color: #d4b896 !important;
     }
-    /* Expanders */
     .streamlit-expanderHeader {
         background: #1a1e2a !important;
         color: #d4b896 !important;
         border-radius: 8px !important;
     }
-    /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 4px;
         background: #1a1e2a;
@@ -132,11 +116,6 @@ st.markdown("""
         background: #2a3040 !important;
         color: #f0e6d0 !important;
     }
-    /* Status indicators */
-    .status-good { color: #6fcf97; }
-    .status-warn { color: #f2c94a; }
-    .status-bad { color: #eb5757; }
-    /* Footer */
     .footer {
         text-align: center;
         color: #556688;
@@ -145,7 +124,6 @@ st.markdown("""
         border-top: 1px solid #1a1e2a;
         margin-top: 30px;
     }
-    /* OSS branding */
     .oss-badge {
         display: inline-block;
         background: #2a3040;
@@ -160,21 +138,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================================
-# SESSION STATE INIT
+# SESSION STATE
 # ============================================================================
-if 'initialized' not in st.session_state:
+if "initialized" not in st.session_state:
     st.session_state.initialized = True
     st.session_state.current_year = datetime.now().year
     st.session_state.current_month = datetime.now().month
     st.session_state.current_day = datetime.now().day
-    st.session_state.current_hour = datetime.now().hour + datetime.now().minute/60.0
+    st.session_state.current_hour = datetime.now().hour + datetime.now().minute / 60.0
 
 # ============================================================================
-# IMPORTS – with lazy loading to improve startup time
+# CACHE LOADER
 # ============================================================================
 @st.cache_resource
 def load_core_modules():
-    """Load core modules with caching."""
     from JRC_Ephemeris import (
         IAU2023UltraPrecision,
         TimeSystem as JRC_TimeSystem,
@@ -208,34 +185,34 @@ def load_core_modules():
     from display import print_panel, print_table, print_header, print_info
 
     return {
-        'jrc_const': IAU2023UltraPrecision(),
-        'time_sys': JRC_TimeSystem(),
-        'jrc_archaeo': JRC_ArchaeoSystem(),
-        'mech_engine': WukuMechanicalEngine(),
-        'sthapati': ΩSthapatiSystem(verbose_startup=False),
-        'CalendarConverter': CalendarConverter,
-        'offset_solar_days': offset_solar_days,
-        'offset_solar_months': offset_solar_months,
-        'offset_solar_years': offset_solar_years,
-        'offset_lunar_months': offset_lunar_months,
-        'offset_lunar_years': offset_lunar_years,
-        'offset_tithi': offset_tithi,
-        'display_comprehensive_info': display_comprehensive_info,
-        'parse_time_input': parse_time_input,
-        'OldJavaNormalizer': OldJavaNormalizer,
-        'AstronomicalEngine': AstronomicalEngine,
-        'VedicTimeEngine': VedicTimeEngine,
-        'GrahacaraAsthaEngine': GrahacaraAsthaEngine,
-        'DewataMandalaEngine': DewataMandalaEngine,
-        'ΩConstants': ΩConstants,
-        'VSOP87SolarEngine': VSOP87SolarEngine,
-        'LunarELP82Engine': LunarELP82Engine,
-        'UnifiedCoordinateTransformer': UnifiedCoordinateTransformer,
-        'JPLStyleTopocentricCorrections': JPLStyleTopocentricCorrections,
-        'print_panel': print_panel,
-        'print_table': print_table,
-        'print_header': print_header,
-        'print_info': print_info
+        "jrc_const": IAU2023UltraPrecision(),
+        "time_sys": JRC_TimeSystem(),
+        "jrc_archaeo": JRC_ArchaeoSystem(),
+        "mech_engine": WukuMechanicalEngine(),
+        "sthapati": ΩSthapatiSystem(verbose_startup=False),
+        "CalendarConverter": CalendarConverter,
+        "offset_solar_days": offset_solar_days,
+        "offset_solar_months": offset_solar_months,
+        "offset_solar_years": offset_solar_years,
+        "offset_lunar_months": offset_lunar_months,
+        "offset_lunar_years": offset_lunar_years,
+        "offset_tithi": offset_tithi,
+        "display_comprehensive_info": display_comprehensive_info,
+        "parse_time_input": parse_time_input,
+        "OldJavaNormalizer": OldJavaNormalizer,
+        "AstronomicalEngine": AstronomicalEngine,
+        "VedicTimeEngine": VedicTimeEngine,
+        "GrahacaraAsthaEngine": GrahacaraAsthaEngine,
+        "DewataMandalaEngine": DewataMandalaEngine,
+        "ΩConstants": ΩConstants,
+        "VSOP87SolarEngine": VSOP87SolarEngine,
+        "LunarELP82Engine": LunarELP82Engine,
+        "UnifiedCoordinateTransformer": UnifiedCoordinateTransformer,
+        "JPLStyleTopocentricCorrections": JPLStyleTopocentricCorrections,
+        "print_panel": print_panel,
+        "print_table": print_table,
+        "print_header": print_header,
+        "print_info": print_info
     }
 
 # ============================================================================
@@ -243,28 +220,30 @@ def load_core_modules():
 # ============================================================================
 with st.spinner("⏳ Memuat OSS OLDJAVA-astro..."):
     mods = load_core_modules()
-    jrc_const = mods['jrc_const']
-    time_sys = mods['time_sys']
-    jrc_archaeo = mods['jrc_archaeo']
-    mech_engine = mods['mech_engine']
-    sthapati = mods['sthapati']
-    CC = mods['CalendarConverter']
-    display_info = mods['display_comprehensive_info']
-    parse_time = mods['parse_time_input']
-    OldJavaNormalizer = mods['OldJavaNormalizer']
-    AstronomicalEngine = mods['AstronomicalEngine']
-    VedicTimeEngine = mods['VedicTimeEngine']
-    GrahacaraAsthaEngine = mods['GrahacaraAsthaEngine']
-    DewataMandalaEngine = mods['DewataMandalaEngine']
-    ΩConst = mods['ΩConstants']
-    offset_funcs = {
-        'solar_days': mods['offset_solar_days'],
-        'solar_months': mods['offset_solar_months'],
-        'solar_years': mods['offset_solar_years'],
-        'lunar_months': mods['offset_lunar_months'],
-        'lunar_years': mods['offset_lunar_years'],
-        'tithi': mods['offset_tithi']
-    }
+
+jrc_const = mods["jrc_const"]
+time_sys = mods["time_sys"]
+jrc_archaeo = mods["jrc_archaeo"]
+mech_engine = mods["mech_engine"]
+sthapati = mods["sthapati"]
+CC = mods["CalendarConverter"]
+display_info = mods["display_comprehensive_info"]
+parse_time = mods["parse_time_input"]
+OldJavaNormalizer = mods["OldJavaNormalizer"]
+AstronomicalEngine = mods["AstronomicalEngine"]
+VedicTimeEngine = mods["VedicTimeEngine"]
+GrahacaraAsthaEngine = mods["GrahacaraAsthaEngine"]
+DewataMandalaEngine = mods["DewataMandalaEngine"]
+ΩConst = mods["ΩConstants"]
+
+offset_funcs = {
+    "solar_days": mods["offset_solar_days"],
+    "solar_months": mods["offset_solar_months"],
+    "solar_years": mods["offset_solar_years"],
+    "lunar_months": mods["offset_lunar_months"],
+    "lunar_years": mods["offset_lunar_years"],
+    "tithi": mods["offset_tithi"]
+}
 
 st.success("✅ Sistem siap!")
 
@@ -293,30 +272,64 @@ nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.caption(f"v301.5.Ω • {datetime.now().strftime('%Y-%m-%d')}")
 st.sidebar.caption("Open Source • Jolotundo Research Consortium")
+st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
 # ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
 def format_ka(ka):
-    return f"{ka:,}".replace(',', '.')
-
-def format_date_astro(year, month, day):
-    if year <= 0:
-        return f"{1-year} SM-{month:02d}-{day:02d}"
-    return f"{year:04d}-{month:02d}-{day:02d}"
+    return f"{ka:,}".replace(",", ".")
 
 def get_wuku_display(ka):
     info = mech_engine.get_wuku_by_ka(ka)
     epoch = mech_engine.get_detailed_wuku_epoch_info(ka)
     return info, epoch
 
-def show_metric(label, value, help_text=None):
+def show_metric(label, value):
     st.markdown(f"""
     <div class="metric-box">
         <div class="metric-label">{label}</div>
         <div class="metric-value">{value}</div>
     </div>
     """, unsafe_allow_html=True)
+
+def display_wuku_detail(info, epoch, ka):
+    cols = st.columns(2)
+    with cols[0]:
+        st.markdown("""
+        <div class="jae-card">
+            <h3>📆 Wuku</h3>
+        """, unsafe_allow_html=True)
+        st.metric("Nama Wuku", f"{info['wuku_name']} (#{info['wuku_number']})")
+        st.metric("Hari ke-", f"{info['day_in_wuku']}/7")
+        st.metric("TU-PA-Ā", "✅" if info['is_tu_pa_a'] else "❌")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with cols[1]:
+        st.markdown("""
+        <div class="jae-card">
+            <h3>🌀 Wara Triple</h3>
+        """, unsafe_allow_html=True)
+        st.metric("Sadwara", f"{info['sadwara_full']} ({info['sadwara']})")
+        st.metric("Pancawara", f"{info['pancawara_full']} ({info['pancawara']})")
+        st.metric("Saptawara", f"{info['saptawara_full']} ({info['saptawara']})")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="jae-card">
+        <h3>📊 Posisi Relatif</h3>
+    """, unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Hari sejak epoch", f"{epoch['days_since_epoch']:,}")
+        st.metric("Arah", epoch['direction'])
+    with c2:
+        st.metric("Siklus Wuku", f"{epoch['cycle_number']}")
+        st.metric("Hari dalam siklus", f"{epoch['day_in_cycle']}/210")
+    with c3:
+        st.metric("Progres siklus", f"{epoch['progress_percent']:.1f}%")
+        st.metric("TU-PA-Ā berikutnya", f"{epoch['days_to_next_tu_pa_a']} hari")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: BERANDA
@@ -385,7 +398,7 @@ elif nav == "🌞 Real-time":
 
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
-    hour = now.hour + now.minute/60.0 + now.second/3600.0
+    hour = now.hour + now.minute / 60.0 + now.second / 3600.0
 
     st.markdown(f"""
     <div style="background: #1a1e2a; border-radius: 10px; padding: 16px; margin: 8px 0 20px 0; border-left: 4px solid #d4b896;">
@@ -394,13 +407,23 @@ elif nav == "🌞 Real-time":
     </div>
     """, unsafe_allow_html=True)
 
-    # Compute data
-    jd_utc = time_sys.wib_to_jd_utc(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-    jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
+    # Compute basic data
+    jd_utc = time_sys.wib_to_jd_utc(
+        year, month, day,
+        int(hour),
+        int((hour - int(hour)) * 60),
+        int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60)
+    )
+    jd_tt = time_sys.wib_to_jd_tt_extended(
+        year, month, day,
+        int(hour),
+        int((hour - int(hour)) * 60),
+        int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60)
+    )
     ka = mech_engine.date_to_ka(year, month, day)
     wuku_info, epoch_info = get_wuku_display(ka)
 
-    # Metrics row
+    # Metrics
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         show_metric("KA (Kali Ahargana)", format_ka(ka))
@@ -411,18 +434,21 @@ elif nav == "🌞 Real-time":
     with col4:
         show_metric("TU-PA-Ā", "✅ YA" if wuku_info['is_tu_pa_a'] else "❌ TIDAK")
 
-    # JRC Ephemeris data
+    # JRC Ephemeris
     with st.spinner("Menghitung ephemeris..."):
         try:
             jrc_data = jrc_archaeo.get_complete_ephemeris(
-                year_astro=year, month=month, day=day,
-                hour=int(hour), minute=int((hour-int(hour))*60),
-                second=int(((hour-int(hour))*60-int((hour-int(hour))*60))*60),
+                year_astro=year,
+                month=month,
+                day=day,
+                hour=int(hour),
+                minute=int((hour - int(hour)) * 60),
+                second=int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60),
                 use_current_time=False
             )
 
-            sun = jrc_data['sun']
-            moon = jrc_data['moon']
+            sun = jrc_data["sun"]
+            moon = jrc_data["moon"]
 
             col1, col2 = st.columns(2)
             with col1:
@@ -447,36 +473,36 @@ elif nav == "🌞 Real-time":
                 st.metric("Iluminasi", f"{moon['phase']['illumination_fraction']*100:.1f}%")
                 st.markdown("</div>", unsafe_allow_html=True)
 
-            # Sunrise/Sunset
+            # Sunrise / Sunset
             st.markdown("""
             <div class="jae-card">
                 <h3>🌅 Waktu Matahari</h3>
             """, unsafe_allow_html=True)
-            sr = jrc_data['sun']['times']
+            sr = jrc_data["sun"]["times"]
             c1, c2, c3 = st.columns(3)
             with c1:
-                st.metric("Terbit", sr.get('sunrise_wib', '--:--:--'))
+                st.metric("Terbit", sr.get("sunrise_wib", "--:--:--"))
             with c2:
-                st.metric("Transit", sr.get('transit_wib', '--:--:--'))
+                st.metric("Transit", sr.get("transit_wib", "--:--:--"))
             with c3:
-                st.metric("Terbenam", sr.get('sunset_wib', '--:--:--'))
+                st.metric("Terbenam", sr.get("sunset_wib", "--:--:--"))
             st.metric("Panjang Siang", f"{sr.get('day_length_hours', 0):.2f} jam")
             st.markdown("</div>", unsafe_allow_html=True)
 
             # Moon rise/set
-            mr = moon.get('times', {})
-            if mr and 'error' not in mr:
+            mr = moon.get("times", {})
+            if mr and "error" not in mr:
                 st.markdown("""
                 <div class="jae-card">
                     <h3>🌙 Waktu Bulan</h3>
                 """, unsafe_allow_html=True)
                 c1, c2, c3 = st.columns(3)
                 with c1:
-                    st.metric("Terbit", mr.get('moonrise', {}).get('wib', '--:--:--'))
+                    st.metric("Terbit", mr.get("moonrise", {}).get("wib", "--:--:--"))
                 with c2:
-                    st.metric("Transit", mr.get('transit', {}).get('wib', '--:--:--'))
+                    st.metric("Transit", mr.get("transit", {}).get("wib", "--:--:--"))
                 with c3:
-                    st.metric("Terbenam", mr.get('moonset', {}).get('wib', '--:--:--'))
+                    st.metric("Terbenam", mr.get("moonset", {}).get("wib", "--:--:--"))
                 st.markdown("</div>", unsafe_allow_html=True)
 
         except Exception as e:
@@ -513,7 +539,7 @@ elif nav == "📅 Tanggal Spesifik":
     with col1:
         year = st.number_input("Tahun", value=2024, step=1, format="%d")
     with col2:
-        month = st.selectbox("Bulan", list(range(1, 13)), index=datetime.now().month-1)
+        month = st.selectbox("Bulan", list(range(1, 13)), index=datetime.now().month - 1)
     with col3:
         day = st.number_input("Hari", value=1, min_value=1, max_value=31, step=1)
 
@@ -529,13 +555,23 @@ elif nav == "📅 Tanggal Spesifik":
             """, unsafe_allow_html=True)
 
             with st.spinner("Menghitung data astronomi..."):
-                # Compute basic data
-                jd_utc = time_sys.wib_to_jd_utc(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-                jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
+                # Basic data
+                jd_utc = time_sys.wib_to_jd_utc(
+                    year, month, day,
+                    int(hour),
+                    int((hour - int(hour)) * 60),
+                    int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60)
+                )
+                jd_tt = time_sys.wib_to_jd_tt_extended(
+                    year, month, day,
+                    int(hour),
+                    int((hour - int(hour)) * 60),
+                    int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60)
+                )
                 ka = mech_engine.date_to_ka(year, month, day)
                 wuku_info, epoch_info = get_wuku_display(ka)
 
-                # Display metrics
+                # Metrics
                 c1, c2, c3, c4 = st.columns(4)
                 with c1:
                     show_metric("KA", format_ka(ka))
@@ -548,14 +584,17 @@ elif nav == "📅 Tanggal Spesifik":
 
                 # JRC Ephemeris
                 jrc_data = jrc_archaeo.get_complete_ephemeris(
-                    year_astro=year, month=month, day=day,
-                    hour=int(hour), minute=int((hour-int(hour))*60),
-                    second=int(((hour-int(hour))*60-int((hour-int(hour))*60))*60),
+                    year_astro=year,
+                    month=month,
+                    day=day,
+                    hour=int(hour),
+                    minute=int((hour - int(hour)) * 60),
+                    second=int(((hour - int(hour)) * 60 - int((hour - int(hour)) * 60)) * 60),
                     use_current_time=False
                 )
 
-                sun = jrc_data['sun']
-                moon = jrc_data['moon']
+                sun = jrc_data["sun"]
+                moon = jrc_data["moon"]
 
                 col1, col2 = st.columns(2)
                 with col1:
@@ -580,17 +619,15 @@ elif nav == "📅 Tanggal Spesifik":
                     st.metric("Iluminasi", f"{moon['phase']['illumination_fraction']*100:.1f}%")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-                # Expand with Old Java details
+                # Old Java details
                 with st.expander("📖 Pancanga & Vedic Time (Old Java Astronomy)", expanded=True):
                     try:
-                        # Use Old Java display function
                         import io
                         import contextlib
                         f = io.StringIO()
                         with contextlib.redirect_stdout(f):
                             display_info(year, month, day, hour)
-                        output = f.getvalue()
-                        st.text(output)
+                        st.text(f.getvalue())
                     except Exception as e:
                         st.warning(f"Detail Old Java: {str(e)}")
 
@@ -616,7 +653,7 @@ elif nav == "📆 Wuku & Wara":
             if st.button("Cari KA"):
                 info = mech_engine.get_wuku_by_ka(ka_input)
                 epoch = mech_engine.get_detailed_wuku_epoch_info(ka_input)
-                _display_wuku_detail(info, epoch, ka_input)
+                display_wuku_detail(info, epoch, ka_input)
         else:
             y = st.number_input("Tahun", value=2024, step=1, format="%d")
             m = st.selectbox("Bulan", list(range(1, 13)), index=0)
@@ -626,7 +663,7 @@ elif nav == "📆 Wuku & Wara":
                 info = mech_engine.get_wuku_by_ka(ka)
                 epoch = mech_engine.get_detailed_wuku_epoch_info(ka)
                 st.info(f"KA: {format_ka(ka)}")
-                _display_wuku_detail(info, epoch, ka)
+                display_wuku_detail(info, epoch, ka)
 
     with tab2:
         st.subheader("📍 TU-PA-Ā (Tungleh-Pahing-Aditya)")
@@ -638,12 +675,12 @@ elif nav == "📆 Wuku & Wara":
             if tpa_list:
                 data = []
                 for tpa in tpa_list:
-                    y, m, d = tpa['date']
+                    y, m, d = tpa["date"]
                     data.append({
                         "Tanggal": f"{int(y)}-{int(m):02d}-{int(d):02d}",
-                        "KA": format_ka(tpa['ka']),
-                        "Wuku": tpa['wuku_info']['wuku_name'],
-                        "Wara": tpa['wuku_info']['wara_triple']
+                        "KA": format_ka(tpa["ka"]),
+                        "Wuku": tpa["wuku_info"]["wuku_name"],
+                        "Wara": tpa["wuku_info"]["wara_triple"]
                     })
                 st.dataframe(data, use_container_width=True)
             else:
@@ -669,44 +706,6 @@ elif nav == "📆 Wuku & Wara":
         Pahang, Kuruwelut, Marakeh, Tambir, Medangkungan, Maktal, Wuye, Manahil,
         Prangbakat, Bala, Wugu, Wayang, Kulawu, Dukut, Watugunung
         """)
-
-def _display_wuku_detail(info, epoch, ka):
-    cols = st.columns(2)
-    with cols[0]:
-        st.markdown("""
-        <div class="jae-card">
-            <h3>📆 Wuku</h3>
-        """, unsafe_allow_html=True)
-        st.metric("Nama Wuku", f"{info['wuku_name']} (#{info['wuku_number']})")
-        st.metric("Hari ke-", f"{info['day_in_wuku']}/7")
-        st.metric("TU-PA-Ā", "✅" if info['is_tu_pa_a'] else "❌")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with cols[1]:
-        st.markdown("""
-        <div class="jae-card">
-            <h3>🌀 Wara Triple</h3>
-        """, unsafe_allow_html=True)
-        st.metric("Sadwara", f"{info['sadwara_full']} ({info['sadwara']})")
-        st.metric("Pancawara", f"{info['pancawara_full']} ({info['pancawara']})")
-        st.metric("Saptawara", f"{info['saptawara_full']} ({info['saptawara']})")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="jae-card">
-        <h3>📊 Posisi Relatif</h3>
-    """, unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.metric("Hari sejak epoch", f"{epoch['days_since_epoch']:,}")
-        st.metric("Arah", epoch['direction'])
-    with c2:
-        st.metric("Siklus Wuku", f"{epoch['cycle_number']}")
-        st.metric("Hari dalam siklus", f"{epoch['day_in_cycle']}/210")
-    with c3:
-        st.metric("Progres siklus", f"{epoch['progress_percent']:.1f}%")
-        st.metric("TU-PA-Ā berikutnya", f"{epoch['days_to_next_tu_pa_a']} hari")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: KONVERSI PRASASTI
@@ -737,9 +736,11 @@ elif nav == "📜 Konversi Prasasti":
         saka_year = st.number_input("Tahun Śaka", value=851, step=1, format="%d")
         masa = st.selectbox(
             "Bulan Śaka (Masa)",
-            ["Caitra", "Vaisakha", "Jyestha", "Asadha", "Sravana",
-             "Bhadrapada", "Asvini", "Kartika", "Margasira", "Pausa",
-             "Magha", "Phalguna"],
+            [
+                "Caitra", "Vaisakha", "Jyestha", "Asadha", "Sravana",
+                "Bhadrapada", "Asvini", "Kartika", "Margasira", "Pausa",
+                "Magha", "Phalguna"
+            ],
             index=8
         )
         tithi = st.number_input("Tithi (1-30)", value=12, min_value=1, max_value=30, step=1)
@@ -757,13 +758,13 @@ elif nav == "📜 Konversi Prasasti":
             with st.spinner("Memproses konversi..."):
                 try:
                     data = {
-                        'saka_year': int(saka_year),
-                        'masa': masa,
-                        'tithi': int(tithi),
-                        'paksa': paksa,
-                        'wuku': wuku if wuku else "",
-                        'wara_string': wara if wara else "",
-                        'nakshatra': nakshatra if nakshatra else ""
+                        "saka_year": int(saka_year),
+                        "masa": masa,
+                        "tithi": int(tithi),
+                        "paksa": paksa,
+                        "wuku": wuku if wuku else "",
+                        "wara_string": wara if wara else "",
+                        "nakshatra": nakshatra if nakshatra else ""
                     }
 
                     results = sthapati.convert_prasasti_with_smart_parsing(data, verbose=False)
@@ -773,10 +774,9 @@ elif nav == "📜 Konversi Prasasti":
                     else:
                         st.success(f"✅ Ditemukan {len(results)} kandidat")
 
-                        # Best candidate
                         best = results[0]
-                        cand = best['candidate']
-                        y, m, d = cand['date']
+                        cand = best["candidate"]
+                        y, m, d = cand["date"]
 
                         st.markdown(f"""
                         <div style="background: #1a1e2a; border-radius: 12px; padding: 20px; border: 1px solid #d4b896; margin: 12px 0;">
@@ -793,63 +793,66 @@ elif nav == "📜 Konversi Prasasti":
                         </div>
                         """, unsafe_allow_html=True)
 
-                        # Table of top candidates
+                        # Table top candidates
                         table_data = []
                         for i, res in enumerate(results[:5]):
-                            c = res['candidate']
-                            yy, mm, dd = c['date']
+                            c = res["candidate"]
+                            yy, mm, dd = c["date"]
                             table_data.append({
-                                "Rank": i+1,
+                                "Rank": i + 1,
                                 "Tanggal": f"{int(yy)}-{int(mm):02d}-{int(dd):02d}",
-                                "KA": format_ka(c['ka']),
-                                "Wuku": c['wuku_info']['wuku_name'],
-                                "Wara": c['wuku_info']['wara_triple'],
+                                "KA": format_ka(c["ka"]),
+                                "Wuku": c["wuku_info"]["wuku_name"],
+                                "Wara": c["wuku_info"]["wara_triple"],
                                 "Skor": f"{res['score']:.3f}",
-                                "Confidence": res['confidence']
+                                "Confidence": res["confidence"]
                             })
                         st.dataframe(table_data, use_container_width=True)
 
-                        # Verification against input
+                        # Verification
                         st.markdown("""
                         <div class="jae-card">
                             <h3>🔍 Verifikasi Input</h3>
                         """, unsafe_allow_html=True)
 
-                        # Tithi verification
-                        tithi_input = data.get('tithi')
-                        paksa_input = data.get('paksa')
+                        tithi_input = data.get("tithi")
+                        paksa_input = data.get("paksa")
                         if tithi_input and paksa_input:
-                            # Get tithi from Old Java for the candidate date
                             hh = 12
                             try:
                                 astro_engine = AstronomicalEngine()
-                                jd_tt_calc = time_sys.wib_to_jd_tt_extended(int(y), int(m), int(d), hh, 0, 0)
+                                jd_tt_calc = time_sys.wib_to_jd_tt_extended(
+                                    int(y), int(m), int(d), hh, 0, 0
+                                )
                                 sun_data = astro_engine.calculate_sun_position_ultra(jd_tt_calc)
-                                moon_data = astro_engine.calculate_moon_position_ultra(jd_tt_calc, sun_data['longitude_deg'])
+                                moon_data = astro_engine.calculate_moon_position_ultra(
+                                    jd_tt_calc, sun_data["longitude_deg"]
+                                )
                                 ayanamsa = astro_engine.calculate_ayanamsa_precise(jd_tt_calc)
-                                sun_nirayana = (sun_data['longitude_deg'] - ayanamsa) % 360
-                                moon_nirayana = (moon_data['longitude'] - ayanamsa) % 360
-                                tithi_calc = astro_engine.calculate_tithi(sun_nirayana, moon_nirayana, "nirayana")
+                                sun_nirayana = (sun_data["longitude_deg"] - ayanamsa) % 360
+                                moon_nirayana = (moon_data["longitude"] - ayanamsa) % 360
+                                tithi_calc = astro_engine.calculate_tithi(
+                                    sun_nirayana, moon_nirayana, "nirayana"
+                                )
 
                                 st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
                                 st.write(f"**Tithi hitung:** {tithi_calc['tithi']} {tithi_calc['paksa']}")
 
-                                if tithi_input == tithi_calc['tithi'] and paksa_input.lower() == tithi_calc['paksa'].lower():
+                                if tithi_input == tithi_calc["tithi"] and paksa_input.lower() == tithi_calc["paksa"].lower():
                                     st.success("✅ Tithi cocok persis")
-                                elif abs(tithi_input - tithi_calc['tithi']) <= 1 and paksa_input.lower() == tithi_calc['paksa'].lower():
+                                elif abs(tithi_input - tithi_calc["tithi"]) <= 1 and paksa_input.lower() == tithi_calc["paksa"].lower():
                                     st.warning(f"⚠️ Tithi cocok dengan toleransi 1 (selisih {abs(tithi_input - tithi_calc['tithi'])})")
                                 else:
                                     st.error("❌ Tithi tidak cocok")
 
-                                # Nakshatra verification
-                                naks_input = data.get('nakshatra')
+                                naks_input = data.get("nakshatra")
                                 if naks_input:
                                     old_norm = OldJavaNormalizer()
                                     naks_norm = old_norm.normalize(naks_input)
                                     naks_calc = astro_engine.calculate_nakshatra(moon_nirayana, "nirayana")
                                     st.write(f"**Nakṣatra input:** {naks_norm}")
                                     st.write(f"**Nakṣatra hitung (Nirayana):** {naks_calc['nakshatra']}")
-                                    if naks_norm == naks_calc['nakshatra']:
+                                    if naks_norm == naks_calc["nakshatra"]:
                                         st.success("✅ Nakṣatra cocok (Nirayana)")
                                     else:
                                         st.warning("⚠️ Nakṣatra tidak cocok (cek ejaan atau sistem)")
@@ -859,10 +862,8 @@ elif nav == "📜 Konversi Prasasti":
 
                         st.markdown("</div>", unsafe_allow_html=True)
 
-                        # Show 4 components evaluation
                         with st.expander("📊 Evaluasi 4 Komponen Utama", expanded=False):
                             try:
-                                # Re-run with verbose to capture evaluation
                                 import io
                                 import contextlib
                                 f = io.StringIO()
@@ -882,7 +883,12 @@ elif nav == "🔄 Konversi Waktu":
     st.title("🔄 Konversi Waktu")
     st.caption("JD, KA, Gregorian, Julian – konversi antar sistem")
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📅 Tanggal → JD/KA", "📊 JD → Tanggal/KA", "📊 KA → Tanggal/JD", "📆 Gregorian ↔ Julian"])
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "📅 Tanggal → JD/KA",
+        "📊 JD → Tanggal/KA",
+        "📊 KA → Tanggal/JD",
+        "📆 Gregorian ↔ Julian"
+    ])
 
     with tab1:
         y = st.number_input("Tahun", value=2024, step=1, format="%d", key="conv_t1_y")
@@ -987,10 +993,10 @@ elif nav == "⏱️ Offset Waktu":
                 func = offset_funcs[key]
                 res = func(date_str, int(offset_val))
 
-                if 'error' in res:
+                if "error" in res:
                     st.error(f"❌ {res['error']}")
                 else:
-                    ny, nm, nd = res['date']
+                    ny, nm, nd = res["date"]
                     st.markdown(f"""
                     <div style="background: #1a1e2a; border-radius: 12px; padding: 20px; border: 1px solid #d4b896; margin: 12px 0;">
                         <h3 style="color: #d4b896; margin-top: 0;">📅 Hasil Offset</h3>
@@ -1007,7 +1013,6 @@ elif nav == "⏱️ Offset Waktu":
                     </div>
                     """, unsafe_allow_html=True)
 
-                    # Show comparison
                     ka0 = mech_engine.date_to_ka(int(year0), int(month0), int(day0))
                     st.write(f"**KA awal:** {format_ka(ka0)} → **KA baru:** {format_ka(res['ka'])} (selisih: {res['ka'] - ka0:,} hari)")
 
@@ -1015,10 +1020,36 @@ elif nav == "⏱️ Offset Waktu":
                 st.error(f"❌ Error: {str(e)}")
 
 # ============================================================================
-# FOOTER
+# GLOBAL FOOTER – tampil di semua halaman
 # ============================================================================
-st.sidebar.markdown("---")
-st.sidebar.caption("🌏 Jolotundo, Indonesia")
-st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
+st.markdown("""
+<style>
+    .global-footer {
+        text-align: center;
+        color: #556688;
+        font-size: 0.75rem;
+        padding: 20px 0 10px 0;
+        border-top: 1px solid #1a1e2a;
+        margin-top: 40px;
+        width: 100%;
+    }
+    .global-footer a {
+        color: #8899bb;
+        text-decoration: none;
+    }
+    .global-footer a:hover {
+        color: #d4b896;
+        text-decoration: underline;
+    }
+</style>
+<div class="global-footer">
+    <b>OSS OLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
+    Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
+    <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
+    Jolotundo Research Consortium
+</div>
+""", unsafe_allow_html=True)
 
-# Run with: streamlit run app.py
+# ============================================================================
+# END OF FILE
+# ============================================================================
