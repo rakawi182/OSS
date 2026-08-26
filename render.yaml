@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: oss-astro
+    name: oldjava-astro
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
