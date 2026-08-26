@@ -4270,11 +4270,11 @@ class JolotundoArchaeoastronomySystem:
             return "Waxing Crescent"
         elif 67.5 <= a < 112.5:
             return "First Quarter"
-        elif 112.5 <= a < 157.5:
+        elif 112.5 <= a < 165.0:
             return "Waxing Gibbous"
-        elif 157.5 <= a < 202.5:
+        elif 165.0 <= a < 195.0:
             return "Full Moon"
-        elif 202.5 <= a < 247.5:
+        elif 195.0 <= a < 247.5:
             return "Waning Gibbous"
         elif 247.5 <= a < 292.5:
             return "Last Quarter"
