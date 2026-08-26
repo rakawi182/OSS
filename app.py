@@ -516,13 +516,13 @@ if nav == "🏠 Beranda":
         st.markdown("""
         <div class="jae-card">
             <h3>📜 Prasasti</h3>
-            <p>Ω-STHAPATI<br>Damais + Proudfoot + Rakawi</p>
+            <p>Ω-STHAPATI<br>Damais + Proudfoot + (smart parsing) Rakawi</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="footer">
-        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Observatory
+        OSS ΩLDJAVA-astro • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Obsv
     </div>
     """, unsafe_allow_html=True)
 
