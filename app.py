@@ -425,7 +425,7 @@ if nav == "🏠 Beranda":
         <div style="margin-top: 12px;">
             <span class="oss-badge">🌍 OPEN SOURCE</span>
             <span class="oss-badge" style="margin-left: 8px;">🔓 PUBLIC</span>
-            <span class="oss-badge" style="margin-left: 8px;">⚡ v301.5.Ω</span>
+            <span class="oss-badge" style="margin-left: 8px;">⚡ OSS</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -466,7 +466,7 @@ if nav == "🏠 Beranda":
         <b>📆 WUKU SYSTEM (210-HARI) – SUMBER EPIGRAFI</b><br>
         Berdasarkan penelitian <b>Louis-Charles Damais (1955)</b> tentang 
         kalender Jawa kuno, serta katalog prasasti dan wuku dalam 
-        <b><i>Javaanse Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
+        <b><i>Javaanese Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
         Sistem ini menggunakan epoch absolut <b>8 Februari 1 SM</b> 
         (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.
         <br><br>
