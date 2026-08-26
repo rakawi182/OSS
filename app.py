@@ -708,12 +708,14 @@ elif nav == "📆 Wuku & Wara":
             if tpa_list:
                 data = []
                 for tpa in tpa_list:
+                    ka = tpa["ka"]
+                    w_info = mech_engine.get_wuku_by_ka(ka)
                     y, m, d = tpa["date"]
                     data.append({
                         "Tanggal": f"{int(y)}-{int(m):02d}-{int(d):02d}",
-                        "KA": format_ka(tpa["ka"]),
-                        "Wuku": tpa["wuku_info"]["wuku_name"],
-                        "Wara": tpa["wuku_info"]["wara_triple"]
+                        "KA": format_ka(ka),
+                        "Wuku": w_info["wuku_name"],
+                        "Wara": w_info["wara_triple"]
                     })
                 st.dataframe(data, use_container_width=True)
             else:
