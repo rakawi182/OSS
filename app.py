@@ -430,23 +430,24 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # --- DESKRIPSI LENGKAP DENGAN REFERENSI RESMI (SYRTE / IMCCE) ---
+    # --- DESKRIPSI LENGKAP DENGAN REFERENSI RESMI ---
     st.markdown("""
     <div class="description-box">
-        <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b><br>
-        <br>
+        <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
+        <br><br>
         <b>☀️ MATAHARI (VSOP87D) – IMCCE / Observatoire de Paris</b><br>
         Menggunakan <b>VSOP87D</b> (<i>Bretagnon &amp; Francou, 1988</i>) dari 
         <b>IMCCE - Observatoire de Paris</b>, yang merupakan turunan spherical 
         (bujur, lintang, radius) dari solusi analitik VSOP87 yang difit terhadap 
         integrasi numerik <b>DE200/LE200 (JPL)</b>. Implementasi ini adalah 
         translasi Python langsung dari subroutine Fortran resmi 
-        (file data <code>VSOP87D.ear</code>).<br>
+        (file data <code>VSOP87D.ear</code>).
+        <br><br>
         Validasi internal terhadap tabel referensi FORTRAN menunjukkan selisih 
         posisi <b>&lt; 0.001″</b>. Perbandingan eksternal dengan 
         <b>JPL Horizons (DE441)</b> menunjukkan akurasi praktis <b>3–10″</b> 
-        untuk koordinat ekuatorial dan <b>&lt; 0.1°</b> untuk koordinat horizontal.<br><br>
-        
+        untuk koordinat ekuatorial dan <b>&lt; 0.1°</b> untuk koordinat horizontal.
+        <br><br>
         <b>🌙 BULAN (ELP2000-82B) – SYRTE / Observatoire de Paris</b><br>
         Menggunakan <b>ELP2000-82B</b> (<i>Chapront-Touzé, Chapront &amp; Francou, 2001</i>) 
         dari <b>SYRTE - Observatoire de Paris</b>, solusi semi-analitik yang 
@@ -454,20 +455,21 @@ if nav == "🏠 Beranda":
         Implementasi ini menggunakan 36 file data resmi 
         (<code>ELP01</code> sampai <code>ELP36</code>) yang berisi deret Fourier 
         dan Poisson untuk bujur, lintang, dan jarak, sesuai dokumentasi internal 
-        SYRTE (<i>Lunar solution ELP, version ELP 2000-82B</i>).<br>
+        SYRTE (<i>Lunar solution ELP, version ELP 2000-82B</i>).
+        <br><br>
         Validasi internal terhadap <b>Tabel H</b> (lima epoch acuan) menunjukkan 
         perbedaan posisi <b>&lt; 0.001 km</b> (sub-meter). Perbandingan eksternal 
         dengan <b>JPL Horizons (DE441)</b> menunjukkan akurasi praktis 
         <b>7–10″</b> untuk asensio rekta/deklinasi dan <b>&lt; 40 km</b> 
-        untuk jarak geosentrik.<br><br>
-        
+        untuk jarak geosentrik.
+        <br><br>
         <b>📆 WUKU SYSTEM (210-HARI) – SUMBER EPIGRAFI</b><br>
         Berdasarkan penelitian <b>Louis-Charles Damais (1955)</b> tentang 
         kalender Jawa kuno, serta katalog prasasti dan wuku dalam 
         <b><i>Javaanse Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
         Sistem ini menggunakan epoch absolut <b>8 Februari 1 SM</b> 
-        (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.<br><br>
-        
+        (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.
+        <br><br>
         <b>📜 KONVERSI PRASASTI SAKA → MASEHI (Ω-STHAPATI)</b><br>
         Metode <b>smart parsing</b> dikembangkan berdasarkan metodologi 
         <b>Damais (1955)</b> dan <b>Proudfoot (2013)</b> untuk deteksi 
@@ -475,20 +477,20 @@ if nav == "🏠 Beranda":
         <b>4 komponen utama</b> (Tahun, Bulan, Wara, Wuku) dan skor 
         <b>TPDP (Temporal Probabilistic Dating Protocol)</b> yang 
         dikembangkan khusus untuk arkeoastronomi Jawa Kuno oleh 
-        <b>Rakawi (2024)</b>.<br><br>
-        
+        <b>Rakawi (2024)</b>.
+        <br><br>
         <b>⏱️ KOREKSI WAKTU (ΔT) – SUMBER HISTORIS &amp; MODERN</b><br>
         ΔT dihitung dengan metode hybrid: data eksplisit <b>IERS/HMNAO</b> 
         (era modern), jangkar gerhana historis Jolotundo 702–1299 M 
         (<i>Morrison &amp; Stephenson, 2004</i>), dan polinomial 
-        <b>Espenak &amp; Meeus (2006)</b> untuk era di luar jangkauan data.<br><br>
-        
+        <b>Espenak &amp; Meeus (2006)</b> untuk era di luar jangkauan data.
+        <br><br>
         <b>🌏 KOORDINAT HORIZONTAL &amp; KOREKSI ATMOSFER</b><br>
         Koreksi refraksi atmosfer menggunakan formulasi <b>Bennett (1982)</b> 
         dengan koreksi suhu/tekanan dari <b>Meeus (1998)</b>. 
         Paralaks diurnal dihitung dengan metode vektor 
-        <b>JPL Horizons style</b> (<i>Meeus, 1998</i>).<br><br>
-        
+        <b>JPL Horizons style</b> (<i>Meeus, 1998</i>).
+        <br><br>
         <b>📍 LOKASI ACUAN – JOLOTUNDO</b><br>
         Observatorium Jolotundo, Jawa Timur (−7.609444°, 112.595556°, elev. 554.5 m) 
         dengan parameter atmosfer lokal dari model <b>GPT3 + VMF3</b> (epoch 2026.445).
@@ -520,7 +522,7 @@ if nav == "🏠 Beranda":
 
     st.markdown("""
     <div class="footer">
-        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Obsv
+        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Observatory
     </div>
     """, unsafe_allow_html=True)
 
