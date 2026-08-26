@@ -1,5 +1,5 @@
 # ============================================================================
-# app.py - OSS OLDJAVA-astro Web Application
+# app.py - OSS ΩLDJAVA-astro Web Application
 # Open Source System for Old Javanese Archaeoastronomy
 # Streamlit Cloud Deployment Ready
 # ============================================================================
@@ -26,14 +26,14 @@ def clean_ansi(text):
 # PAGE CONFIG
 # ============================================================================
 st.set_page_config(
-    page_title="OSS OLDJAVA-astro – Open Source Old Javanese Astronomy",
+    page_title="OSS ΩLDJAVA-astro – Open Source Old Javanese Astronomy",
     page_icon="🌙",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ============================================================================
-# CUSTOM CSS
+# CUSTOM CSS – ukuran font lebih proporsional
 # ============================================================================
 st.markdown("""
 <style>
@@ -44,13 +44,23 @@ st.markdown("""
         color: #f0e6d0 !important;
         font-family: 'Georgia', serif;
     }
+    /* Judul halaman lebih proporsional */
+    h1 {
+        font-size: 2.2rem !important;
+    }
+    h2 {
+        font-size: 1.6rem !important;
+    }
+    h3 {
+        font-size: 1.2rem !important;
+    }
     .css-1d391kg, .css-12oz5g7 {
         background-color: #1a1e2a;
     }
     .jae-card {
         background: linear-gradient(145deg, #1e2230, #151926);
         border-radius: 12px;
-        padding: 20px;
+        padding: 18px 20px;
         border: 1px solid #2a3040;
         box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         margin-bottom: 16px;
@@ -60,23 +70,29 @@ st.markdown("""
         border-bottom: 1px solid #2a3040;
         padding-bottom: 8px;
         margin-bottom: 12px;
+        font-size: 1.1rem;
+    }
+    .jae-card p {
+        font-size: 0.9rem;
+        color: #c0c8d8;
+        line-height: 1.6;
     }
     .metric-box {
         background: #1a1e2a;
         border-radius: 8px;
-        padding: 12px 16px;
+        padding: 10px 14px;
         border-left: 3px solid #d4b896;
         margin: 4px 0;
     }
     .metric-label {
         color: #8899bb;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     .metric-value {
         color: #f0e6d0;
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         font-weight: 600;
         font-family: 'Courier New', monospace;
     }
@@ -84,20 +100,24 @@ st.markdown("""
         background: #1a1e2a !important;
         border-radius: 8px !important;
         border: 1px solid #2a3040 !important;
+        font-size: 0.85rem !important;
     }
     .dataframe th {
         background: #252b3d !important;
         color: #d4b896 !important;
         font-weight: 600 !important;
+        font-size: 0.85rem !important;
     }
     .dataframe td {
         color: #c0c8d8 !important;
+        font-size: 0.85rem !important;
     }
     .stButton button {
         background: #2a3040 !important;
         color: #f0e6d0 !important;
         border: 1px solid #3a4050 !important;
         border-radius: 8px !important;
+        font-size: 0.9rem !important;
         transition: all 0.2s;
     }
     .stButton button:hover {
@@ -108,6 +128,7 @@ st.markdown("""
         background: #1a1e2a !important;
         color: #d4b896 !important;
         border-radius: 8px !important;
+        font-size: 0.9rem !important;
     }
     .stTabs [data-baseweb="tab-list"] {
         gap: 4px;
@@ -119,7 +140,8 @@ st.markdown("""
         background: transparent;
         color: #8899bb;
         border-radius: 6px;
-        padding: 8px 16px;
+        padding: 6px 14px;
+        font-size: 0.85rem !important;
     }
     .stTabs [aria-selected="true"] {
         background: #2a3040 !important;
@@ -128,7 +150,7 @@ st.markdown("""
     .footer {
         text-align: center;
         color: #556688;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         padding: 20px 0 10px 0;
         border-top: 1px solid #1a1e2a;
         margin-top: 30px;
@@ -137,16 +159,16 @@ st.markdown("""
         display: inline-block;
         background: #2a3040;
         color: #d4b896;
-        padding: 4px 12px;
+        padding: 3px 10px;
         border-radius: 20px;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         letter-spacing: 1px;
         border: 1px solid #3a4050;
     }
     .global-footer {
         text-align: center;
         color: #556688;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         padding: 20px 0 10px 0;
         border-top: 1px solid #1a1e2a;
         margin-top: 40px;
@@ -159,6 +181,32 @@ st.markdown("""
     .global-footer a:hover {
         color: #d4b896;
         text-decoration: underline;
+    }
+    /* Deskripsi beranda */
+    .description-box {
+        background: #1a1e2a;
+        border-radius: 12px;
+        padding: 20px 24px;
+        border: 1px solid #2a3040;
+        margin: 16px 0;
+        color: #c0c8d8;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+    .description-box b {
+        color: #d4b896;
+    }
+    .description-box ul {
+        margin: 8px 0 8px 20px;
+        padding-left: 0;
+    }
+    .description-box li {
+        margin: 4px 0;
+    }
+    .highlight-omega {
+        color: #d4b896;
+        font-weight: 700;
+        font-size: 1.1em;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -246,7 +294,7 @@ def load_core_modules():
 # ============================================================================
 # LOAD MODULES
 # ============================================================================
-with st.spinner("⏳ Memuat OSS OLDJAVA-astro..."):
+with st.spinner("⏳ Memuat OSS ΩLDJAVA-astro..."):
     mods = load_core_modules()
 
 jrc_const = mods["jrc_const"]
@@ -279,7 +327,7 @@ st.success("✅ Sistem siap!")
 # SIDEBAR NAVIGATION
 # ============================================================================
 st.sidebar.image("https://img.icons8.com/fluency/96/000000/sun.png", width=60)
-st.sidebar.title("🌙 OSS OLDJAVA-astro")
+st.sidebar.title("🌙 OSS ΩLDJAVA-astro")
 st.sidebar.caption("Open Source Old Javanese Astronomy")
 st.sidebar.markdown("---")
 
@@ -362,10 +410,10 @@ def display_wuku_detail(info, epoch, ka):
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
-# PAGE: BERANDA
+# PAGE: BERANDA – dengan deskripsi lengkap
 # ============================================================================
 if nav == "🏠 Beranda":
-    st.title("🏛️ OSS OLDJAVA-astro")
+    st.title("🏛️ OSS ΩLDJAVA-astro")
     st.markdown("""
     <div style="background: linear-gradient(145deg, #1a1e2a, #0e1117); 
                 border-radius: 16px; padding: 24px; border: 1px solid #2a3040; 
@@ -374,16 +422,49 @@ if nav == "🏠 Beranda":
             <b style="color: #d4b896;">Open Source System for Old Javanese Archaeoastronomy</b> – 
             sistem terpadu untuk astronomi arkeologi Jawa Kuno.
         </p>
-        <p style="color: #8899bb; font-size: 0.9rem;">
-            Menggabungkan <b>JRC Ephemeris</b> (VSOP87D + ELP2000-82B), 
-            <b>Wuku System</b> (210-hari), 
-            <b>Old Java Astronomy</b> (Pancanga, Yoga, Karana, Lagna),
-            dan <b>Ω-STHAPATI</b> (konversi prasasti Saka).
-        </p>
         <div style="margin-top: 12px;">
             <span class="oss-badge">🌍 OPEN SOURCE</span>
             <span class="oss-badge" style="margin-left: 8px;">🔓 PUBLIC</span>
+            <span class="oss-badge" style="margin-left: 8px;">⚡ v301.5.Ω</span>
         </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- DESKRIPSI LENGKAP ---
+    st.markdown("""
+    <div class="description-box">
+        <b>🔭 EPHEMERIS PRESISI TINGGI</b><br>
+        Sistem ini menggunakan <b>VSOP87D</b> untuk Matahari dan planet (akurasi < 0.01″) 
+        serta <b>ELP2000-82B</b> untuk Bulan (akurasi < 0.5″). 
+        Kedua model dikalibrasi dengan data <b>IERS/HMNAO</b> dan koreksi 
+        <b>ΔT (Delta T)</b> berbasis gerhana historis Jolotundo (702–1299 M) serta 
+        tabel EOP modern. Untuk koordinat horizontal diterapkan koreksi 
+        <b>refraksi atmosfer</b> (Bennett 1982 + Meeus) dan <b>paralaks diurnal</b> 
+        (JPL Horizons style).
+        <br><br>
+        <b>📜 KONVERSI PRASASTI SAKA → MASEHI</b><br>
+        Metode <b>smart parsing</b> memungkinkan input wara tidak lengkap, 
+        misalnya <i>"Jumat-Wage"</i> atau <i>"Saniscara"</i> saja, 
+        lalu sistem akan mencocokkan dengan matriks 210-hari Wuku-Wara. 
+        Evaluasi menggunakan <b>4 komponen utama</b> (Tahun, Bulan, Wara, Wuku) 
+        dengan skor TPDP (Temporal Probabilistic Dating Protocol) dan 
+        deteksi interkalasi (punaḥ) berdasarkan data Damais.
+        <br><br>
+        <b>📅 DUKUNGAN TAHUN NEGATIF & KALENDER HIBRID</b><br>
+        Mendukung tahun astronomi negatif (misal <i>-3101</i> untuk 3102 SM) 
+        dan konversi otomatis antara kalender <b>Julian</b> (sebelum 1582) 
+        dan <b>Gregorian</b> (sesudah 1582). Sistem KA (Kali Ahargana) 
+        berbasis epoch 18 Februari 3102 SM dengan rentang tak terbatas.
+        <br><br>
+        <b>⏱️ KOREKSI WAKTU (ΔT)</b><br>
+        ΔT dihitung dengan metode hybrid: data eksplisit IERS/HMNAO untuk era modern, 
+        jangkar gerhana Jolotundo (702–1299 M), dan polinomial Espenak & Meeus 
+        untuk era di luar jangkauan data. Nilai ΔT ditampilkan dalam setiap 
+        laporan ephemeris.
+        <br><br>
+        <b>🌏 LOKASI ACUAN</b><br>
+        Observatorium Jolotundo, Jawa Timur (−7.609444°, 112.595556°, elev. 554.5 m) 
+        dengan parameter atmosfer lokal (tekanan 952.5 hPa, suhu 24.0°C).
     </div>
     """, unsafe_allow_html=True)
 
@@ -392,27 +473,27 @@ if nav == "🏠 Beranda":
         st.markdown("""
         <div class="jae-card">
             <h3>☀️ Matahari</h3>
-            <p style="color: #8899bb;">Posisi presisi tinggi<br>VSOP87D + nutasi + aberasi</p>
+            <p>Posisi presisi tinggi<br>VSOP87D + nutasi + aberasi</p>
         </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown("""
         <div class="jae-card">
             <h3>🌙 Bulan</h3>
-            <p style="color: #8899bb;">ELP2000-82B<br>+ topocentrik + fase</p>
+            <p>ELP2000-82B<br>+ topocentrik + fase</p>
         </div>
         """, unsafe_allow_html=True)
     with col3:
         st.markdown("""
         <div class="jae-card">
             <h3>📜 Prasasti</h3>
-            <p style="color: #8899bb;">Konversi Saka→Masehi<br>+ 4 komponen utama</p>
+            <p>Konversi Saka→Masehi<br>+ 4 komponen utama</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="footer">
-        OSS OLDJAVA-astro v301.5.Ω • Open Source • Data: JRC Ephemeris (IAU2023) • Jolotundo Observatory
+        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: JRC Ephemeris (IAU2023) • Jolotundo Observatory
     </div>
     """, unsafe_allow_html=True)
 
@@ -813,17 +894,17 @@ elif nav == "📜 Konversi Prasasti":
                         cand = best["candidate"]
                         y, m, d = cand["date"]
                         ka = cand["ka"]
-                        w_info = mech_engine.get_wuku_by_ka(ka)  # info wuku lengkap dari sistem wuku
+                        w_info = mech_engine.get_wuku_by_ka(ka)
 
                         st.markdown(f"""
                         <div style="background: #1a1e2a; border-radius: 12px; padding: 20px; border: 1px solid #d4b896; margin: 12px 0;">
                             <h3 style="color: #d4b896; margin-top: 0;">✨ Kandidat Terbaik</h3>
-                            <p style="color: #f0e6d0; font-size: 1.2rem;">
+                            <p style="color: #f0e6d0; font-size: 1.1rem;">
                                 <b>{int(y)}-{int(m):02d}-{int(d):02d}</b>
                                 &nbsp;·&nbsp; KA: <b>{format_ka(ka)}</b>
                                 &nbsp;·&nbsp; Wuku: <b>{w_info['wuku_name']}</b>
                             </p>
-                            <p style="color: #8899bb;">
+                            <p style="color: #8899bb; font-size: 0.9rem;">
                                 Skor: {best['score']:.3f} &nbsp;·&nbsp; Confidence: {best['confidence']}
                                 &nbsp;·&nbsp; Wara: {w_info['wara_triple_full']}
                             </p>
@@ -1045,7 +1126,7 @@ elif nav == "⏱️ Offset Waktu":
                             &nbsp;·&nbsp; KA: <b>{format_ka(res['ka'])}</b>
                             &nbsp;·&nbsp; Wuku: <b>{res['wuku_name']}</b>
                         </p>
-                        <p style="color: #8899bb;">
+                        <p style="color: #8899bb; font-size: 0.9rem;">
                             Wara: {res['wara_triple_full']} &nbsp;·&nbsp;
                             Hari ke-{res['day_in_wuku']}/7 &nbsp;·&nbsp;
                             TU-PA-Ā: {'✅' if res['is_tu_pa_a'] else '❌'}
@@ -1064,7 +1145,7 @@ elif nav == "⏱️ Offset Waktu":
 # ============================================================================
 st.markdown("""
 <div class="global-footer">
-    <b>OSS OLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
+    <b>OSS ΩLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
     Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
     <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
     Jolotundo Research Consortium
