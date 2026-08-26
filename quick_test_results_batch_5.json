@@ -1,0 +1,469 @@
+{
+  "batch_number": 5,
+  "batch_size": 10,
+  "start_idx": 40,
+  "end_idx": 50,
+  "test_date": "2026-08-27T06:24:34.272411",
+  "system": "Ω-STHAPATI v301.4 FINAL IMPROVED + JRC Verification",
+  "total_in_batch": 10,
+  "statistics": {
+    "exact_match": 10,
+    "within_3_days": 0,
+    "within_7_days": 0,
+    "within_30_days": 0,
+    "failed": 0,
+    "no_result": 0
+  },
+  "accuracy": {
+    "exact": 100.0,
+    "within_3_days": 100.0,
+    "within_7_days": 100.0,
+    "within_30_days": 100.0
+  },
+  "ayanamsa_stats": {
+    "sayana": 2,
+    "nirayana": 4,
+    "both": 0,
+    "none": 1,
+    "no_naks_data": 3
+  },
+  "ayanamsa_stats_tolerance": {
+    "sayana": 0,
+    "nirayana": 0,
+    "both": 6,
+    "none": 1,
+    "no_naks_data": 3
+  },
+  "results": [
+    {
+      "no": 41,
+      "id": "A.78_79",
+      "name": "Kikil Batu I & II",
+      "saka": 827,
+      "masa": "Margasira",
+      "expected_date": [
+        905,
+        11,
+        28
+      ],
+      "converted_date": [
+        905,
+        11,
+        28
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1463475,
+      "wuku": "Mandasiya",
+      "wara": "Maulu-Pahing-Wrhaspati",
+      "score": 0.8235704285714286,
+      "confidence": "SEDANG",
+      "month_shifted": true,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 29,
+        "tithi_calculated": {
+          "tithi": 14,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": false,
+        "naks_sayana": "Jyestha",
+        "naks_nirayana": "Jyestha",
+        "system_detected": null,
+        "system_detected_tolerance": null,
+        "ayanamsa": 8.46378254770063
+      }
+    },
+    {
+      "no": 42,
+      "id": "A.81",
+      "name": "Kandangan",
+      "saka": 828,
+      "masa": "Bhadrapada",
+      "expected_date": [
+        906,
+        9,
+        11
+      ],
+      "converted_date": [
+        906,
+        9,
+        11
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1463762,
+      "wuku": "Bala",
+      "wara": "Was-Wage-Wrhaspati",
+      "score": 0.8907132857142857,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 20,
+        "tithi_calculated": {
+          "tithi": 6,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": false,
+        "naks_sayana": "Mrigasira",
+        "naks_nirayana": "Rohini",
+        "system_detected": "none",
+        "system_detected_tolerance": "none",
+        "ayanamsa": 8.506697341682743
+      }
+    },
+    {
+      "no": 43,
+      "id": "A.82",
+      "name": "Mantyasih I",
+      "saka": 829,
+      "masa": "Caitra",
+      "expected_date": [
+        907,
+        4,
+        11
+      ],
+      "converted_date": [
+        907,
+        4,
+        11
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1463974,
+      "wuku": "Bala",
+      "wara": "Tungleh-Umanis-Saniscara",
+      "score": 0.8907132857142857,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 26,
+        "tithi_calculated": {
+          "tithi": 11,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Uttara Bhadrapada",
+        "naks_nirayana": "Purva Bhadrapada",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.541636073491457
+      }
+    },
+    {
+      "no": 44,
+      "id": "A.84",
+      "name": "Sangsang",
+      "saka": 829,
+      "masa": "Vaisakha",
+      "expected_date": [
+        907,
+        5,
+        4
+      ],
+      "converted_date": [
+        907,
+        5,
+        4
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1463997,
+      "wuku": "Dukut",
+      "wara": "Maulu-Wage-Soma",
+      "score": 0.8657132857142856,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 19,
+        "tithi_calculated": {
+          "tithi": 4,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": true,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Uttara Ashadha",
+        "naks_nirayana": "Purva Ashadha",
+        "system_detected": "sayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.545421099870843
+      }
+    },
+    {
+      "no": 45,
+      "id": "A.86",
+      "name": "Kasugihan",
+      "saka": 829,
+      "masa": "Margasira",
+      "expected_date": [
+        907,
+        11,
+        18
+      ],
+      "converted_date": [
+        907,
+        11,
+        18
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1464195,
+      "wuku": "Wayang",
+      "wara": "Maulu-Pahing-Budha",
+      "score": 0.8692847142857143,
+      "confidence": "TINGGI",
+      "month_shifted": true,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 10,
+        "tithi_calculated": {
+          "tithi": 11,
+          "paksa": "Sukla"
+        },
+        "naks_sayana_exact": true,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Aswini",
+        "naks_nirayana": "Revati",
+        "system_detected": "sayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.580037257031384
+      }
+    },
+    {
+      "no": 46,
+      "id": "A.87",
+      "name": "Kiněwu (Ganesa)",
+      "saka": 829,
+      "masa": "Margasira",
+      "expected_date": [
+        907,
+        11,
+        20
+      ],
+      "converted_date": [
+        907,
+        11,
+        20
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1464197,
+      "wuku": "Wayang",
+      "wara": "Haryang-Wage-Sukra",
+      "score": 0.8621418571428572,
+      "confidence": "TINGGI",
+      "month_shifted": true,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 12,
+        "tithi_calculated": {
+          "tithi": 13,
+          "paksa": "Sukla"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Krittika",
+        "naks_nirayana": "Bharani",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.580355780700096
+      }
+    },
+    {
+      "no": 47,
+      "id": "A.88",
+      "name": "Kaladi",
+      "saka": 831,
+      "masa": "Asadha",
+      "expected_date": [
+        909,
+        6,
+        27
+      ],
+      "converted_date": [
+        909,
+        6,
+        27
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1464782,
+      "wuku": "Maktal",
+      "wara": "Was-Wage-Anggara",
+      "score": 0.8471408571428571,
+      "confidence": "SEDANG",
+      "month_shifted": true,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 8,
+        "tithi_calculated": {
+          "tithi": 7,
+          "paksa": "Sukla"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Chitra",
+        "naks_nirayana": "Hasta",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.68343218749223
+      }
+    },
+    {
+      "no": 48,
+      "id": "A.91",
+      "name": "Wuru Tunggal",
+      "saka": 833,
+      "masa": "Phalguna",
+      "expected_date": [
+        912,
+        3,
+        8
+      ],
+      "converted_date": [
+        912,
+        3,
+        8
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1465767,
+      "wuku": "Kuningan",
+      "wara": "Maulu-Wage-Aditya",
+      "score": 0.879998,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 17,
+        "tithi_calculated": {
+          "tithi": 3,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": false,
+        "naks_sayana": "Visakha",
+        "naks_nirayana": "Swati",
+        "system_detected": null,
+        "system_detected_tolerance": null,
+        "ayanamsa": 8.807487721198854
+      }
+    },
+    {
+      "no": 49,
+      "id": "A.93_94",
+      "name": "Pěsindon I & II",
+      "saka": 836,
+      "masa": "Sravana",
+      "expected_date": [
+        914,
+        8,
+        14
+      ],
+      "converted_date": [
+        914,
+        8,
+        14
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1466656,
+      "wuku": "Tambir",
+      "wara": "Tungleh-Pon-Aditya",
+      "score": 0.9014265714285714,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 20,
+        "tithi_calculated": {
+          "tithi": 6,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": false,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": false,
+        "naks_sayana": "Krittika",
+        "naks_nirayana": "Bharani",
+        "system_detected": null,
+        "system_detected_tolerance": null,
+        "ayanamsa": 8.822377215436632
+      }
+    },
+    {
+      "no": 50,
+      "id": "A.95",
+      "name": "Sugih Manek",
+      "saka": 837,
+      "masa": "Asvini",
+      "expected_date": [
+        915,
+        9,
+        13
+      ],
+      "converted_date": [
+        915,
+        9,
+        13
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1467051,
+      "wuku": "Julungpujut",
+      "wara": "Maulu-Pon-Budha",
+      "score": 0.8828551428571428,
+      "confidence": "TINGGI",
+      "month_shifted": true,
+      "jrc_verification": {
+        "tithi_match": true,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 2,
+        "tithi_calculated": {
+          "tithi": 2,
+          "paksa": "Sukla"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": true,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Swati",
+        "naks_nirayana": "Chitra",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "both",
+        "ayanamsa": 8.799703287004043
+      }
+    }
+  ]
+}

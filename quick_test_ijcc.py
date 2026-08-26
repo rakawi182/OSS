@@ -33,7 +33,7 @@ def get_nakshatra_index(name):
 
 def inscription_tithi_to_standard(t_ins, p_ins):
     """
-    Konversi representasi tithi prasasti (1-30 dengan paksa) ke nomor standar 30-hari.
+    Konversi representasi tithi prasasti (1-15 dengan paksa) ke nomor standar 30-hari.
     Contoh: (1, Krsna) -> 16
     """
     p = p_ins.lower() if p_ins else ''
@@ -90,11 +90,9 @@ def verify_with_jrc(converted_date, inscription_data):
         if tithi_std_ins is not None:
             tithi_calc = tithi_nirayana['tithi']
             tithi_exact_match = (tithi_calc == tithi_std_ins)
-            # Toleransi drift 1: hitung selisih absolut, perhatikan siklus 30?
-            # Untuk drift 1, cukup absolut diff <=1 (30->1 dianggap diff 29, tidak dianggap)
-            # Tapi bisa juga diff modulo 30: min(abs(diff), 30-abs(diff)) <= 1
+            # Toleransi drift 1: basis 15 (karena tithi 1-15 per paksa)
             diff = abs(tithi_calc - tithi_std_ins)
-            if diff <= 1 or (30 - diff) <= 1:
+            if diff <= 1 or (15 - diff) <= 1:
                 tithi_tolerance_match = True
             else:
                 tithi_tolerance_match = False

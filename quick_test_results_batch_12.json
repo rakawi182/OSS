@@ -1,0 +1,125 @@
+{
+  "batch_number": 12,
+  "batch_size": 10,
+  "start_idx": 110,
+  "end_idx": 112,
+  "test_date": "2026-08-27T06:28:45.352437",
+  "system": "Ω-STHAPATI v301.4 FINAL IMPROVED + JRC Verification",
+  "total_in_batch": 2,
+  "statistics": {
+    "exact_match": 2,
+    "within_3_days": 0,
+    "within_7_days": 0,
+    "within_30_days": 0,
+    "failed": 0,
+    "no_result": 0
+  },
+  "accuracy": {
+    "exact": 100.0,
+    "within_3_days": 100.0,
+    "within_7_days": 100.0,
+    "within_30_days": 100.0
+  },
+  "ayanamsa_stats": {
+    "sayana": 0,
+    "nirayana": 2,
+    "both": 0,
+    "none": 0,
+    "no_naks_data": 0
+  },
+  "ayanamsa_stats_tolerance": {
+    "sayana": 0,
+    "nirayana": 2,
+    "both": 0,
+    "none": 0,
+    "no_naks_data": 0
+  },
+  "results": [
+    {
+      "no": 111,
+      "id": "A.209",
+      "name": "Pamintihan",
+      "saka": 1395,
+      "masa": "Vaisakha",
+      "expected_date": [
+        1473,
+        5,
+        14
+      ],
+      "converted_date": [
+        1473,
+        5,
+        14
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1670739,
+      "wuku": "Langkir",
+      "wara": "Maulu-Umanis-Sukra",
+      "score": 0.9664285714285714,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": false,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 18,
+        "tithi_calculated": {
+          "tithi": 3,
+          "paksa": "Krsna"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Uttara Ashadha",
+        "naks_nirayana": "Mula",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "nirayana",
+        "ayanamsa": 16.559317761309874
+      }
+    },
+    {
+      "no": 112,
+      "id": "A.210",
+      "name": "Pětak",
+      "saka": 1408,
+      "masa": "Jyestha",
+      "expected_date": [
+        1486,
+        6,
+        11
+      ],
+      "converted_date": [
+        1486,
+        6,
+        11
+      ],
+      "days_diff": 0,
+      "status": "✅ EXACT MATCH",
+      "ka": 1675515,
+      "wuku": "Gumbreg",
+      "wara": "Maulu-Pahing-Aditya",
+      "score": 0.9557142857142857,
+      "confidence": "TINGGI",
+      "month_shifted": false,
+      "jrc_verification": {
+        "tithi_match": true,
+        "tithi_tolerance_match": true,
+        "tithi_std_ins": 10,
+        "tithi_calculated": {
+          "tithi": 10,
+          "paksa": "Sukla"
+        },
+        "naks_sayana_exact": false,
+        "naks_nirayana_exact": true,
+        "naks_sayana_tolerance": false,
+        "naks_nirayana_tolerance": true,
+        "naks_sayana": "Visakha",
+        "naks_nirayana": "Chitra",
+        "system_detected": "nirayana",
+        "system_detected_tolerance": "nirayana",
+        "ayanamsa": 16.711965286715056
+      }
+    }
+  ]
+}
