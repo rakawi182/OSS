@@ -979,31 +979,51 @@ elif nav == "📜 Konversi Prasasti":
                                 ayanamsa = astro_engine.calculate_ayanamsa_precise(jd_tt_calc)
                                 sun_nirayana = (sun_data["longitude_deg"] - ayanamsa) % 360
                                 moon_nirayana = (moon_data["longitude"] - ayanamsa) % 360
+                                moon_tropical = moon_data["longitude"]
+
+                                # --- TITHI (dengan konversi 1-30 ke 1-15 per paksa) ---
                                 tithi_calc = astro_engine.calculate_tithi(
                                     sun_nirayana, moon_nirayana, "nirayana"
                                 )
 
-                                st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
-                                st.write(f"**Tithi hitung:** {tithi_calc['tithi']} {tithi_calc['paksa']}")
+                                # Konversi tithi hitung dari 1-30 ke 1-15 per paksa
+                                tithi_num = tithi_calc["tithi"]
+                                paksa_calc = tithi_calc["paksa"]
+                                if paksa_calc == "Sukla":
+                                    tithi_display = tithi_num
+                                else:
+                                    tithi_display = tithi_num - 15
 
-                                if tithi_input == tithi_calc["tithi"] and paksa_input.lower() == tithi_calc["paksa"].lower():
+                                # Bandingkan input (1-15) dengan hasil hitung (1-15)
+                                st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
+                                st.write(f"**Tithi hitung:** {tithi_display} {paksa_calc}")
+
+                                if tithi_input == tithi_display and paksa_input.lower() == paksa_calc.lower():
                                     st.success("✅ Tithi cocok persis")
-                                elif abs(tithi_input - tithi_calc["tithi"]) <= 1 and paksa_input.lower() == tithi_calc["paksa"].lower():
-                                    st.warning(f"⚠️ Tithi cocok dengan toleransi 1 (selisih {abs(tithi_input - tithi_calc['tithi'])})")
+                                elif abs(tithi_input - tithi_display) <= 1 and paksa_input.lower() == paksa_calc.lower():
+                                    st.warning(f"⚠️ Tithi cocok dengan toleransi 1 (selisih {abs(tithi_input - tithi_display)})")
                                 else:
                                     st.error("❌ Tithi tidak cocok")
 
+                                # --- NAKSATRA (Nirayana & Sayana) ---
                                 naks_input = data.get("nakshatra")
                                 if naks_input:
                                     old_norm = OldJavaNormalizer()
                                     naks_norm = old_norm.normalize(naks_input)
-                                    naks_calc = astro_engine.calculate_nakshatra(moon_nirayana, "nirayana")
+
+                                    naks_nirayana = astro_engine.calculate_nakshatra(moon_nirayana, "nirayana")
+                                    naks_sayana = astro_engine.calculate_nakshatra(moon_tropical, "tropical")
+
                                     st.write(f"**Nakṣatra input:** {naks_norm}")
-                                    st.write(f"**Nakṣatra hitung (Nirayana):** {naks_calc['nakshatra']}")
-                                    if naks_norm == naks_calc["nakshatra"]:
-                                        st.success("✅ Nakṣatra cocok (Nirayana)")
+                                    st.write(f"**Nakṣatra hitung (Nirayana):** {naks_nirayana['nakshatra']}")
+                                    st.write(f"**Nakṣatra hitung (Sayana):** {naks_sayana['nakshatra']}")
+
+                                    if naks_norm == naks_nirayana["nakshatra"]:
+                                        st.success("✅ Nakṣatra cocok dengan Nirayana")
+                                    elif naks_norm == naks_sayana["nakshatra"]:
+                                        st.success("✅ Nakṣatra cocok dengan Sayana")
                                     else:
-                                        st.warning("⚠️ Nakṣatra tidak cocok (cek ejaan atau sistem)")
+                                        st.warning("⚠️ Nakṣatra tidak cocok dengan kedua sistem (cek ejaan atau sistem)")
 
                             except Exception as e:
                                 st.warning(f"Tidak dapat verifikasi tithi/naksatra: {str(e)}")
