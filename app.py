@@ -212,7 +212,29 @@ offset_funcs = {
     "tithi": mods["offset_tithi"]
 }
 
-st.success("✅ Sistem siap!")
+st.markdown("""
+<div style="
+    background: linear-gradient(135deg, #1a1e2a, #2a3040);
+    border-radius: 12px;
+    padding: 16px 24px;
+    border-left: 6px solid #d4b896;
+    margin: 16px 0 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+">
+    <span style="font-size: 2rem; line-height: 1;">🔭</span>
+    <div>
+        <span style="color: #d4b896; font-weight: 600; font-size: 1.15rem; font-family: 'Georgia', serif;">
+            Jolotundo Research
+        </span>
+        <span style="color: #8899bb; font-size: 0.95rem; margin-left: 8px; font-style: italic;">
+            — not just observing, but remembering
+        </span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ============================================================================
 # LOAD VALIDATION RESULTS (BATCH FILES)
