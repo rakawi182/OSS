@@ -290,7 +290,7 @@ nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 wib_tz = timezone(timedelta(hours=7))
 now_wib = datetime.now(wib_tz)
-st.sidebar.caption(f"RAKAWI.Ω • {now_wib.strftime('%Y-%m-%d')}")
+st.sidebar.caption(f"PAWITRA • {now_wib.strftime('%Y-%m-%d')}")
 st.sidebar.caption("Open Source • Jolotundo Research Consortium")
 st.sidebar.caption("🏫 Sekolah Alam Penanggungan")
 st.sidebar.caption("📜 SAJAK (Sinau Aksara Jawa Kuno)")
