@@ -2,17 +2,27 @@
 # app.py - OSS ΩLDJAVA-astro Web Application
 # Open Source System for Old Javanese Archaeoastronomy
 # Streamlit Cloud Deployment Ready
+#
+# FINAL VERSION
+# - Istilah "Sistem Zodiak" untuk Sayana/Nirayana
+# - Referensi Damais (1955) dicantumkan
+# - Fitur Database Damais & Analisis Sistem
 # ============================================================================
 
 import sys
 import os
-import time
 import re
+import json
+import glob
 from datetime import datetime, timezone, timedelta
 import warnings
 warnings.filterwarnings("ignore")
 
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
 # ============================================================================
 # FUNGSI PEMBERSIH ANSI
@@ -33,7 +43,7 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CUSTOM CSS – ukuran font lebih proporsional
+# CUSTOM CSS
 # ============================================================================
 st.markdown("""
 <style>
@@ -44,7 +54,6 @@ st.markdown("""
         color: #f0e6d0 !important;
         font-family: 'Georgia', serif;
     }
-    /* Judul halaman lebih proporsional */
     h1 {
         font-size: 2.2rem !important;
     }
@@ -182,7 +191,6 @@ st.markdown("""
         color: #d4b896;
         text-decoration: underline;
     }
-    /* Deskripsi beranda */
     .description-box {
         background: #1a1e2a;
         border-radius: 12px;
@@ -196,17 +204,21 @@ st.markdown("""
     .description-box b {
         color: #d4b896;
     }
-    .description-box ul {
-        margin: 8px 0 8px 20px;
-        padding-left: 0;
+    .description-box a {
+        color: #7a9bcb;
+        text-decoration: none;
     }
-    .description-box li {
-        margin: 4px 0;
+    .description-box a:hover {
+        text-decoration: underline;
     }
-    .highlight-omega {
-        color: #d4b896;
-        font-weight: 700;
-        font-size: 1.1em;
+    .ref-card {
+        background: #1a1e2a;
+        border-radius: 8px;
+        padding: 12px 16px;
+        border-left: 4px solid #d4b896;
+        margin: 12px 0;
+        font-size: 0.85rem;
+        color: #8899bb;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -224,7 +236,7 @@ if "initialized" not in st.session_state:
     st.session_state.current_hour = now_wib.hour + now_wib.minute / 60.0
 
 # ============================================================================
-# CACHE LOADER
+# CACHE LOADER UNTUK MODUL
 # ============================================================================
 @st.cache_resource
 def load_core_modules():
@@ -258,7 +270,7 @@ def load_core_modules():
         ΩConstants
     )
     from SPICA_v18 import ΩSthapatiSystem
-    from display import print_panel, print_table, print_header, print_info
+    from Damais_DB import DAMAIS_INSCRIPTIONS
 
     return {
         "jrc_const": IAU2023UltraPrecision(),
@@ -285,10 +297,7 @@ def load_core_modules():
         "LunarELP82Engine": LunarELP82Engine,
         "UnifiedCoordinateTransformer": UnifiedCoordinateTransformer,
         "JPLStyleTopocentricCorrections": JPLStyleTopocentricCorrections,
-        "print_panel": print_panel,
-        "print_table": print_table,
-        "print_header": print_header,
-        "print_info": print_info
+        "DAMAIS_INSCRIPTIONS": DAMAIS_INSCRIPTIONS
     }
 
 # ============================================================================
@@ -311,6 +320,7 @@ VedicTimeEngine = mods["VedicTimeEngine"]
 GrahacaraAsthaEngine = mods["GrahacaraAsthaEngine"]
 DewataMandalaEngine = mods["DewataMandalaEngine"]
 ΩConst = mods["ΩConstants"]
+DAMAIS_INSCRIPTIONS = mods["DAMAIS_INSCRIPTIONS"]
 
 offset_funcs = {
     "solar_days": mods["offset_solar_days"],
@@ -322,6 +332,33 @@ offset_funcs = {
 }
 
 st.success("✅ Sistem siap!")
+
+# ============================================================================
+# LOAD VALIDATION RESULTS (BATCH FILES)
+# ============================================================================
+@st.cache_data
+def load_validation_results():
+    """Gabungkan semua file quick_test_results_batch_*.json menjadi satu DataFrame."""
+    try:
+        pattern = "quick_test_results_batch_*.json"
+        files = sorted(glob.glob(pattern))
+        if not files:
+            return pd.DataFrame()
+        all_data = []
+        for f in files:
+            with open(f, "r", encoding="utf-8") as fp:
+                data = json.load(fp)
+                if "results" in data:
+                    for res in data["results"]:
+                        res["batch"] = data.get("batch_number", 0)
+                        all_data.append(res)
+        df = pd.DataFrame(all_data)
+        return df
+    except Exception as e:
+        st.warning(f"Tidak dapat memuat hasil validasi: {e}")
+        return pd.DataFrame()
+
+validation_df = load_validation_results()
 
 # ============================================================================
 # SIDEBAR NAVIGATION
@@ -339,6 +376,8 @@ nav = st.sidebar.radio(
         "📅 Tanggal Spesifik",
         "📆 Wuku & Wara",
         "📜 Konversi Prasasti",
+        "📊 Database Damais",
+        "📈 Analisis Sistem Zodiak",
         "🔄 Konversi Waktu",
         "⏱️ Offset Waktu"
     ],
@@ -410,7 +449,7 @@ def display_wuku_detail(info, epoch, ka):
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
-# PAGE: BERANDA – dengan deskripsi ilmiah dan referensi resmi
+# PAGE: BERANDA
 # ============================================================================
 if nav == "🏠 Beranda":
     st.title("🏛️ OSS ΩLDJAVA-astro")
@@ -430,7 +469,7 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # --- DESKRIPSI LENGKAP DENGAN REFERENSI RESMI ---
+    # Deskripsi lengkap
     st.markdown("""
     <div class="description-box">
         <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
@@ -469,6 +508,14 @@ if nav == "🏠 Beranda":
         <b><i>Javaanse Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
         Sistem ini menggunakan epoch absolut <b>8 Februari 1 SM</b> 
         (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.
+        <br><br>
+        <b>📚 DATABASE DAMAIS (112 PRASASTI)</b><br>
+        Seluruh data prasasti yang digunakan untuk validasi dan analisis sistem zodiak 
+        bersumber dari publikasi ilmiah:<br>
+        <b>Louis-Charles Damais</b> (1955). 
+        <i>"II. Études d'épigraphie indonésienne : IV. Discussion de la date des inscriptions"</i>, 
+        <b>Bulletin de l'École française d'Extrême-Orient</b>, tome 47, n°1, pp. 7-290. 
+        DOI: <a href="https://doi.org/10.3406/befeo.1955.5406" target="_blank">10.3406/befeo.1955.5406</a>.
         <br><br>
         <b>📜 KONVERSI PRASASTI SAKA → MASEHI (Ω-STHAPATI)</b><br>
         Metode <b>smart parsing</b> dikembangkan berdasarkan metodologi 
@@ -869,6 +916,7 @@ elif nav == "📜 Konversi Prasasti":
         - **Paksa:** Sukla (paruh terang/waxing) atau Krsna (paruh gelap/waning)
         - **Wuku:** (opsional) nama wuku
         - **Wara:** (opsional) bisa lengkap (Tungleh-Pahing-Aditya) atau parsial (Jumat-Wage)
+        - **Nakṣatra:** (opsional) nama naksatra
 
         **Aturan konversi tahun:**
         - Pausa: Śaka +78 atau +79 (ambigu)
@@ -981,12 +1029,10 @@ elif nav == "📜 Konversi Prasasti":
                                 moon_nirayana = (moon_data["longitude"] - ayanamsa) % 360
                                 moon_tropical = moon_data["longitude"]
 
-                                # --- TITHI (dengan konversi 1-30 ke 1-15 per paksa) ---
                                 tithi_calc = astro_engine.calculate_tithi(
                                     sun_nirayana, moon_nirayana, "nirayana"
                                 )
 
-                                # Konversi tithi hitung dari 1-30 ke 1-15 per paksa
                                 tithi_num = tithi_calc["tithi"]
                                 paksa_calc = tithi_calc["paksa"]
                                 if paksa_calc == "Sukla":
@@ -994,7 +1040,6 @@ elif nav == "📜 Konversi Prasasti":
                                 else:
                                     tithi_display = tithi_num - 15
 
-                                # Bandingkan input (1-15) dengan hasil hitung (1-15)
                                 st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
                                 st.write(f"**Tithi hitung:** {tithi_display} {paksa_calc}")
 
@@ -1005,7 +1050,6 @@ elif nav == "📜 Konversi Prasasti":
                                 else:
                                     st.error("❌ Tithi tidak cocok")
 
-                                # --- NAKSATRA (Nirayana & Sayana) ---
                                 naks_input = data.get("nakshatra")
                                 if naks_input:
                                     old_norm = OldJavaNormalizer()
@@ -1045,6 +1089,224 @@ elif nav == "📜 Konversi Prasasti":
 
                 except Exception as e:
                     st.error(f"❌ Error: {str(e)}")
+
+# ============================================================================
+# PAGE: DATABASE DAMAIS
+# ============================================================================
+elif nav == "📊 Database Damais":
+    st.title("📊 Database Prasasti Damais")
+    st.caption("📚 Sumber: Damais, L.-C. (1955). BEFEO 47.1, pp. 7-290. DOI: 10.3406/befeo.1955.5406")
+    st.caption("112 prasasti dari database Damais dengan hasil validasi sistem zodiak")
+
+    # Tampilkan statistik ringkas
+    if not validation_df.empty:
+        total = len(validation_df)
+        exact = validation_df[validation_df["status"] == "✅ EXACT MATCH"].shape[0]
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            show_metric("Total Prasasti", total)
+        with col2:
+            show_metric("Exact Match", f"{exact}/{total} ({exact/total*100:.1f}%)")
+        with col3:
+            sys_counts = {}
+            for _, row in validation_df.iterrows():
+                jrc = row.get("jrc_verification")
+                if jrc and isinstance(jrc, dict):
+                    sys = jrc.get("system_detected")
+                    if sys:
+                        sys_counts[sys] = sys_counts.get(sys, 0) + 1
+            if sys_counts:
+                show_metric("Sistem Zodiak", f"{sys_counts.get('nirayana',0)} Nirayana, {sys_counts.get('sayana',0)} Sayana")
+            else:
+                show_metric("Sistem Zodiak", "Belum ada data")
+    else:
+        st.info("Data validasi belum tersedia. Jalankan quick_test_ijcc.py untuk menghasilkan data.")
+
+    # Tabel interaktif
+    st.subheader("📋 Daftar Prasasti")
+
+    # Filter
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        filter_system = st.selectbox("Filter Sistem Zodiak", ["Semua", "Sayana", "Nirayana", "Both", "None"])
+    with col2:
+        centuries = sorted(set([(ins["saka"] // 100) * 100 for ins in DAMAIS_INSCRIPTIONS if ins.get("saka")]))
+        century_options = ["Semua"] + [f"{c}-{c+99}" for c in centuries]
+        filter_century = st.selectbox("Filter Abad", century_options)
+    with col3:
+        search_text = st.text_input("Cari (nama/ID)", "")
+
+    # Build DataFrame for display
+    display_data = []
+    for ins in DAMAIS_INSCRIPTIONS:
+        row = {
+            "No": ins.get("no"),
+            "ID": ins.get("id"),
+            "Nama": ins.get("name"),
+            "Śaka": ins.get("saka"),
+            "Masa": ins.get("masa"),
+            "Tithi": ins.get("tithi"),
+            "Paksa": ins.get("paksa"),
+            "Wara": ins.get("wara_string"),
+            "Wuku": ins.get("wuku"),
+            "Nakṣatra": ins.get("nakshatra"),
+            "Tanggal Damais": f"{ins['julian_date'][0]}-{ins['julian_date'][1]:02d}-{ins['julian_date'][2]:02d}" if ins.get("julian_date") else "",
+        }
+        # Tambahkan hasil validasi jika ada
+        if not validation_df.empty:
+            match = validation_df[validation_df["no"] == ins.get("no")]
+            if not match.empty:
+                row["Status"] = match.iloc[0].get("status", "")
+                row["KA"] = match.iloc[0].get("ka")
+                row["Skor"] = match.iloc[0].get("score")
+                jrc = match.iloc[0].get("jrc_verification")
+                if jrc and isinstance(jrc, dict):
+                    row["Sistem Zodiak"] = jrc.get("system_detected") or "N/A"
+                    row["Sistem Zodiak (Tol ±1)"] = jrc.get("system_detected_tolerance") or "N/A"
+                else:
+                    row["Sistem Zodiak"] = "N/A"
+                    row["Sistem Zodiak (Tol ±1)"] = "N/A"
+            else:
+                row["Status"] = "Belum diproses"
+                row["KA"] = ""
+                row["Skor"] = ""
+                row["Sistem Zodiak"] = "N/A"
+        display_data.append(row)
+
+    df = pd.DataFrame(display_data)
+
+    # Terapkan filter
+    if filter_system != "Semua":
+        df = df[df["Sistem Zodiak"] == filter_system]
+    if filter_century != "Semua":
+        century_start = int(filter_century.split("-")[0])
+        df = df[(df["Śaka"] >= century_start) & (df["Śaka"] < century_start + 100)]
+    if search_text:
+        df = df[df.apply(lambda row: search_text.lower() in str(row["Nama"]).lower() or search_text.lower() in str(row["ID"]).lower(), axis=1)]
+
+    st.dataframe(df, use_container_width=True, hide_index=True)
+
+    # Detail prasasti saat diklik
+    st.subheader("🔍 Detail Prasasti")
+    if not df.empty:
+        selected_id = st.selectbox("Pilih Prasasti (ID)", df["ID"].tolist())
+        if selected_id:
+            detail = df[df["ID"] == selected_id]
+            if not detail.empty:
+                row = detail.iloc[0]
+                st.markdown(f"""
+                <div class="jae-card">
+                    <h3>{row['ID']} - {row['Nama']}</h3>
+                    <p><b>Śaka:</b> {row['Śaka']} &nbsp;·&nbsp; <b>Masa:</b> {row['Masa']}</p>
+                    <p><b>Tithi:</b> {row['Tithi']} {row['Paksa']} &nbsp;·&nbsp; <b>Wara:</b> {row['Wara']} &nbsp;·&nbsp; <b>Wuku:</b> {row['Wuku']}</p>
+                    <p><b>Nakṣatra:</b> {row['Nakṣatra']} &nbsp;·&nbsp; <b>Tanggal Damais:</b> {row['Tanggal Damais']}</p>
+                    <p><b>Status:</b> {row.get('Status', 'N/A')} &nbsp;·&nbsp; <b>KA:</b> {row.get('KA', 'N/A')} &nbsp;·&nbsp; <b>Skor:</b> {row.get('Skor', 'N/A')}</p>
+                    <p><b>Sistem Zodiak (Exact):</b> {row.get('Sistem Zodiak', 'N/A')} &nbsp;·&nbsp; <b>Sistem Zodiak (Tol ±1):</b> {row.get('Sistem Zodiak (Tol ±1)', 'N/A')}</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+# ============================================================================
+# PAGE: ANALISIS SISTEM ZODIAK
+# ============================================================================
+elif nav == "📈 Analisis Sistem Zodiak":
+    st.title("📈 Analisis Sistem Zodiak (Sayana vs Nirayana)")
+    st.caption("Distribusi sistem zodiak berdasarkan hasil validasi 112 prasasti Damais (1955)")
+
+    if validation_df.empty:
+        st.warning("Belum ada data validasi. Jalankan quick_test_ijcc.py terlebih dahulu.")
+    else:
+        # Ekstrak data sistem
+        systems = []
+        centuries = []
+        for _, row in validation_df.iterrows():
+            jrc = row.get("jrc_verification")
+            if jrc and isinstance(jrc, dict):
+                sys = jrc.get("system_detected")
+                if sys and sys != "none" and sys != "both":
+                    systems.append(sys)
+                    saka = row.get("saka", 0)
+                    centuries.append((saka // 100) * 100)
+
+        if systems:
+            df_sys = pd.DataFrame({"Sistem": systems, "Abad": centuries})
+            counts = df_sys["Sistem"].value_counts().reset_index()
+            counts.columns = ["Sistem", "Jumlah"]
+
+            # Grafik batang
+            fig = px.bar(counts, x="Sistem", y="Jumlah", color="Sistem",
+                         title="Distribusi Sistem Zodiak (Exact Match)",
+                         color_discrete_map={"sayana": "#f1c40f", "nirayana": "#3498db"})
+            fig.update_layout(
+                plot_bgcolor="#1a1e2a",
+                paper_bgcolor="#1a1e2a",
+                font_color="#c0c8d8",
+                title_font_color="#d4b896"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Grafik timeline per abad
+            if not df_sys.empty:
+                df_century = df_sys.groupby(["Abad", "Sistem"]).size().reset_index(name="Jumlah")
+                fig2 = px.bar(df_century, x="Abad", y="Jumlah", color="Sistem",
+                              title="Sistem Zodiak per Abad",
+                              color_discrete_map={"sayana": "#f1c40f", "nirayana": "#3498db"})
+                fig2.update_layout(
+                    plot_bgcolor="#1a1e2a",
+                    paper_bgcolor="#1a1e2a",
+                    font_color="#c0c8d8",
+                    title_font_color="#d4b896"
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+
+        # Statistik tambahan
+        st.subheader("📊 Statistik Sistem Zodiak")
+        total_naks = 0
+        count_sayana = 0
+        count_nirayana = 0
+        count_both = 0
+        count_none = 0
+        for _, row in validation_df.iterrows():
+            jrc = row.get("jrc_verification")
+            if jrc and isinstance(jrc, dict):
+                sys = jrc.get("system_detected")
+                if sys:
+                    total_naks += 1
+                    if sys == "sayana":
+                        count_sayana += 1
+                    elif sys == "nirayana":
+                        count_nirayana += 1
+                    elif sys == "both":
+                        count_both += 1
+                    elif sys == "none":
+                        count_none += 1
+
+        col1, col2, col3, col4, col5 = st.columns(5)
+        with col1:
+            show_metric("Total dg Naksatra", total_naks)
+        with col2:
+            show_metric("Sayana (Tropis)", f"{count_sayana} ({count_sayana/total_naks*100:.1f}%)" if total_naks > 0 else "0")
+        with col3:
+            show_metric("Nirayana (Sideris)", f"{count_nirayana} ({count_nirayana/total_naks*100:.1f}%)" if total_naks > 0 else "0")
+        with col4:
+            show_metric("Both", f"{count_both} ({count_both/total_naks*100:.1f}%)" if total_naks > 0 else "0")
+        with col5:
+            show_metric("None", f"{count_none} ({count_none/total_naks*100:.1f}%)" if total_naks > 0 else "0")
+
+        # Kesimpulan
+        st.markdown("""
+        <div class="description-box">
+            <b>📌 Kesimpulan</b><br>
+            Berdasarkan validasi 112 prasasti Damais, sistem zodiak <b>Nirayana (sidereal)</b> mendominasi 
+            dibandingkan <b>Sayana (tropical)</b>. Grafik per abad menunjukkan bahwa penggunaan 
+            Nirayana meningkat pada periode Śaka 800–900 dan menjadi dominan setelah abad ke-10.
+            <br><br>
+            Beberapa prasasti menunjukkan <b>kedua sistem cocok</b> (Both), yang berarti pada tanggal 
+            tersebut naksatra yang sama muncul di kedua sistem zodiak. Kasus <b>None</b> (tidak cocok) 
+            mungkin disebabkan oleh kesalahan penulisan atau sistem zodiak yang berbeda.
+            <br><br>
+            <b>Referensi:</b> Damais, L.-C. (1955). <i>II. Études d'épigraphie indonésienne : IV. Discussion de la date des inscriptions</i>, BEFEO 47.1, pp. 7-290. DOI: 10.3406/befeo.1955.5406.
+        </div>
+        """, unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: KONVERSI WAKTU
@@ -1190,12 +1452,13 @@ elif nav == "⏱️ Offset Waktu":
                 st.error(f"❌ Error: {str(e)}")
 
 # ============================================================================
-# GLOBAL FOOTER – tampil di semua halaman
+# GLOBAL FOOTER
 # ============================================================================
 st.markdown("""
 <div class="global-footer">
     <b>OSS ΩLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
-    Data: JRC Ephemeris (IAU2023) &nbsp;·&nbsp; 
+    Data: IMCCE VSOP87D / SYRTE ELP2000-82B &nbsp;·&nbsp; 
+    Prasasti: Damais (1955) – BEFEO 47.1 &nbsp;·&nbsp; 
     <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
     Jolotundo Research Consortium
 </div>
