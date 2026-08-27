@@ -290,8 +290,11 @@ nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 wib_tz = timezone(timedelta(hours=7))
 now_wib = datetime.now(wib_tz)
-st.sidebar.caption(f"v301.5.Ω • {now_wib.strftime('%Y-%m-%d')}")
+st.sidebar.caption(f"RAKAWI.Ω • {now_wib.strftime('%Y-%m-%d')}")
 st.sidebar.caption("Open Source • Jolotundo Research Consortium")
+st.sidebar.caption("🏫 Sekolah Alam Penanggungan")
+st.sidebar.caption("📜 SAJAK (Sinau Aksara Jawa Kuno)")
+st.sidebar.caption("🔭 Jolotundo Obsv")
 st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
 # ============================================================================
@@ -372,7 +375,7 @@ if nav == "🏠 Beranda":
         <div style="margin-top: 12px;">
             <span class="oss-badge">🌍 OPEN SOURCE</span>
             <span class="oss-badge" style="margin-left: 8px;">🔓 PUBLIC</span>
-            <span class="oss-badge" style="margin-left: 8px;">⚡ v301.5.Ω</span>
+            <span class="oss-badge" style="margin-left: 8px;">⚡ OSS.Ω</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -413,7 +416,7 @@ if nav == "🏠 Beranda":
         <b>📆 WUKU SYSTEM (210-HARI) – SUMBER EPIGRAFI</b><br>
         Berdasarkan penelitian <b>Louis-Charles Damais (1955)</b> tentang 
         kalender Jawa kuno, serta katalog prasasti dan wuku dalam 
-        <b><i>Javaanse Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
+        <b><i>Javaanese Oorkonden</i></b> (<i>Pigeaud, 1960–1963</i>). 
         Sistem ini menggunakan epoch absolut <b>8 Februari 1 SM</b> 
         (KA 1132630) dan siklus 210 hari yang konsisten dengan data prasasti.
         <br><br>
@@ -446,7 +449,7 @@ if nav == "🏠 Beranda":
         <b>4 komponen utama</b> (Tahun, Bulan, Wara, Wuku) dan skor 
         <b>TPDP (Temporal Probabilistic Dating Protocol)</b> yang 
         dikembangkan khusus untuk arkeoastronomi Jawa Kuno oleh 
-        <b>Rakawi (2024)</b>.
+        <b>Jolotundo Obsv (2024)</b>.
         <br><br>
         <b>⏱️ KOREKSI WAKTU (ΔT) – SUMBER HISTORIS &amp; MODERN</b><br>
         ΔT dihitung dengan metode hybrid: data eksplisit <b>IERS/HMNAO</b> 
@@ -477,12 +480,12 @@ if nav == "🏠 Beranda":
         """, unsafe_allow_html=True)
     with col3:
         st.markdown("""
-        <div class="jae-card"><h3>📜 Prasasti</h3><p>Ω-STHAPATI<br>Damais + Proudfoot + Rakawi</p></div>
+        <div class="jae-card"><h3>📜 Prasasti</h3><p>Ω-STHAPATI<br>Damais + Proudfoot + (smart parsing) Jolotundo Obsv</p></div>
         """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="footer">
-        OSS ΩLDJAVA-astro v301.5.Ω • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Observatory
+        OSS ΩLDJAVA-astro • Open Source • Data: IMCCE VSOP87D / SYRTE ELP2000-82B • Jolotundo Obsv
     </div>
     """, unsafe_allow_html=True)
 
@@ -1275,7 +1278,7 @@ elif nav == "⏱️ Offset Waktu":
 # ============================================================================
 st.markdown("""
 <div class="global-footer">
-    <b>OSS ΩLDJAVA-astro</b> v301.5.Ω &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
+    <b>OSS ΩLDJAVA-astro</b> &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; 
     Data: IMCCE VSOP87D / SYRTE ELP2000-82B &nbsp;·&nbsp; 
     Prasasti: Damais (1955) – BEFEO 47.1 &nbsp;·&nbsp; 
     <a href="https://github.com/rakawi182/OSS" target="_blank">GitHub</a> &nbsp;·&nbsp;
