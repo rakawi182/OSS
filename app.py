@@ -148,7 +148,8 @@ def load_core_modules():
         VedicTimeEngine,
         GrahacaraAsthaEngine,
         DewataMandalaEngine,
-        ΩConstants
+        ΩConstants,
+        get_saka_cal          
     )
     from SPICA_v18 import ΩSthapatiSystem
     from Damais_DB import DAMAIS_INSCRIPTIONS
@@ -178,7 +179,8 @@ def load_core_modules():
         "LunarELP82Engine": LunarELP82Engine,
         "UnifiedCoordinateTransformer": UnifiedCoordinateTransformer,
         "JPLStyleTopocentricCorrections": JPLStyleTopocentricCorrections,
-        "DAMAIS_INSCRIPTIONS": DAMAIS_INSCRIPTIONS
+        "DAMAIS_INSCRIPTIONS": DAMAIS_INSCRIPTIONS,
+        "get_saka_cal": get_saka_cal   
     }
 
 # ============================================================================
@@ -202,6 +204,7 @@ GrahacaraAsthaEngine = mods["GrahacaraAsthaEngine"]
 DewataMandalaEngine = mods["DewataMandalaEngine"]
 ΩConst = mods["ΩConstants"]
 DAMAIS_INSCRIPTIONS = mods["DAMAIS_INSCRIPTIONS"]
+get_saka_cal = mods["get_saka_cal"]
 
 offset_funcs = {
     "solar_days": mods["offset_solar_days"],
@@ -379,6 +382,46 @@ if nav == "🏠 Beranda":
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # ============================================================
+    # TAMPILKAN TAHUN SAKA DAN BULAN SAKA UNTUK WAKTU SEKARANG
+    # ============================================================
+    try:
+        wib_tz = timezone(timedelta(hours=7))
+        now = datetime.now(wib_tz)
+        year = now.year
+        month = now.month
+        day = now.day
+        hour = now.hour
+        minute = now.minute
+        second = now.second
+
+        jd_utc = time_sys.wib_to_jd_utc(year, month, day, hour, minute, second)
+        saka_cal = get_saka_cal()
+        saka_info = saka_cal.jd_to_saka(jd_utc)
+
+        saka_year = saka_info.get('saka_year')
+        saka_month = saka_info.get('month_name')
+        is_adhika = saka_info.get('is_adhika', False)
+
+        if saka_year is not None:
+            st.markdown(f"""
+            <div style="background: #1a1e2a; border-radius: 12px; padding: 16px 20px; border: 1px solid #d4b896; margin: 20px 0;">
+                <h3 style="color: #d4b896; margin-top: 0;">📅 Kalender Saka Sekarang</h3>
+                <p style="color: #f0e6d0; font-size: 1.1rem;">
+                    <b>Tahun Saka:</b> {saka_year}
+                    &nbsp;·&nbsp; <b>Bulan:</b> {saka_month if saka_month else 'N/A'}
+                    { ' (Bulan Adhika)' if is_adhika else '' }
+                </p>
+                <p style="color: #8899bb; font-size: 0.9rem;">
+                    Berdasarkan waktu sekarang: {now.strftime('%Y-%m-%d %H:%M:%S')} WIB
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.warning("Tidak dapat mengambil informasi Saka untuk waktu sekarang.")
+    except Exception as e:
+        st.warning(f"Gagal mengambil informasi Saka: {e}")
 
     # Deskripsi lengkap dengan dukungan tahun negatif
     st.markdown("""
