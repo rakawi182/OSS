@@ -230,7 +230,7 @@ st.markdown("""
             Jolotundo Research
         </span>
         <span style="color: #8899bb; font-size: 0.95rem; margin-left: 8px; font-style: italic;">
-            — not just observing, but remembering
+            — exploring the ancient sky
         </span>
     </div>
 </div>
