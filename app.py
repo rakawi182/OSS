@@ -600,7 +600,7 @@ if nav == "🏠 Beranda":
     # =========================================================================
     st.markdown("""
     <div class="description-box">
-        <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
+        <b>🔭 SISTEM EPHEMERIS – SUMBER RESMI &amp; VALIDASI</b>
         <br><br>
         <b>☀️ MATAHARI (VSOP87D) – IMCCE / Observatoire de Paris</b><br>
         Menggunakan <b>VSOP87D</b> (<i>Bretagnon &amp; Francou, 1988</i>) dari 
