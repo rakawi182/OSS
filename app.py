@@ -516,7 +516,7 @@ if nav == "🏠 Beranda":
             <div class="jae-card">
                 <h3>🌙 Panchanga</h3>
                 <p><b>Tithi:</b> {p['tithi']['tithi']} {p['tithi']['paksa']} ({p['tithi']['percent']:.1f}%)</p>
-                <p><b>Wara:</b> {p['wuku']['wara_triple']}</p>
+                <p><b>Wara:</b> {p['wuku']['wara_triple']} ({p['wuku']['wara_triple_full']})</p>
                 <p><b>Wuku:</b> {p['wuku']['wuku_name']}</p>
                 <p><b>Nakṣatra (Nirayana):</b> {p['nakshatra']['nakshatra']} (pada {p['nakshatra']['pada']})</p>
                 <p><b>Nakṣatra (Sayana):</b> {p['nakshatra_sayana']['nakshatra']} (pada {p['nakshatra_sayana']['pada']})</p>
