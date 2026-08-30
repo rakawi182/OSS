@@ -538,6 +538,7 @@ if nav == "🏠 Beranda":
             muhurta = p.get('muhurta', {})
             tabeh = p.get('tabeh', {})
 
+            # Hitung waktu spesifik muhurta
             muhurta_start = muhurta.get('period_start', 'N/A')
             muhurta_end = muhurta.get('period_end', 'N/A')
             if muhurta and 'period_start' in muhurta and 'muhurta_length' in muhurta and 'index' in muhurta:
@@ -567,6 +568,11 @@ if nav == "🏠 Beranda":
                 <p><b>Tabeh:</b> {tabeh.get('tabeh_name', 'N/A') if tabeh else 'N/A'}</p>
             </div>
             """, unsafe_allow_html=True)
+
+        st.caption(f"🕐 Data untuk {p['date']} pukul {p['time']} WIB (KA: {format_ka(p['ka'])}) – diperbarui setiap jam")
+
+    except Exception as e:
+        st.warning(f"Tidak dapat memuat panchanga: {str(e)}")
 
     # =========================================================================
     # DESKRIPSI PANJANG (tidak berubah)
