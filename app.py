@@ -523,7 +523,7 @@ if nav == "🏠 Beranda":
             st.markdown(f"""
             <div class="jae-card">
                 <h3>🙏 Dewata & Maṇḍala</h3>
-                <p><b>Dewata Penguasa:</b> {p['dewata']['dewata']}</p>
+                <p><b>Dewata:</b> {p['dewata']['dewata']}</p>
                 <p><b>Maṇḍala:</b> {p['dewata']['mandala']}</p>
                 <p><b>Parwesa:</b> {p['parwesa']['name']}</p>
             </div>
