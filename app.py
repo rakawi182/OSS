@@ -1319,7 +1319,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
                     font_color="#c0c8d8",
                     title_font_color="#d4b896"
                 )
-                st.plotly_chart(fig, width='stretch')
+                st.plotly_chart(fig, width='stretch', key="zodiak_distribusi")
             else:
                 st.bar_chart(counts.set_index("Sistem"))
 
@@ -1335,7 +1335,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
                         font_color="#c0c8d8",
                         title_font_color="#d4b896"
                     )
-                    st.plotly_chart(fig, width='stretch')
+                    st.plotly_chart(fig2, width='stretch', key="zodiak_per_abad")
                 else:
                     pivot = df_century.pivot(index="Abad", columns="Sistem", values="Jumlah").fillna(0)
                     st.bar_chart(pivot)
