@@ -311,6 +311,11 @@ def get_today_panchanga_full():
             ishta_kala = (hour - sunrise_hour) * 60
     else:
         ishta_kala = 0.0
+        
+    nadi_vinadi = vedic.calculate_nadi_vinadi(ishta_kala) if ishta_kala > 0 else None        
+
+    day_length_hours = sunrise_info.get('day_length', 0) if sunrise_info else 0
+    night_length_hours = sunrise_info.get('night_length', 0) if sunrise_info else 0
 
     lagna_info = vedic.calculate_lagna_precise(
         sun_nirayana,
@@ -339,6 +344,9 @@ def get_today_panchanga_full():
         'tabeh': tabeh,
         'lagna': lagna_info,
         'ishta_kala_minutes': ishta_kala,
+        'nadi_vinadi': nadi_vinadi,        
+        'day_length_hours': day_length_hours,
+        'night_length_hours': night_length_hours,
         'ka': ka
     }
 
@@ -532,6 +540,7 @@ if nav == "🏠 Beranda":
         with col4:
             lagna = p.get('lagna', {})
             ishta = p.get('ishta_kala_minutes', 0)
+            nv = p.get('nadi_vinadi', {})
             muhurta = p.get('muhurta', {})
             tabeh = p.get('tabeh', {})
 
@@ -562,15 +571,22 @@ if nav == "🏠 Beranda":
             tabeh_end = tabeh.get('end_time', 'N/A') if tabeh else 'N/A'
             tabeh_durasi = tabeh.get('duration_hours', 0) if tabeh else 0
 
+            # Gabungkan Ishta Kala dengan Nadi-Vinadi
+            ishta_text = f"{ishta:.1f} menit"
+            if nv and 'description' in nv:
+                ishta_text += f" ({nv['description']})"
+
             st.markdown(f"""
             <div class="jae-card">
                 <h3>⏳ Lagna & Waktu</h3>
-                <p><b>Lagna (ascendant):</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
-                <p><b>Ishta Kala:</b> {ishta:.1f} menit</p>
+                <p><b>Lagna Rasi:</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
+                <p><b>Ishta Kala:</b> {ishta_text}</p>
+                <p><b>Panjang Siang:</b> {p.get('day_length_hours', 0):.2f} jam</p>
+                <p><b>Panjang Malam:</b> {p.get('night_length_hours', 0):.2f} jam</p>
                 <p><b>Muhurta:</b> {muhurta.get('name', 'N/A') if muhurta else 'N/A'} ({muhurta.get('period', '')})</p>
-                <p><b>Waktu:</b> {muhurta_start} – {muhurta_end} ({muhurta_durasi*60:.0f} menit)</p>
+                <p><b>Waktu:</b> {muhurta_start} – {muhurta_end} ({muhurta_durasi*60:.1f} menit)</p>
                 <p><b>Tabeh:</b> {tabeh.get('tabeh_name', 'N/A') if tabeh else 'N/A'}</p>
-                <p><b>Waktu:</b> {tabeh_start} – {tabeh_end} ({tabeh_durasi*60:.0f} menit)</p>
+                <p><b>Waktu:</b> {tabeh_start} – {tabeh_end} ({tabeh_durasi*60:.1f} menit)</p>
             </div>
             """, unsafe_allow_html=True)
 
