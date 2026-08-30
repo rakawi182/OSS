@@ -298,6 +298,27 @@ def get_today_panchanga_full():
     year_kabisat = is_kabisat(saka_year)
     punah_month = get_punah_month(saka_year)
 
+    sunrise_info = astro.calculate_sunrise_sunset_precise(jd_utc)
+    if sunrise_info and 'sunrise' in sunrise_info:
+        sunrise_str = sunrise_info['sunrise']['wib']
+        def parse_time(tstr):
+            parts = tstr.split(':')
+            return float(parts[0]) + float(parts[1])/60.0 + float(parts[2])/3600.0
+        sunrise_hour = parse_time(sunrise_str)
+        if hour < sunrise_hour:
+            ishta_kala = ((hour + 24) - sunrise_hour) * 60
+        else:
+            ishta_kala = (hour - sunrise_hour) * 60
+    else:
+        ishta_kala = 0.0
+
+    lagna_info = vedic.calculate_lagna_precise(
+        sun_nirayana,
+        ishta_kala,
+        jd_tt
+    )
+    moon_nakshatra_sayana = astro.calculate_nakshatra(moon_data['longitude'], "tropical")
+
     return {
         'date': f"{year}-{month:02d}-{day:02d}",
         'time': f"{int(hour):02d}:{int((hour-int(hour))*60):02d}",
@@ -308,6 +329,7 @@ def get_today_panchanga_full():
         'punah_month': punah_month,
         'tithi': tithi,
         'nakshatra': nakshatra,
+        'nakshatra_sayana': moon_nakshatra_sayana,
         'yoga': yoga,
         'karana': karana,
         'parwesa': parwesa,
@@ -315,6 +337,8 @@ def get_today_panchanga_full():
         'dewata': dewata_info,
         'muhurta': muhurta,
         'tabeh': tabeh,
+        'lagna': lagna_info,
+        'ishta_kala_minutes': ishta_kala,
         'ka': ka
     }
 
@@ -462,129 +486,87 @@ if nav == "🏠 Beranda":
     # RINGKASAN PANCHANGA LENGKAP DI ATAS DESKRIPSI
     # =========================================================================
     st.markdown("---")
-    st.subheader("🙏🏻 Swasti Śakawarsātīta")
+    st.subheader("📜 Swasti Śakawarsātīta")
 
     try:
         p = get_today_panchanga_full()
 
-        # Baris 1: Saka, Tithi, Naksatra, Wuku
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
+        col1, col2 = st.columns(2)
+
+        with col1:
             st.markdown(f"""
             <div class="jae-card">
-                <h3>📅 Saka</h3>
+                <h3>📅 Śaka Tahun & Bulan</h3>
                 <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['saka_year']} {'🌟' if p['year_kabisat'] else ''}
+                    {p['saka_year']} {p['saka_month']}
+                    {'' if not p['year_kabisat'] else ' 🌟 Kabisat'}
+                    {'' if not p['saka_adhika'] else ' (Adhika)'}
                 </p>
-                <p>Bulan: {p['saka_month']}{' (Adhika)' if p['saka_adhika'] else ''}</p>
                 {f'<p style="color:#d4b896;">Punah: {p["punah_month"]}</p>' if p['punah_month'] else ''}
             </div>
             """, unsafe_allow_html=True)
-        with c2:
+
+        with col2:
             st.markdown(f"""
             <div class="jae-card">
-                <h3>🌙 Tithi</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['tithi']['tithi']} {p['tithi']['paksa']}
-                </p>
-                <p>Progress: {p['tithi']['percent']:.1f}%</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c3:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>⭐ Naksatra</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['nakshatra']['nakshatra']}
-                </p>
-                <p>Pada: {p['nakshatra']['pada']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c4:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🌾 Wuku</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['wuku']['wuku_name']}
-                </p>
-                <p>Triple Wara: {p['wuku']['wara_triple_full']}</p>
+                <h3>🌙 Panchanga</h3>
+                <p><b>Tithi:</b> {p['tithi']['tithi']} {p['tithi']['paksa']} ({p['tithi']['percent']:.1f}%)</p>
+                <p><b>Wara (Triple):</b> {p['wuku']['wara_triple']}</p>
+                <p><b>Wuku:</b> {p['wuku']['wuku_name']}</p>
+                <p><b>Nakṣatra (Nirayana):</b> {p['nakshatra']['nakshatra']} (pada {p['nakshatra']['pada']})</p>
+                <p><b>Nakṣatra (Sayana):</b> {p['nakshatra_sayana']['nakshatra']} (pada {p['nakshatra_sayana']['pada']})</p>
+                <p><b>Yoga:</b> {p['yoga']['name']} ({p['yoga']['percent']:.0f}%)</p>
+                <p><b>Karana:</b> {p['karana']['name']}</p>
             </div>
             """, unsafe_allow_html=True)
 
-        # Baris 2: Yoga, Karana, Parwesa, Dewata & Mandala
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🧘 Yoga</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['yoga']['name']}
-                </p>
-                <p>Progress: {p['yoga']['percent']:.0f}%</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c2:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>📜 Karana</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['karana']['name']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c3:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🌀 Parwesa</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['parwesa']['name']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c4:
+        col3, col4 = st.columns(2)
+
+        with col3:
             st.markdown(f"""
             <div class="jae-card">
                 <h3>🙏 Dewata & Maṇḍala</h3>
-                <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                    {p['dewata']['dewata']}
-                </p>
-                <p>Maṇḍala: {p['dewata']['mandala']}</p>
+                <p><b>Dewata Penguasa:</b> {p['dewata']['dewata']}</p>
+                <p><b>Maṇḍala:</b> {p['dewata']['mandala']}</p>
+                <p><b>Parwesa (Gomperts):</b> {p['parwesa']['name']}</p>
             </div>
             """, unsafe_allow_html=True)
 
-        # Baris 3: Muhurta & Tabeh
-        c1, c2 = st.columns(2)
-        with c1:
-            if p['muhurta'] and 'error' not in p['muhurta']:
-                st.markdown(f"""
-                <div class="jae-card">
-                    <h3>⏳ Muhurta</h3>
-                    <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                        {p['muhurta']['name']}
-                    </p>
-                    <p>Periode: {p['muhurta']['period']}</p>
-                    <p>Waktu: {p['muhurta'].get('period_start', '')} – {p['muhurta'].get('period_end', '')}</p>
-                    <p>Progress: {p['muhurta']['progress']:.1f}%</p>
-                </div>
-                """, unsafe_allow_html=True)
-        with c2:
-            if p['tabeh'] and 'error' not in p['tabeh']:
-                st.markdown(f"""
-                <div class="jae-card">
-                    <h3>🌓 Tabeh</h3>
-                    <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                        {p['tabeh']['tabeh_name']}
-                    </p>
-                    <p>Periode: {p['tabeh']['period_type']}</p>
-                    <p>Waktu: {p['tabeh']['start_time']} – {p['tabeh']['end_time']}</p>
-                    <p>Durasi: {p['tabeh']['duration_hours']:.2f} jam</p>
-                </div>
-                """, unsafe_allow_html=True)
+        with col4:
+            lagna = p.get('lagna', {})
+            ishta = p.get('ishta_kala_minutes', 0)
+            muhurta = p.get('muhurta', {})
+            tabeh = p.get('tabeh', {})
 
-        st.caption(f"🕐 Data untuk {p['date']} pukul {p['time']} WIB (KA: {format_ka(p['ka'])}) – diperbarui setiap jam")
+            muhurta_start = muhurta.get('period_start', 'N/A')
+            muhurta_end = muhurta.get('period_end', 'N/A')
+            if muhurta and 'period_start' in muhurta and 'muhurta_length' in muhurta and 'index' in muhurta:
+                try:
+                    def parse_time(tstr):
+                        parts = tstr.split(':')
+                        return float(parts[0]) + float(parts[1])/60.0 + float(parts[2])/3600.0
+                    def format_hhmm(f):
+                        f_mod = f % 24.0
+                        h = int(f_mod)
+                        m = int((f_mod - h) * 60)
+                        s = int(((f_mod - h) * 60 - m) * 60)
+                        return f"{h:02d}:{m:02d}:{s:02d}"
+                    start_period = parse_time(muhurta['period_start'])
+                    muhurta_start = format_hhmm(start_period + muhurta['index'] * muhurta['muhurta_length'])
+                    muhurta_end = format_hhmm(start_period + (muhurta['index'] + 1) * muhurta['muhurta_length'])
+                except:
+                    pass
 
-    except Exception as e:
-        st.warning(f"Tidak dapat memuat panchanga: {str(e)}")
+            st.markdown(f"""
+            <div class="jae-card">
+                <h3>⏳ Lagna & Waktu</h3>
+                <p><b>Lagna Rasi:</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
+                <p><b>Ishta Kala:</b> {ishta:.1f} menit</p>
+                <p><b>Muhurta:</b> {muhurta.get('name', 'N/A') if muhurta else 'N/A'} ({muhurta.get('period', '')})</p>
+                <p><b>Waktu Muhurta:</b> {muhurta_start} – {muhurta_end}</p>
+                <p><b>Tabeh:</b> {tabeh.get('tabeh_name', 'N/A') if tabeh else 'N/A'}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     # =========================================================================
     # DESKRIPSI PANJANG (tidak berubah)

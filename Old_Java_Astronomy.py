@@ -2469,25 +2469,28 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     tabeh_info = vedic.calculate_tabeh_precise(ka, hour)
 
     if muhurta_info and 'error' not in muhurta_info:
+        # Hitung ulang waktu spesifik muhurta
         period_start_str = muhurta_info.get('period_start')
-        period_end_str   = muhurta_info.get('period_end')
-        muhurta_length   = muhurta_info.get('muhurta_length')
-        muhurta_index    = muhurta_info.get('index')
+        muhurta_length = muhurta_info.get('muhurta_length')
+        muhurta_index = muhurta_info.get('index')
+
         if period_start_str and muhurta_length is not None and muhurta_index is not None:
             start_period = str_time_to_float(period_start_str)
             start_muhurta = start_period + muhurta_index * muhurta_length
-            end_muhurta   = start_muhurta + muhurta_length
+            end_muhurta = start_muhurta + muhurta_length
             start_str = float_to_hhmmss(start_muhurta)
-            end_str   = float_to_hhmmss(end_muhurta)
+            end_str = float_to_hhmmss(end_muhurta)
         else:
-            start_str = end_str = "N/A"
+            # Fallback: tampilkan seluruh periode
+            start_str = muhurta_info.get('period_start', 'N/A')
+            end_str = muhurta_info.get('period_end', 'N/A')
 
         print(f"{BOLD}   Muhurta Jawa Kuno:{RESET}")
-        print_labeled("  - Periode", muhurta_info['period'])
-        print_labeled("  - Muhurta", f"{muhurta_info['name']} ({muhurta_info['index']+1}/{muhurta_info['total_muhurta']})")
+        print_labeled("  - Periode", muhurta_info.get('period', 'N/A'))
+        print_labeled("  - Muhurta", f"{muhurta_info.get('name', 'N/A')} ({muhurta_info.get('index', 0)+1}/{muhurta_info.get('total_muhurta', 15)})")
         print_labeled("  - Waktu", f"{start_str} - {end_str}")
-        print_labeled("  - Durasi", f"{muhurta_info['muhurta_length']:.2f} jam")
-        print_labeled("  - Progress", f"{muhurta_info['progress']:.1f}%")
+        print_labeled("  - Durasi", f"{muhurta_info.get('muhurta_length', 0):.2f} jam")
+        print_labeled("  - Progress", f"{muhurta_info.get('progress', 0):.1f}%")
 
     if tabeh_info:
         print(f"\n{BOLD}   Tabeh:{RESET}")
