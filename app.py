@@ -579,7 +579,7 @@ if nav == "🏠 Beranda":
             st.markdown(f"""
             <div class="jae-card">
                 <h3>⏳ Lagna & Waktu</h3>
-                <p><b>Lagna Rasi:</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
+                <p><b>Lagna (ascendant):</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
                 <p><b>Ishta Kala:</b> {ishta_text}</p>
                 <p><b>Panjang Siang:</b> {p.get('day_length_hours', 0):.2f} jam</p>
                 <p><b>Panjang Malam:</b> {p.get('night_length_hours', 0):.2f} jam</p>
