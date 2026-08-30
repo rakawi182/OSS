@@ -496,13 +496,10 @@ if nav == "🏠 Beranda":
         with col1:
             st.markdown(f"""
             <div class="jae-card">
-                <h3>📅 Śaka Tahun & Bulan</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['saka_year']} {p['saka_month']}
-                    {'' if not p['year_kabisat'] else ' 🌟 Kabisat'}
-                    {'' if not p['saka_adhika'] else ' (Adhika)'}
-                </p>
-                {f'<p style="color:#d4b896;">Punah: {p["punah_month"]}</p>' if p['punah_month'] else ''}
+                <h3>📅 Saka</h3>
+                <p><b>Tahun:</b> {p['saka_year']} {'' if not p['year_kabisat'] else '🌟 Kabisat'}</p>
+                <p><b>Bulan:</b> {p['saka_month']}{' (Adhika)' if p['saka_adhika'] else ''}</p>
+                {f'<p><b>Punah:</b> {p["punah_month"]}</p>' if p['punah_month'] else ''}
             </div>
             """, unsafe_allow_html=True)
 
@@ -528,7 +525,7 @@ if nav == "🏠 Beranda":
                 <h3>🙏 Dewata & Maṇḍala</h3>
                 <p><b>Dewata Penguasa:</b> {p['dewata']['dewata']}</p>
                 <p><b>Maṇḍala:</b> {p['dewata']['mandala']}</p>
-                <p><b>Parwesa (Gomperts):</b> {p['parwesa']['name']}</p>
+                <p><b>Parwesa:</b> {p['parwesa']['name']}</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -541,6 +538,7 @@ if nav == "🏠 Beranda":
             # Hitung waktu spesifik muhurta
             muhurta_start = muhurta.get('period_start', 'N/A')
             muhurta_end = muhurta.get('period_end', 'N/A')
+            muhurta_durasi = muhurta.get('muhurta_length', 0)
             if muhurta and 'period_start' in muhurta and 'muhurta_length' in muhurta and 'index' in muhurta:
                 try:
                     def parse_time(tstr):
@@ -555,8 +553,14 @@ if nav == "🏠 Beranda":
                     start_period = parse_time(muhurta['period_start'])
                     muhurta_start = format_hhmm(start_period + muhurta['index'] * muhurta['muhurta_length'])
                     muhurta_end = format_hhmm(start_period + (muhurta['index'] + 1) * muhurta['muhurta_length'])
+                    muhurta_durasi = muhurta['muhurta_length']
                 except:
                     pass
+
+            # Tabeh waktu
+            tabeh_start = tabeh.get('start_time', 'N/A') if tabeh else 'N/A'
+            tabeh_end = tabeh.get('end_time', 'N/A') if tabeh else 'N/A'
+            tabeh_durasi = tabeh.get('duration_hours', 0) if tabeh else 0
 
             st.markdown(f"""
             <div class="jae-card">
@@ -564,8 +568,9 @@ if nav == "🏠 Beranda":
                 <p><b>Lagna Rasi:</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
                 <p><b>Ishta Kala:</b> {ishta:.1f} menit</p>
                 <p><b>Muhurta:</b> {muhurta.get('name', 'N/A') if muhurta else 'N/A'} ({muhurta.get('period', '')})</p>
-                <p><b>Waktu Muhurta:</b> {muhurta_start} – {muhurta_end}</p>
+                <p><b>Waktu:</b> {muhurta_start} – {muhurta_end} ({muhurta_durasi*60:.0f} menit)</p>
                 <p><b>Tabeh:</b> {tabeh.get('tabeh_name', 'N/A') if tabeh else 'N/A'}</p>
+                <p><b>Waktu:</b> {tabeh_start} – {tabeh_end} ({tabeh_durasi*60:.0f} menit)</p>
             </div>
             """, unsafe_allow_html=True)
 
