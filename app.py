@@ -600,7 +600,7 @@ if nav == "🏠 Beranda":
     # =========================================================================
     st.markdown("""
     <div class="description-box">
-        <b>🔭 SISTEM EPHEMERIS – SUMBER RESMI &amp; VALIDASI</b>
+        <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
         <br><br>
         <b>☀️ MATAHARI (VSOP87D) – IMCCE / Observatoire de Paris</b><br>
         Menggunakan <b>VSOP87D</b> (<i>Bretagnon &amp; Francou, 1988</i>) dari 
@@ -1319,7 +1319,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
                     font_color="#c0c8d8",
                     title_font_color="#d4b896"
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             else:
                 st.bar_chart(counts.set_index("Sistem"))
 
@@ -1335,7 +1335,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
                         font_color="#c0c8d8",
                         title_font_color="#d4b896"
                     )
-                    st.plotly_chart(fig2, use_container_width=True)
+                    st.plotly_chart(fig, width='stretch')
                 else:
                     pivot = df_century.pivot(index="Abad", columns="Sistem", values="Jumlah").fillna(0)
                     st.bar_chart(pivot)
