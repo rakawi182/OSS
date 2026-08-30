@@ -9,8 +9,6 @@
 # - Dukungan tahun negatif (tahun astronomi) di deskripsi dan input
 # - Fitur Database Damais & Analisis Sistem Zodiak
 # - Plotly fallback (jika tidak terinstall)
-# - TAMBAHAN: Ringkasan Panchanga Lengkap di Beranda (Saka, Tithi, Naksatra, Wuku, Yoga, Karana, Parwesa, Dewata, Mandala, Muhurta, Tabeh)
-# - Semua use_container_width diganti width='stretch'/'content' (Streamlit 1.45+)
 # ============================================================================
 
 import sys
@@ -57,7 +55,7 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CUSTOM CSS (tidak berubah)
+# CUSTOM CSS
 # ============================================================================
 st.markdown("""
 <style>
@@ -150,12 +148,7 @@ def load_core_modules():
         VedicTimeEngine,
         GrahacaraAsthaEngine,
         DewataMandalaEngine,
-        ΩConstants,
-        SakaYearMonth,
-        get_astro_engine,
-        get_vedic_engine,
-        get_graha_engine,
-        get_dewata_engine
+        ΩConstants
     )
     from SPICA_v18 import ΩSthapatiSystem
     from Damais_DB import DAMAIS_INSCRIPTIONS
@@ -185,12 +178,7 @@ def load_core_modules():
         "LunarELP82Engine": LunarELP82Engine,
         "UnifiedCoordinateTransformer": UnifiedCoordinateTransformer,
         "JPLStyleTopocentricCorrections": JPLStyleTopocentricCorrections,
-        "DAMAIS_INSCRIPTIONS": DAMAIS_INSCRIPTIONS,
-        "SakaYearMonth": SakaYearMonth,
-        "get_astro_engine": get_astro_engine,
-        "get_vedic_engine": get_vedic_engine,
-        "get_graha_engine": get_graha_engine,
-        "get_dewata_engine": get_dewata_engine
+        "DAMAIS_INSCRIPTIONS": DAMAIS_INSCRIPTIONS
     }
 
 # ============================================================================
@@ -214,11 +202,6 @@ GrahacaraAsthaEngine = mods["GrahacaraAsthaEngine"]
 DewataMandalaEngine = mods["DewataMandalaEngine"]
 ΩConst = mods["ΩConstants"]
 DAMAIS_INSCRIPTIONS = mods["DAMAIS_INSCRIPTIONS"]
-SakaYearMonth = mods["SakaYearMonth"]
-get_astro_engine = mods["get_astro_engine"]
-get_vedic_engine = mods["get_vedic_engine"]
-get_graha_engine = mods["get_graha_engine"]
-get_dewata_engine = mods["get_dewata_engine"]
 
 offset_funcs = {
     "solar_days": mods["offset_solar_days"],
@@ -229,94 +212,90 @@ offset_funcs = {
     "tithi": mods["offset_tithi"]
 }
 
+st.markdown("""
+<div style="
+    background: linear-gradient(135deg, #1a1e2a, #2a3040);
+    border-radius: 12px;
+    padding: 16px 24px;
+    border-left: 6px solid #d4b896;
+    margin: 16px 0 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+">
+    <span style="font-size: 2rem; line-height: 1;">🔭</span>
+    <div>
+        <span style="color: #d4b896; font-weight: 600; font-size: 1.15rem; font-family: 'Georgia', serif;">
+            Jolotundo Research
+        </span>
+        <span style="color: #8899bb; font-size: 0.95rem; margin-left: 8px; font-style: italic;">
+            — not just observing, but remembering
+        </span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 # ============================================================================
-# TAMBAHAN: CACHE UNTUK SOLAR & LUNAR EVENTS
+# LOAD VALIDATION RESULTS (BATCH FILES)
 # ============================================================================
-@st.cache_resource
-def get_solar_events():
-    from JRC_Ephemeris import VSOP87SolarEngine
-    from solar_lunar_events import SolarEvents
-    return SolarEvents(VSOP87SolarEngine(), time_sys)
+@st.cache_data
+def load_validation_results():
+    """Gabungkan semua file quick_test_results_batch_*.json menjadi satu DataFrame."""
+    try:
+        pattern = "quick_test_results_batch_*.json"
+        files = sorted(glob.glob(pattern))
+        if not files:
+            return pd.DataFrame()
+        all_data = []
+        for f in files:
+            with open(f, "r", encoding="utf-8") as fp:
+                data = json.load(fp)
+                if "results" in data:
+                    for res in data["results"]:
+                        res["batch"] = data.get("batch_number", 0)
+                        all_data.append(res)
+        df = pd.DataFrame(all_data)
+        return df
+    except Exception as e:
+        st.warning(f"Tidak dapat memuat hasil validasi: {e}")
+        return pd.DataFrame()
 
-@st.cache_resource
-def get_lunar_events():
-    from JRC_Ephemeris import LunarELP82Engine, VSOP87SolarEngine
-    from solar_lunar_events import LunarEvents
-    return LunarEvents(LunarELP82Engine(), VSOP87SolarEngine(), time_sys)
+validation_df = load_validation_results()
 
 # ============================================================================
-# TAMBAHAN: CACHE UNTUK PANCHANGA LENGKAP HARI INI
+# SIDEBAR NAVIGATION
 # ============================================================================
-@st.cache_data(ttl=3600)
-def get_today_panchanga_full():
-    """Panchanga lengkap untuk hari ini – di-cache selama 1 jam."""
-    from datetime import datetime, timezone, timedelta
-    wib_tz = timezone(timedelta(hours=7))
-    now = datetime.now(wib_tz)
-    year = now.year
-    month = now.month
-    day = now.day
-    hour = now.hour + now.minute/60.0 + now.second/3600.0
+st.sidebar.image("https://img.icons8.com/fluency/96/000000/sun.png", width=60)
+st.sidebar.title("🌙 OSS ΩLDJAVA-astro")
+st.sidebar.caption("Open Source Old Javanese Astronomy")
+st.sidebar.markdown("---")
 
-    astro = get_astro_engine()
-    vedic = get_vedic_engine()
-    dewata = get_dewata_engine()
-    time_sys_local = time_sys
+nav = st.sidebar.radio(
+    "Navigasi",
+    [
+        "🏠 Beranda",
+        "🌞 Real-time",
+        "📅 Tanggal Spesifik",
+        "📆 Wuku & Wara",
+        "📜 Konversi Prasasti",
+        "📊 Database Damais",
+        "📈 Analisis Sistem Zodiak",
+        "🔄 Konversi Waktu",
+        "⏱️ Offset Waktu"
+    ],
+    index=0
+)
 
-    jd_utc = time_sys_local.wib_to_jd_utc(year, month, day,
-                                          int(hour), int((hour-int(hour))*60),
-                                          int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-    jd_tt = time_sys_local.wib_to_jd_tt_extended(year, month, day,
-                                                 int(hour), int((hour-int(hour))*60),
-                                                 int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-    ka = mech_engine.date_to_ka(year, month, day)
-
-    ayanamsa = astro.calculate_ayanamsa_precise(jd_tt)
-    sun_data = astro.calculate_sun_position_ultra(jd_tt)
-    sun_nirayana = (sun_data['longitude_deg'] - ayanamsa) % 360
-    moon_data = astro.calculate_moon_position_ultra(jd_tt, sun_data['longitude_deg'])
-    moon_nirayana = (moon_data['longitude'] - ayanamsa) % 360
-
-    tithi = astro.calculate_tithi(sun_nirayana, moon_nirayana, "nirayana")
-    nakshatra = astro.calculate_nakshatra(moon_nirayana, "nirayana")
-    yoga = vedic.calculate_yoga(sun_nirayana, moon_nirayana)
-    karana = vedic.calculate_karana(sun_nirayana, moon_nirayana)
-    parwesa = vedic.calculate_parwesa_gompers(ka)
-    wuku_info = mech_engine.get_wuku_by_ka(ka)
-    dewata_info = dewata.get_dewata_mandala_from_nakshatra(nakshatra['nakshatra'])
-    muhurta = vedic.calculate_muhurta_jawa_kuno(ka, hour)
-    tabeh = vedic.calculate_tabeh_precise(ka, hour)
-
-    from saka_calendar import is_kabisat, get_punah_month
-    solar_events = get_solar_events()
-    lunar_events = get_lunar_events()
-    saka_ym = SakaYearMonth(time_sys_local, solar_events, lunar_events)
-    ym = saka_ym.jd_to_saka_year_month(jd_utc)
-    saka_year = ym['saka_year']
-    saka_month = ym['month_name']
-    saka_adhika = ym['is_adhika']
-    year_kabisat = is_kabisat(saka_year)
-    punah_month = get_punah_month(saka_year)
-
-    return {
-        'date': f"{year}-{month:02d}-{day:02d}",
-        'time': f"{int(hour):02d}:{int((hour-int(hour))*60):02d}",
-        'saka_year': saka_year,
-        'saka_month': saka_month,
-        'saka_adhika': saka_adhika,
-        'year_kabisat': year_kabisat,
-        'punah_month': punah_month,
-        'tithi': tithi,
-        'nakshatra': nakshatra,
-        'yoga': yoga,
-        'karana': karana,
-        'parwesa': parwesa,
-        'wuku': wuku_info,
-        'dewata': dewata_info,
-        'muhurta': muhurta,
-        'tabeh': tabeh,
-        'ka': ka
-    }
+st.sidebar.markdown("---")
+wib_tz = timezone(timedelta(hours=7))
+now_wib = datetime.now(wib_tz)
+st.sidebar.caption(f"PAWITRA • {now_wib.strftime('%Y-%m-%d')}")
+st.sidebar.caption("Open Source • Jolotundo Research Consortium")
+st.sidebar.caption("🏫 Sekolah Alam Penanggungan")
+st.sidebar.caption("📜 SAJAK (Sinau Aksara Jawa Kuno)")
+st.sidebar.caption("🔭 Jolotundo Obsv")
+st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -376,44 +355,11 @@ def display_wuku_detail(info, epoch, ka):
     st.markdown("</div>", unsafe_allow_html=True)
 
 def display_astronomical_year_help():
+    """Helper untuk menampilkan informasi tahun negatif."""
     st.caption("""
     ℹ️ **Tahun astronomi** – sistem penanggalan dengan dukungan tahun negatif:
     - `1` = 1 M | `0` = 1 SM | `-1` = 2 SM | `-3101` = 3102 SM
     """)
-
-# ============================================================================
-# SIDEBAR NAVIGATION
-# ============================================================================
-st.sidebar.image("https://img.icons8.com/fluency/96/000000/sun.png", width=60)
-st.sidebar.title("🌙 OSS ΩLDJAVA-astro")
-st.sidebar.caption("Open Source Old Javanese Astronomy")
-st.sidebar.markdown("---")
-
-nav = st.sidebar.radio(
-    "Navigasi",
-    [
-        "🏠 Beranda",
-        "🌞 Real-time",
-        "📅 Tanggal Spesifik",
-        "📆 Wuku & Wara",
-        "📜 Konversi Prasasti",
-        "📊 Database Damais",
-        "📈 Analisis Sistem Zodiak",
-        "🔄 Konversi Waktu",
-        "⏱️ Offset Waktu"
-    ],
-    index=0
-)
-
-st.sidebar.markdown("---")
-wib_tz = timezone(timedelta(hours=7))
-now_wib = datetime.now(wib_tz)
-st.sidebar.caption(f"PAWITRA • {now_wib.strftime('%Y-%m-%d')}")
-st.sidebar.caption("Open Source • Jolotundo Research Consortium")
-st.sidebar.caption("🏫 Sekolah Alam Penanggungan")
-st.sidebar.caption("📜 SAJAK (Sinau Aksara Jawa Kuno)")
-st.sidebar.caption("🔭 Jolotundo Obsv")
-st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
 
 # ============================================================================
 # PAGE: BERANDA
@@ -434,137 +380,7 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # =========================================================================
-    # RINGKASAN PANCHANGA LENGKAP DI ATAS DESKRIPSI
-    # =========================================================================
-    st.markdown("---")
-    st.subheader("📊 OldJava Saka Calendar")
-
-    try:
-        p = get_today_panchanga_full()
-
-        # Baris 1: Saka, Tithi, Naksatra, Wuku
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>📅 Saka</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['saka_year']} {'🌟' if p['year_kabisat'] else ''}
-                </p>
-                <p>Bulan: {p['saka_month']}{' (Adhika)' if p['saka_adhika'] else ''}</p>
-                {f'<p style="color:#d4b896;">Punah: {p["punah_month"]}</p>' if p['punah_month'] else ''}
-            </div>
-            """, unsafe_allow_html=True)
-        with c2:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🌙 Tithi</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['tithi']['tithi']} {p['tithi']['paksa']}
-                </p>
-                <p>Progress: {p['tithi']['percent']:.1f}%</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c3:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>⭐ Naksatra</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['nakshatra']['nakshatra']}
-                </p>
-                <p>Pada: {p['nakshatra']['pada']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c4:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🌾 Wuku</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['wuku']['wuku_name']}
-                </p>
-                <p>Triple Wara: {p['wuku']['wara_triple_full']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # Baris 2: Yoga, Karana, Parwesa, Dewata & Mandala
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🧘 Yoga</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['yoga']['name']}
-                </p>
-                <p>Progress: {p['yoga']['percent']:.0f}%</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c2:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>📜 Karana</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['karana']['name']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c3:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🌀 Parwesa</h3>
-                <p style="font-size:1.2rem; font-weight:600; color:#f0e6d0;">
-                    {p['parwesa']['name']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c4:
-            st.markdown(f"""
-            <div class="jae-card">
-                <h3>🙏 Dewata & Maṇḍala</h3>
-                <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                    {p['dewata']['dewata']}
-                </p>
-                <p>Maṇḍala: {p['dewata']['mandala']}</p>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # Baris 3: Muhurta & Tabeh
-        c1, c2 = st.columns(2)
-        with c1:
-            if p['muhurta'] and 'error' not in p['muhurta']:
-                st.markdown(f"""
-                <div class="jae-card">
-                    <h3>⏳ Muhurta</h3>
-                    <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                        {p['muhurta']['name']}
-                    </p>
-                    <p>Periode: {p['muhurta']['period']}</p>
-                    <p>Waktu: {p['muhurta'].get('period_start', '')} – {p['muhurta'].get('period_end', '')}</p>
-                    <p>Progress: {p['muhurta']['progress']:.1f}%</p>
-                </div>
-                """, unsafe_allow_html=True)
-        with c2:
-            if p['tabeh'] and 'error' not in p['tabeh']:
-                st.markdown(f"""
-                <div class="jae-card">
-                    <h3>🌓 Tabeh</h3>
-                    <p style="font-size:1.1rem; font-weight:600; color:#f0e6d0;">
-                        {p['tabeh']['tabeh_name']}
-                    </p>
-                    <p>Periode: {p['tabeh']['period_type']}</p>
-                    <p>Waktu: {p['tabeh']['start_time']} – {p['tabeh']['end_time']}</p>
-                    <p>Durasi: {p['tabeh']['duration_hours']:.2f} jam</p>
-                </div>
-                """, unsafe_allow_html=True)
-
-        st.caption(f"🕐 Data untuk {p['date']} pukul {p['time']} WIB (KA: {format_ka(p['ka'])}) – diperbarui setiap jam")
-
-    except Exception as e:
-        st.warning(f"Tidak dapat memuat panchanga: {str(e)}")
-
-    # =========================================================================
-    # DESKRIPSI PANJANG (tidak berubah)
-    # =========================================================================
+    # Deskripsi lengkap dengan dukungan tahun negatif
     st.markdown("""
     <div class="description-box">
         <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
@@ -653,9 +469,6 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # =========================================================================
-    # TIGA KARTU (Matahari, Bulan, Prasasti)
-    # =========================================================================
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
@@ -683,7 +496,7 @@ elif nav == "🌞 Real-time":
     st.title("🌞 Real-time Astronomy")
     st.caption("Data berdasarkan waktu sistem lokal (dianggap WIB)")
 
-    if st.button("🔄 Refresh Sekarang", width='stretch'):
+    if st.button("🔄 Refresh Sekarang", use_container_width=True):
         st.rerun()
 
     wib_tz = timezone(timedelta(hours=7))
@@ -794,7 +607,7 @@ elif nav == "📅 Tanggal Spesifik":
         day = st.number_input("Hari", value=1, min_value=1, max_value=31, step=1)
 
     time_input = st.text_input("Jam (HH:MM:SS atau desimal)", value="12:00:00")
-    if st.button("🔍 Hitung", width='stretch'):
+    if st.button("🔍 Hitung", use_container_width=True):
         try:
             hour = parse_time(time_input)
             st.markdown(f"""
@@ -869,7 +682,7 @@ elif nav == "📆 Wuku & Wara":
             search_type = st.radio("Cari berdasarkan:", ["KA", "Tanggal"], horizontal=True)
         if search_type == "KA":
             ka_input = st.number_input("Masukkan KA", value=0, step=1, format="%d")
-            if st.button("Cari KA", width='stretch'):
+            if st.button("Cari KA"):
                 info = mech_engine.get_wuku_by_ka(ka_input)
                 epoch = mech_engine.get_detailed_wuku_epoch_info(ka_input)
                 display_wuku_detail(info, epoch, ka_input)
@@ -878,7 +691,7 @@ elif nav == "📆 Wuku & Wara":
             st.caption("ℹ️ Contoh: -3101 = 3102 SM, 0 = 1 SM")
             m = st.selectbox("Bulan", list(range(1, 13)), index=0)
             d = st.number_input("Hari", value=1, min_value=1, max_value=31, step=1)
-            if st.button("Cari Tanggal", width='stretch'):
+            if st.button("Cari Tanggal"):
                 ka = mech_engine.date_to_ka(y, m, d)
                 info = mech_engine.get_wuku_by_ka(ka)
                 epoch = mech_engine.get_detailed_wuku_epoch_info(ka)
@@ -890,7 +703,7 @@ elif nav == "📆 Wuku & Wara":
         st.caption("Hari pertama siklus wuku, referensi absolut")
         tpa_year = st.number_input("Tahun (negatif untuk SM) untuk mencari TU-PA-Ā", value=2024, step=1, format="%d")
         st.caption("ℹ️ Contoh: -3101 = 3102 SM")
-        if st.button("🔍 Cari TU-PA-Ā di tahun ini", width='stretch'):
+        if st.button("🔍 Cari TU-PA-Ā di tahun ini"):
             tpa_list = mech_engine.find_tu_pa_a_in_year(tpa_year)
             if tpa_list:
                 data = []
@@ -904,7 +717,7 @@ elif nav == "📆 Wuku & Wara":
                         "Wuku": w_info["wuku_name"],
                         "Wara": w_info["wara_triple"]
                     })
-                st.dataframe(data, width='stretch')
+                st.dataframe(data, use_container_width=True)
             else:
                 st.warning("Tidak ditemukan TU-PA-Ā di tahun ini.")
 
@@ -971,7 +784,7 @@ elif nav == "📜 Konversi Prasasti":
         wara = st.text_input("Wara (opsional, bisa parsial)", placeholder="Contoh: Tungleh-Pahing-Sukra atau Jumat-Wage")
         nakshatra = st.text_input("Nakṣatra (opsional)", placeholder="Contoh: Aswini")
 
-    if st.button("🔄 Konversi Prasasti", width='stretch'):
+    if st.button("🔄 Konversi Prasasti", use_container_width=True):
         if not saka_year or not masa:
             st.warning("Masukkan tahun Śaka dan bulan.")
         else:
@@ -1029,7 +842,7 @@ elif nav == "📜 Konversi Prasasti":
                                 "Skor": f"{res['score']:.3f}",
                                 "Confidence": res["confidence"]
                             })
-                        st.dataframe(table_data, width='stretch')
+                        st.dataframe(table_data, use_container_width=True)
 
                         st.markdown("""<div class="jae-card"><h3>🔍 Verifikasi Input</h3>""", unsafe_allow_html=True)
 
@@ -1110,27 +923,6 @@ elif nav == "📊 Database Damais":
     st.caption("📚 Sumber: Damais, L.-C. (1955). BEFEO 47.1, pp. 7-290. DOI: 10.3406/befeo.1955.5406")
     st.caption("112 prasasti dari database Damais dengan hasil validasi sistem zodiak")
 
-    @st.cache_data
-    def load_validation_results():
-        try:
-            pattern = "quick_test_results_batch_*.json"
-            files = sorted(glob.glob(pattern))
-            if not files:
-                return pd.DataFrame()
-            all_data = []
-            for f in files:
-                with open(f, "r", encoding="utf-8") as fp:
-                    data = json.load(fp)
-                    if "results" in data:
-                        for res in data["results"]:
-                            res["batch"] = data.get("batch_number", 0)
-                            all_data.append(res)
-            return pd.DataFrame(all_data)
-        except Exception:
-            return pd.DataFrame()
-
-    validation_df = load_validation_results()
-
     if not validation_df.empty:
         total = len(validation_df)
         exact = validation_df[validation_df["status"] == "✅ EXACT MATCH"].shape[0]
@@ -1209,7 +1001,7 @@ elif nav == "📊 Database Damais":
     if search_text:
         df = df[df.apply(lambda row: search_text.lower() in str(row["Nama"]).lower() or search_text.lower() in str(row["ID"]).lower(), axis=1)]
 
-    st.dataframe(df, width='stretch', hide_index=True)
+    st.dataframe(df, use_container_width=True, hide_index=True)
 
     st.subheader("🔍 Detail Prasasti")
     if not df.empty:
@@ -1236,30 +1028,10 @@ elif nav == "📈 Analisis Sistem Zodiak":
     st.title("📈 Analisis Sistem Zodiak (Sayana vs Nirayana)")
     st.caption("Distribusi sistem zodiak berdasarkan hasil validasi 112 prasasti Damais (1955)")
 
-    @st.cache_data
-    def load_validation_results():
-        try:
-            pattern = "quick_test_results_batch_*.json"
-            files = sorted(glob.glob(pattern))
-            if not files:
-                return pd.DataFrame()
-            all_data = []
-            for f in files:
-                with open(f, "r", encoding="utf-8") as fp:
-                    data = json.load(fp)
-                    if "results" in data:
-                        for res in data["results"]:
-                            res["batch"] = data.get("batch_number", 0)
-                            all_data.append(res)
-            return pd.DataFrame(all_data)
-        except Exception:
-            return pd.DataFrame()
-
-    validation_df = load_validation_results()
-
     if validation_df.empty:
         st.warning("Belum ada data validasi. Jalankan quick_test_ijcc.py terlebih dahulu.")
     else:
+        # Ekstrak data sistem
         systems = []
         centuries = []
         for _, row in validation_df.iterrows():
@@ -1290,6 +1062,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
             else:
                 st.bar_chart(counts.set_index("Sistem"))
 
+            # Grafik timeline per abad
             if not df_sys.empty:
                 df_century = df_sys.groupby(["Abad", "Sistem"]).size().reset_index(name="Jumlah")
                 if HAVE_PLOTLY:
@@ -1307,6 +1080,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
                     pivot = df_century.pivot(index="Abad", columns="Sistem", values="Jumlah").fillna(0)
                     st.bar_chart(pivot)
 
+        # Statistik tambahan
         st.subheader("📊 Statistik Sistem Zodiak")
         total_naks = 0
         count_sayana = 0
@@ -1375,7 +1149,7 @@ elif nav == "🔄 Konversi Waktu":
         mi = st.number_input("Menit (0-59)", value=0, min_value=0, max_value=59, step=1, key="conv_t1_mi")
         s = st.number_input("Detik (0-59)", value=0, min_value=0, max_value=59, step=1, key="conv_t1_s")
 
-        if st.button("Konversi → JD / KA", key="conv_t1_btn", width='stretch'):
+        if st.button("Konversi → JD / KA", key="conv_t1_btn"):
             jd = time_sys.date_to_jd_utc(int(y), int(m), int(d), int(h), int(mi), int(s))
             ka = mech_engine.julian_day_to_ka(jd)
             st.metric("JD UTC", f"{jd:.8f}")
@@ -1385,7 +1159,7 @@ elif nav == "🔄 Konversi Waktu":
 
     with tab2:
         jd_input = st.number_input("JD UTC", value=2460000.0, step=0.0001, format="%.6f", key="conv_t2_jd")
-        if st.button("Konversi → Tanggal / KA", key="conv_t2_btn", width='stretch'):
+        if st.button("Konversi → Tanggal / KA", key="conv_t2_btn"):
             date = time_sys.jd_to_gregorian(jd_input)
             ka = mech_engine.julian_day_to_ka(jd_input)
             st.write(f"**Tahun astronomi:** {date['year_astronomical']} ({date['year_display']})")
@@ -1396,7 +1170,7 @@ elif nav == "🔄 Konversi Waktu":
 
     with tab3:
         ka_input = st.number_input("KA", value=0, step=1, format="%d", key="conv_t3_ka")
-        if st.button("Konversi → Tanggal / JD", key="conv_t3_btn", width='stretch'):
+        if st.button("Konversi → Tanggal / JD", key="conv_t3_btn"):
             jd = mech_engine.ka_to_julian_day(ka_input)
             y, m, d = mech_engine.ka_to_date(ka_input)
             st.metric("JD UTC", f"{jd:.8f}")
@@ -1410,7 +1184,7 @@ elif nav == "🔄 Konversi Waktu":
         st.caption("ℹ️ Contoh: -3101 = 3102 SM")
         mg = st.selectbox("Bulan", list(range(1, 13)), index=0, key="conv_t4_mg")
         dg = st.number_input("Hari", value=1, min_value=1, max_value=31, step=1, key="conv_t4_dg")
-        if st.button("→ Julian", key="conv_t4_btn1", width='stretch'):
+        if st.button("→ Julian", key="conv_t4_btn1"):
             jd = CC.gregorian_to_jd(int(yg), int(mg), int(dg))
             yj, mj, dj = CC.jd_to_julian(jd)
             st.write(f"**Julian:** {int(yj):04d}-{int(mj):02d}-{int(dj):02d}")
@@ -1420,7 +1194,7 @@ elif nav == "🔄 Konversi Waktu":
         st.caption("ℹ️ Contoh: -3101 = 3102 SM")
         mj2 = st.selectbox("Bulan", list(range(1, 13)), index=0, key="conv_t4_mj")
         dj2 = st.number_input("Hari", value=1, min_value=1, max_value=31, step=1, key="conv_t4_dj")
-        if st.button("→ Gregorian", key="conv_t4_btn2", width='stretch'):
+        if st.button("→ Gregorian", key="conv_t4_btn2"):
             jd = CC.julian_to_jd(int(yj2), int(mj2), int(dj2))
             yg2, mg2, dg2 = CC.jd_to_gregorian(jd)
             st.write(f"**Gregorian:** {int(yg2):04d}-{int(mg2):02d}-{int(dg2):02d}")
@@ -1455,7 +1229,7 @@ elif nav == "⏱️ Offset Waktu":
 
     offset_val = st.number_input("Jumlah offset (bisa negatif)", value=0, step=1, format="%d", key="off_val")
 
-    if st.button("🔄 Hitung Offset", width='stretch'):
+    if st.button("🔄 Hitung Offset", use_container_width=True):
         if offset_val == 0:
             st.warning("Masukkan jumlah offset (bisa positif atau negatif).")
         else:
