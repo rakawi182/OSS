@@ -438,7 +438,7 @@ if nav == "🏠 Beranda":
     # RINGKASAN PANCHANGA LENGKAP DI ATAS DESKRIPSI
     # =========================================================================
     st.markdown("---")
-    st.subheader("📊 OldJava Saka Calendar")
+    st.subheader("🙏🏻 Swasti Śakawarsātīta")
 
     try:
         p = get_today_panchanga_full()
