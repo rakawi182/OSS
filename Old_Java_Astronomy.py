@@ -33,7 +33,7 @@ from JRC_Ephemeris import (
 )
 
 from saka_calendar import get_months_in_year, is_kabisat, get_punah_month
-from solar_lunar_events import SolarEvents, LunarEvents
+
 
 # ============================================================================
 # GLOBAL SINGLETON ENGINE (untuk menghindari reload berat setiap panggilan)
@@ -2389,6 +2389,7 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, hour_int, minute_int, second_int)
 
     # --- Hitung tahun dan bulan Saka (tithi tidak dihitung di sini) ---
+    from solar_lunar_events import SolarEvents, LunarEvents
     solar_events = SolarEvents(VSOP87SolarEngine(), time_sys)
     lunar_events = LunarEvents(
         lunar_engine=LunarELP82Engine(),
