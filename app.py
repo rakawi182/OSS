@@ -508,7 +508,7 @@ if nav == "🏠 Beranda":
             <div class="jae-card">
                 <h3>🌙 Panchanga</h3>
                 <p><b>Tithi:</b> {p['tithi']['tithi']} {p['tithi']['paksa']} ({p['tithi']['percent']:.1f}%)</p>
-                <p><b>Wara (Triple):</b> {p['wuku']['wara_triple']}</p>
+                <p><b>Wara:</b> {p['wuku']['wara_triple']}</p>
                 <p><b>Wuku:</b> {p['wuku']['wuku_name']}</p>
                 <p><b>Nakṣatra (Nirayana):</b> {p['nakshatra']['nakshatra']} (pada {p['nakshatra']['pada']})</p>
                 <p><b>Nakṣatra (Sayana):</b> {p['nakshatra_sayana']['nakshatra']} (pada {p['nakshatra_sayana']['pada']})</p>
@@ -565,7 +565,7 @@ if nav == "🏠 Beranda":
             st.markdown(f"""
             <div class="jae-card">
                 <h3>⏳ Lagna & Waktu</h3>
-                <p><b>Lagna Rasi:</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
+                <p><b>Lagna (ascendant):</b> {lagna.get('lagna_rasi_name', 'N/A')} ({lagna.get('deg_in_rasi', 0):.2f}°)</p>
                 <p><b>Ishta Kala:</b> {ishta:.1f} menit</p>
                 <p><b>Muhurta:</b> {muhurta.get('name', 'N/A') if muhurta else 'N/A'} ({muhurta.get('period', '')})</p>
                 <p><b>Waktu:</b> {muhurta_start} – {muhurta_end} ({muhurta_durasi*60:.0f} menit)</p>
