@@ -32,50 +32,6 @@ from JRC_Ephemeris import (
     _DELTA_T_TABLE          
 )
 
-from saka_calendar import get_months_in_year, is_kabisat, get_punah_month
-
-
-# ============================================================================
-# GLOBAL SINGLETON ENGINE (untuk menghindari reload berat setiap panggilan)
-# ============================================================================
-_JRC_ARCHAEO = None
-_ASTRO_ENGINE = None
-_VEDIC_ENGINE = None
-_GRAHA_ENGINE = None
-_DEWATA_ENGINE = None
-
-
-def get_jrc_archaeo():
-    global _JRC_ARCHAEO
-    if _JRC_ARCHAEO is None:
-        from JRC_Ephemeris import JolotundoArchaeoastronomySystem
-        _JRC_ARCHAEO = JolotundoArchaeoastronomySystem()
-    return _JRC_ARCHAEO
-
-def get_astro_engine():
-    global _ASTRO_ENGINE
-    if _ASTRO_ENGINE is None:
-        _ASTRO_ENGINE = AstronomicalEngine()
-    return _ASTRO_ENGINE
-
-def get_vedic_engine():
-    global _VEDIC_ENGINE
-    if _VEDIC_ENGINE is None:
-        _VEDIC_ENGINE = VedicTimeEngine(astro_engine=get_astro_engine())
-    return _VEDIC_ENGINE
-
-def get_graha_engine():
-    global _GRAHA_ENGINE
-    if _GRAHA_ENGINE is None:
-        _GRAHA_ENGINE = GrahacaraAsthaEngine(astro_engine=get_astro_engine())
-    return _GRAHA_ENGINE
-
-def get_dewata_engine():
-    global _DEWATA_ENGINE
-    if _DEWATA_ENGINE is None:
-        _DEWATA_ENGINE = DewataMandalaEngine()
-    return _DEWATA_ENGINE
-
 # ============================================================================
 # DISPLAY HELPER - FORMATTING KONSISTEN
 # ============================================================================
@@ -301,103 +257,6 @@ class MathCore:
     @staticmethod
     def julian_centuries_from_j2000(jd):
         return (jd - 2451545.0) / 36525.0
-
-# ============================================================================
-# SAKA YEAR MONTH CALCULATOR - MENGUBAH JD ⇄ TAHUN & BULAN SAKA
-# ============================================================================
-class SakaYearMonth:
-    """
-    Menghitung tahun dan bulan Saka dari JD UTC.
-    Menggunakan lookup interkalasi dari saka_calendar.py.
-    TIDAK menghitung tithi – ambil dari AstronomicalEngine.
-    """
-
-    def __init__(self, time_system, solar_events, lunar_events):
-        self.time_sys = time_system
-        self.solar = solar_events
-        self.lunar = lunar_events
-        self.cache_start = {}
-
-    def _jd_to_tt(self, jd_utc):
-        return self.time_sys.jd_utc_to_tt_extended(jd_utc)
-
-    def _tt_to_utc(self, jd_tt):
-        jd_utc = jd_tt - 69.0 / 86400.0
-        for _ in range(3):
-            date = self.time_sys.jd_to_gregorian(jd_utc)
-            dt = self.time_sys.delta_t_jolotundo_calibrated(date['year_astronomical'])
-            new = jd_tt - (dt + 32.184) / 86400.0
-            if abs(new - jd_utc) < 1e-8:
-                break
-            jd_utc = new
-        return jd_utc
-
-    def _find_amavasya(self, jd_approx):
-        jd_tt = self._jd_to_tt(jd_approx)
-        jd_tt_new = self.lunar.find_new_moon(jd_tt)
-        return self._tt_to_utc(jd_tt_new)
-
-    def _find_purnima(self, jd_approx):
-        jd_tt = self._jd_to_tt(jd_approx)
-        jd_tt_new = self.lunar.find_full_moon(jd_tt)
-        return self._tt_to_utc(jd_tt_new)
-
-    def get_chaitra_sukla_1(self, saka_year):
-        """JD UTC hari pertama tahun Saka (Chaitra Sukla 1)."""
-        if saka_year in self.cache_start:
-            return self.cache_start[saka_year]
-
-        if saka_year == 0:
-            jd = MathCore.julian_date_to_jd(78, 3, 3)
-        else:
-            ce = 78 + saka_year
-            jd_eq_tt = self.solar.find_event(ce, 0)[0]
-            jd_eq = self._tt_to_utc(jd_eq_tt)
-            am = self._find_amavasya(jd_eq)
-            if am > jd_eq:
-                am = self._find_amavasya(am - 15)
-            jd = am + 1.0
-
-        self.cache_start[saka_year] = jd
-        return jd
-
-    def jd_to_saka_year_month(self, jd_utc):
-        epoch_jd = self.get_chaitra_sukla_1(0)
-        approx = int((jd_utc - epoch_jd) / 365.242190)
-
-        for delta in range(-5, 6):
-            sy = approx + delta
-            start = self.get_chaitra_sukla_1(sy)
-            try:
-                end = self.get_chaitra_sukla_1(sy + 1)
-            except:
-                end = start + 380
-
-            if start <= jd_utc < end:
-                month_names = get_months_in_year(sy)
-                current = start
-                for i, mname in enumerate(month_names):
-                    purn = self._find_purnima(current + 14.77)
-                    next_am = self._find_amavasya(purn + 14.77)
-                    next_start = next_am + 1.0
-                    if jd_utc < next_start:
-                        return {
-                            'saka_year': sy,
-                            'month_name': mname,
-                            'is_adhika': mname.startswith('Punah'),
-                            'month_start_jd': current,
-                            'month_index': i
-                        }
-                    current = next_start
-                return {
-                    'saka_year': sy,
-                    'month_name': month_names[-1],
-                    'is_adhika': month_names[-1].startswith('Punah'),
-                    'month_start_jd': current,
-                    'month_index': len(month_names)-1
-                }
-
-        raise ValueError(f"Tidak dapat menentukan tahun Saka untuk JD {jd_utc:.6f}")
 
 # ============================================================================
 # Ω CONSTANTS - SEMUA KONSTANTA VEDIC DAN MAPPING (menggunakan JRC untuk nilai astronomi)
@@ -1383,7 +1242,7 @@ class PlanetarySystemUpgraded:
 class VedicTimeEngine:
     """Engine untuk menghitung Yoga, Karana, Parwesa, Muhurta, dan Lagna"""
 
-    def __init__(self, latitude=None, longitude=None, timezone_offset=None, astro_engine=None):
+    def __init__(self, latitude=None, longitude=None, timezone_offset=None):
         self.const = ΩConstants
         self.math = MathCore()
         self.norm = NormalizationEngine()
@@ -1392,11 +1251,9 @@ class VedicTimeEngine:
         self.lon = longitude if longitude is not None else self.const.LOC_LON
         self.tz_offset = timezone_offset if timezone_offset is not None else self.const.LOC_TZ_OFFSET
 
+        # Sistem baru
         self.time_system = TimeSystem()
-        if astro_engine is not None:
-            self.astro = astro_engine
-        else:
-            self.astro = AstronomicalEngine(self.lat, self.lon)
+        self.astro = AstronomicalEngine(self.lat, self.lon)
         self.transformer = UnifiedCoordinateTransformer()
 
     def calculate_yoga(self, sun_long, moon_long):
@@ -1849,7 +1706,7 @@ class VedicTimeEngine:
 class GrahacaraAsthaEngine:
     """Engine Grahacara Astha - BERDASARKAN LHA (Local Hour Angle)"""
 
-    def __init__(self, latitude=None, longitude=None, timezone_offset=None, astro_engine=None):
+    def __init__(self, latitude=None, longitude=None, timezone_offset=None):
         self.const = ΩConstants
         self.math = MathCore()
         self.norm = NormalizationEngine()
@@ -1859,10 +1716,7 @@ class GrahacaraAsthaEngine:
         self.tz_offset = timezone_offset if timezone_offset is not None else self.const.LOC_TZ_OFFSET
 
         self.time_system = TimeSystem()
-        if astro_engine is not None:
-            self.astro = astro_engine
-        else:
-            self.astro = AstronomicalEngine(self.lat, self.lon)
+        self.astro = AstronomicalEngine(self.lat, self.lon)
         self.transformer = UnifiedCoordinateTransformer()
 
     def calculate_lha(self, ra: float, jd_utc: float, lon: float = None) -> float:
@@ -2350,20 +2204,19 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     print(f"{BOLD}Lokasi:{RESET} {ΩConstants.LOC_NAME} | {ΩConstants.LOC_LAT:.6f}°, {ΩConstants.LOC_LON:.6f}°, {ΩConstants.LOC_ELEV:.1f} m")
     print("-" * 72)
 
-    # ================================================================
-    # INISIALISASI ENGINE (MENGGUNAKAN SINGLETON GLOBAL)
-    # ================================================================
+    # Inisialisasi engine
     math_core = MathCore()
-    astro = get_astro_engine()           # singleton
-    vedic = get_vedic_engine()           # singleton
-    graha = get_graha_engine()           # singleton
-    dewata = get_dewata_engine()         # singleton
-    time_sys = TimeSystem()              # ringan, boleh baru
+    astro = AstronomicalEngine()
+    vedic = VedicTimeEngine()
+    graha = GrahacaraAsthaEngine()
+    dewata = DewataMandalaEngine()
+    time_sys = TimeSystem()
 
     # ================================================================
     # 1. AMBIL DATA TOPOSENTRIK DARI JRC EPHEMERIS (Matahari & Bulan)
     # ================================================================
-    jrc_system = get_jrc_archaeo()       # singleton
+    from JRC_Ephemeris import JolotundoArchaeoastronomySystem
+    jrc_system = JolotundoArchaeoastronomySystem()
     
     # Konversi jam ke integer
     hour_int = int(hour)
@@ -2388,25 +2241,6 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     jd_utc = time_sys.wib_to_jd_utc(year, month, day, hour_int, minute_int, second_int)
     jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, hour_int, minute_int, second_int)
 
-    # --- Hitung tahun dan bulan Saka (tithi tidak dihitung di sini) ---
-    from solar_lunar_events import SolarEvents, LunarEvents
-    solar_events = SolarEvents(VSOP87SolarEngine(), time_sys)
-    lunar_events = LunarEvents(
-        lunar_engine=LunarELP82Engine(),
-        sun_engine=VSOP87SolarEngine(),
-        time_sys=time_sys
-    )
-    saka_ym = SakaYearMonth(time_sys, solar_events, lunar_events)
-    ym = saka_ym.jd_to_saka_year_month(jd_utc)
-    saka_year = ym['saka_year']
-    saka_month = ym['month_name']
-    saka_month_start = ym['month_start_jd']
-    saka_adhika = ym['is_adhika']
-
-    # --- Cek kabisat dan bulan punah ---
-    year_is_kabisat = is_kabisat(saka_year)
-    punah_month = get_punah_month(saka_year)
-
     # Ayanamsa
     ayanamsa = astro.calculate_ayanamsa_precise(jd_tt)
 
@@ -2414,7 +2248,7 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     mjd = jd_utc - 2400000.5
     delta_t_seconds = time_sys.delta_t_hybrid(year, mjd)
     if 702 <= year <= 1299:
-        delta_t_method = "eclipse‑anchored"
+        delta_t_method = "Jolotundo eclipse‑anchored"
     elif _DELTA_T_TABLE and _DELTA_T_TABLE[0][0] <= mjd <= _DELTA_T_TABLE[-1][0]:
         delta_t_method = "IERS/HMNAO"
     else:
@@ -2439,7 +2273,7 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     sun_rasi = astro.calculate_solar_ingress(sun_nirayana, "nirayana")
 
     moon_data = astro.calculate_moon_position_ultra(jd_tt, sun_data['longitude_deg'])
-    moon_nirayana = (moon_data['longitude'] - ayanamsa) % 360            
+    moon_nirayana = (moon_data['longitude'] - ayanamsa) % 360
     moon_nakshatra = astro.calculate_nakshatra(moon_nirayana, "nirayana")
     moon_nakshatra_sayana = astro.calculate_nakshatra(moon_data['longitude'], "tropical")
 
@@ -2464,15 +2298,6 @@ def display_comprehensive_info(year: int, month: int, day: int, hour: float = No
     print_labeled("Tahun dalam Yuga", ribuan(yuga_info['years_in_current_yuga']))
     print_labeled("Epoch Kali Yuga", f"{ΩConstants.KALI_EPOCH_DATE} (JD {ΩConstants.KALI_EPOCH_JD:.1f})")
 
-    # --- SAKA YEAR & MONTH ---
-    print_section_header("TAHUN & BULAN SAKA")
-    year_label = f"{saka_year}" + (" (kabisat)" if year_is_kabisat else "")
-    print_labeled("Tahun Saka", year_label)
-    print_labeled("Bulan Saka", f"{saka_month}" + (" (Adhika)" if saka_adhika else ""))
-    if punah_month:
-        print_labeled("Interkalasi", punah_month)
-    print_labeled("Awal bulan (JD UTC)", f"{saka_month_start:.6f}")
-      
     # --- POSISI MATAHARI & BULAN (menggunakan azimuth/altitude dari JRC) ---
     print_section_header("MATAHARI & BULAN")
     print(f"{BOLD}   MATAHARI (Surya):{RESET}")
