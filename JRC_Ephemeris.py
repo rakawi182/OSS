@@ -1778,7 +1778,17 @@ class TimeSystem:
 
         jd_tt = jd_utc + (delta_t_seconds + self.const.TT_TAI) / 86400.0
         return jd_tt
-    
+
+    def get_delta_t(self, jd_tt):
+        """
+        Get Delta T (TT - UT) in seconds for a given Julian Date in TT.
+        This method is used by astro_calibration_extractor.py.
+        """
+        date_info = self.jd_to_gregorian(jd_tt)
+        year_astro = date_info['year_astronomical']
+        mjd = jd_tt - 2400000.5  # approximate (using TT instead of UT; negligible error)
+        return self.delta_t_hybrid(year_astro, mjd)
+        
     def jd_utc_to_tt_eclipse_corrected(self, jd_utc, method='jolotundo'):
         """
         Convert UTC JD to TT JD dengan koreksi gerhana
@@ -2976,23 +2986,25 @@ class JPLStyleTopocentricCorrections:
     # ============================================================================
     # MOON RISE, SET, TRANSIT CALCULATION (by coarse search + interpolation)
     # ============================================================================
-    def calculate_moon_rise_set_transit(self, jd_local_midnight_utc: float,
-                                        observer_lat_deg: float,
-                                        observer_lon_deg: float,
-                                        observer_elevation_m: float,
+    def calculate_moon_rise_set_transit(self, jd_local_midnight_utc,
+                                        observer_lat_deg,
+                                        observer_lon_deg,
+                                        observer_elevation_m,
                                         lunar_engine) -> Dict[str, Any]:
         """
         Hitung moonrise, moonset, dan transit Bulan untuk 1 hari kalender LOKAL.
-        Pencarian interval 30 menit di interpolasi untuk presisi tinggi.
+
+        Transit dicari dengan sampling yang diperluas (-12h hingga +36h
+        relatif terhadap tengah malam lokal) untuk menangkap transit yang
+        jatuh di tepi hari, dan dipilih satu transit yang berada di [0, 24].
+
+        Rise/set dilaporkan hanya jika terjadi di dalam [0, 24] waktu lokal.
         """
-        # Pencarian 0h - 24h sejak 00:00 Waktu Lokal
-        hours = np.linspace(0, 24, 49)  
-        alts = []
-        azs = []
-        has = []
-        
-        for h in hours:
-            # jd_local_midnight_utc merepresentasikan presisi jam 00:00 lokal
+        # Sampling diperluas: -12h hingga +36h, step 0.5h
+        hours = np.linspace(-12.0, 36.0, 97)
+
+        alts = np.empty_like(hours)
+        for i, h in enumerate(hours):
             jd = jd_local_midnight_utc + (h / 24.0)
             moon_data = lunar_engine.calculate_position(
                 jd,
@@ -3001,60 +3013,67 @@ class JPLStyleTopocentricCorrections:
                 observer_lon_deg=observer_lon_deg,
                 observer_elevation_m=observer_elevation_m
             )
-            alts.append(moon_data['horizontal']['altitude_apparent_deg'])
-            azs.append(moon_data['horizontal']['azimuth_deg'])
-            has.append(moon_data['horizontal']['hour_angle_deg'])
-        
-        alts = np.array(alts)
-        
-        # Apparent_altitude sudah memperhitungkan paralaks & refraksi.
-        # Saat piringan atas Bulan (upper limb) menyentuh 0° horizon geometris, 
-        # pusat Bulan berada pada sekitar -0.25° (karena 15 arcmin semi-diameter).
+            alts[i] = moon_data['horizontal']['altitude_apparent_deg']
+
+        # Pusat Bulan pada saat piringan atas menyentuh horizon geometris
         horizon = -0.25
-        
+
+        # ------------------------------------------------------------------
+        # Transit: cari semua maksimum lokal, saring ke [0, 24]
+        # ------------------------------------------------------------------
+        transit_candidates = []
+        for i in range(1, len(alts) - 1):
+            if alts[i] > alts[i - 1] and alts[i] > alts[i + 1]:
+                x = hours[i - 1:i + 2]
+                y = alts[i - 1:i + 2]
+                coeffs = np.polyfit(x, y, 2)
+                if coeffs[0] < 0:
+                    t = -coeffs[1] / (2.0 * coeffs[0])
+                    alt = coeffs[0] * t * t + coeffs[1] * t + coeffs[2]
+                else:
+                    t = hours[i]
+                    alt = alts[i]
+                if 0.0 <= t <= 24.0:
+                    transit_candidates.append((t, alt))
+
+        if transit_candidates:
+            transit_time, transit_alt = max(transit_candidates, key=lambda p: p[1])
+        else:
+            transit_time = None
+            transit_alt = None
+
+        # ------------------------------------------------------------------
+        # Rise/set: cari persilangan horizon di dalam [0, 24]
+        # ------------------------------------------------------------------
         rise_time = None
         set_time = None
-        transit_time = None
-        transit_alt = -90
-        
-        # Transit: cari indeks di mana altitude paling tinggi (Bukan via HA)
-        idx_max_alt = np.argmax(alts)
-        transit_time_approx = hours[idx_max_alt]
-        transit_alt_approx = alts[idx_max_alt]
-        
-        # Interpolasi halus di sekitar transit (parabola)
-        if 1 <= idx_max_alt <= len(hours)-2:
-            x = hours[idx_max_alt-1:idx_max_alt+2]
-            y = alts[idx_max_alt-1:idx_max_alt+2]
-            coeffs = np.polyfit(x, y, 2)
-            if coeffs[0] < 0: # Pastikan parabola membuka ke bawah
-                transit_time = -coeffs[1] / (2 * coeffs[0])
-                transit_alt = coeffs[0]*transit_time**2 + coeffs[1]*transit_time + coeffs[2]
-            else:
-                transit_time = transit_time_approx
-                transit_alt = transit_alt_approx
-        else:
-            transit_time = transit_time_approx
-            transit_alt = transit_alt_approx
-        
-        # Cari moonrise & moonset (interpolasi linear)
-        for i in range(len(alts)-1):
-            if alts[i] < horizon and alts[i+1] >= horizon:
-                t = (horizon - alts[i]) / (alts[i+1] - alts[i])
-                rise_time = hours[i] + t * (hours[i+1] - hours[i])
-            elif alts[i] >= horizon and alts[i+1] < horizon:
-                t = (alts[i] - horizon) / (alts[i] - alts[i+1])
-                set_time = hours[i] + t * (hours[i+1] - hours[i])
-        
-        # h_local sudah merupakan representasi waktu WIB/lokal murni
+        for i in range(len(alts) - 1):
+            h1, h2 = hours[i], hours[i + 1]
+            if h2 < 0.0 or h1 > 24.0:
+                continue
+            if alts[i] < horizon and alts[i + 1] >= horizon:
+                frac = (horizon - alts[i]) / (alts[i + 1] - alts[i])
+                t = h1 + frac * (h2 - h1)
+                if 0.0 <= t <= 24.0 and rise_time is None:
+                    rise_time = t
+            elif alts[i] >= horizon and alts[i + 1] < horizon:
+                frac = (alts[i] - horizon) / (alts[i] - alts[i + 1])
+                t = h1 + frac * (h2 - h1)
+                if 0.0 <= t <= 24.0 and set_time is None:
+                    set_time = t
+
+        # ------------------------------------------------------------------
+        # Format keluaran (WIB, UTC, lokal)
+        # ------------------------------------------------------------------
         def format_time(h_local):
-            if h_local is None: return '--:--:--'
+            if h_local is None:
+                return '--:--:--'
             h_local = h_local % 24.0
             h = int(h_local)
             m = int((h_local - h) * 60)
-            s = ((h_local - h) * 60 - m) * 60
-            return f"{h:02d}:{m:02d}:{int(s):02d}"
-        
+            s = int(((h_local - h) * 60 - m) * 60)
+            return f"{h:02d}:{m:02d}:{s:02d}"
+
         wib_offset = 7.0
         return {
             'moonrise': {
