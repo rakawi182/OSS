@@ -2992,16 +2992,79 @@ class JPLStyleTopocentricCorrections:
                                         observer_elevation_m,
                                         lunar_engine) -> Dict[str, Any]:
         """
-        Hitung moonrise, moonset, dan transit Bulan untuk 1 hari kalender LOKAL.
+        Hitung moonrise, moonset, dan transit Bulan untuk satu hari kalender LOKAL.
 
-        Transit dicari dengan sampling yang diperluas (-12h hingga +36h
-        relatif terhadap tengah malam lokal) untuk menangkap transit yang
-        jatuh di tepi hari, dan dipilih satu transit yang berada di [0, 24].
+        Parameter
+        ---------
+        jd_local_midnight_utc : float
+            Julian Day UTC untuk pukul 00:00:00 waktu lokal (WIB) di awal hari.
+        observer_lat_deg, observer_lon_deg : float
+            Koordinat pengamat (derajat).
+        observer_elevation_m : float
+            Ketinggian pengamat dari permukaan laut (meter).
+        lunar_engine : LunarELP82Engine
+            Engine ephemeris Bulan untuk menghitung posisi topocentric.
 
-        Rise/set dilaporkan hanya jika terjadi di dalam [0, 24] waktu lokal.
+        Metode
+        ------
+        Sampling jendela diperluas dari jam -12 sampai +36 relatif terhadap
+        tengah malam lokal, dengan step 0.5 jam (97 titik). Perluasan ini
+        memastikan bahwa puncak altitude (transit) selalu berada di interior
+        jendela sampling — bukan di tepi — sehingga interpolasi parabola
+        tiga titik selalu dapat dilakukan, termasuk ketika transit jatuh
+        sangat dekat dengan tengah malam lokal.
+
+        Langkah perhitungan transit:
+            1. Cari indeks altitude tertinggi pada seluruh array 97 titik
+               (argmax global di jendela diperluas).
+            2. Interpolasi parabola melalui titik puncak dan dua tetangganya
+               untuk mendapatkan waktu transit sub-step. Interpolasi hanya
+               dijalankan jika indeks puncak berada di interior array.
+            3. Saring hasil: transit hanya dilaporkan jika waktunya jatuh
+               di dalam [0, 24] jam lokal. Jika di luar, transit terjadi
+               di hari kalender lain, dan nilai `None` dikembalikan.
+
+        Langkah perhitungan moonrise/moonset:
+            1. Cari persilangan horizon (altitude = -0.25°, yaitu saat
+               piringan atas Bulan menyentuh horizon geometris; pusat Bulan
+               0.25° di bawah horizon karena semi-diameter 15 arcmin).
+            2. Interpolasi linear di antara dua titik sampling yang mengapit
+               persilangan.
+            3. Saring hasil ke [0, 24] jam lokal, sama seperti transit.
+
+        Alasan pemilihan -0.25° sebagai horizon
+        ----------------------------------------
+        Altitude apparent dari ephemeris sudah memperhitungkan paralaks
+        diurnal dan refraksi atmosfer. Saat piringan atas Bulan menyentuh
+        horizon geometris (0°), pusat Bulan berada di sekitar -0.25°,
+        karena semi-diameter Bulan sekitar 15 arcmin (0.25°). Nilai ini
+        adalah konvensi yang sama dengan yang dipakai untuk Matahari
+        (0.8333° di bawah horizon untuk terbit/terbenam).
+
+        Keterbatasan
+        ------------
+        Sampling step 0.5 jam memberikan resolusi koarse. Interpolasi
+        parabola/linear memperhalus ke sub-menit, tetapi akurasi absolut
+        masih dibatasi oleh non-linearitas altitude di sekitar horizon
+        (untuk rise/set) dan oleh variasi deklinasi Bulan sepanjang hari
+        (untuk transit). Untuk aplikasi arkeoastronomi Jolotundo, akurasi
+        orde menit sudah memadai.
+
+        Returns
+        -------
+        dict dengan tiga kunci: 'moonrise', 'moonset', 'transit'.
+        Setiap kunci berisi:
+            - 'utc'        : string HH:MM:SS dalam UTC
+            - 'wib'        : string HH:MM:SS dalam WIB
+            - 'local_time' : float jam lokal (0-24), atau None jika tidak
+                             terjadi dalam hari lokal
+        Kunci 'transit' juga berisi 'altitude_deg' (float), altitude
+        puncak dalam derajat.
         """
-        # Sampling diperluas: -12h hingga +36h, step 0.5h
-        hours = np.linspace(-12.0, 36.0, 97)
+        # ------------------------------------------------------------------
+        # 1. Sampling altitude dengan jendela diperluas
+        # ------------------------------------------------------------------
+        hours = np.linspace(-12.0, 36.0, 97)   # step 0.5 jam
 
         alts = np.empty_like(hours)
         for i, h in enumerate(hours):
@@ -3015,42 +3078,49 @@ class JPLStyleTopocentricCorrections:
             )
             alts[i] = moon_data['horizontal']['altitude_apparent_deg']
 
-        # Pusat Bulan pada saat piringan atas menyentuh horizon geometris
+        # Horizon apparent untuk rise/set (piringan atas menyentuh geometris 0°)
         horizon = -0.25
 
         # ------------------------------------------------------------------
-        # Transit: cari semua maksimum lokal, saring ke [0, 24]
+        # 2. Transit — argmax di seluruh jendela, lalu interpolasi, lalu saring
         # ------------------------------------------------------------------
-        transit_candidates = []
-        for i in range(1, len(alts) - 1):
-            if alts[i] > alts[i - 1] and alts[i] > alts[i + 1]:
-                x = hours[i - 1:i + 2]
-                y = alts[i - 1:i + 2]
-                coeffs = np.polyfit(x, y, 2)
-                if coeffs[0] < 0:
-                    t = -coeffs[1] / (2.0 * coeffs[0])
-                    alt = coeffs[0] * t * t + coeffs[1] * t + coeffs[2]
-                else:
-                    t = hours[i]
-                    alt = alts[i]
-                if 0.0 <= t <= 24.0:
-                    transit_candidates.append((t, alt))
+        transit_time = None
+        transit_alt = None
 
-        if transit_candidates:
-            transit_time, transit_alt = max(transit_candidates, key=lambda p: p[1])
-        else:
-            transit_time = None
-            transit_alt = None
+        idx_peak = int(np.argmax(alts))
+        t_peak = float(hours[idx_peak])
+        alt_peak = float(alts[idx_peak])
+
+        # Interpolasi parabola di sekitar puncak — hanya jika puncak
+        # berada di interior array (punya dua tetangga).
+        if 1 <= idx_peak <= len(hours) - 2:
+            x = hours[idx_peak - 1:idx_peak + 2]
+            y = alts[idx_peak - 1:idx_peak + 2]
+            coeffs = np.polyfit(x, y, 2)
+            if coeffs[0] < 0:   # parabola membuka ke bawah
+                t_peak = -coeffs[1] / (2.0 * coeffs[0])
+                alt_peak = (coeffs[0] * t_peak * t_peak
+                            + coeffs[1] * t_peak
+                            + coeffs[2])
+
+        # Saring ke hari lokal [0, 24]
+        if 0.0 <= t_peak <= 24.0:
+            transit_time = float(t_peak)
+            transit_alt = float(alt_peak)
 
         # ------------------------------------------------------------------
-        # Rise/set: cari persilangan horizon di dalam [0, 24]
+        # 3. Rise/set — cari persilangan horizon, interpolasi linear,
+        #    lalu saring ke [0, 24]
         # ------------------------------------------------------------------
         rise_time = None
         set_time = None
         for i in range(len(alts) - 1):
             h1, h2 = hours[i], hours[i + 1]
+
+            # Lewati segmen yang sepenuhnya di luar hari lokal
             if h2 < 0.0 or h1 > 24.0:
                 continue
+
             if alts[i] < horizon and alts[i + 1] >= horizon:
                 frac = (horizon - alts[i]) / (alts[i + 1] - alts[i])
                 t = h1 + frac * (h2 - h1)
@@ -3063,7 +3133,7 @@ class JPLStyleTopocentricCorrections:
                     set_time = t
 
         # ------------------------------------------------------------------
-        # Format keluaran (WIB, UTC, lokal)
+        # 4. Format keluaran
         # ------------------------------------------------------------------
         def format_time(h_local):
             if h_local is None:
