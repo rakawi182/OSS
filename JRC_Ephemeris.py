@@ -2992,7 +2992,32 @@ class JPLStyleTopocentricCorrections:
                                         observer_elevation_m,
                                         lunar_engine) -> Dict[str, Any]:
         """
-        Hitung moonrise, moonset, dan transit Bulan untuk satu hari kalender LOKAL.
+        Hitung moonrise, moonset, dan transit meridian Bulan untuk satu hari
+        kalender LOKAL.
+
+        Transit didefinisikan sebagai saat Hour Angle (HA) = 0, yaitu saat
+        Bulan melintasi meridian pengamat. Definisi ini identik dengan yang
+        digunakan oleh almanak standar (JPL Horizons, Astronomical Almanac,
+        Timeanddate) sehingga hasilnya dapat dibandingkan langsung dengan
+        sumber-sumber tersebut.
+
+        Mengapa Hour Angle, bukan puncak altitude
+        -----------------------------------------
+        Puncak altitude (altitude maximum) dan transit meridian (HA=0)
+        hanya identik jika deklinasi objek konstan sepanjang hari. Untuk
+        bintang, kondisi ini hampir terpenuhi. Untuk Bulan, deklinasi dapat
+        berubah hingga ~5° per hari karena inklinasi orbit terhadap ekliptika.
+        Akibatnya puncak altitude dapat berbeda dari transit meridian hingga
+        2-3 menit. Karena transit meridian adalah kuantitas yang terdefinisi
+        secara astronomis dan dipakai oleh almanak, nilai itulah yang
+        dilaporkan.
+
+        Dari sisi numerik, Hour Angle berubah hampir linear terhadap waktu
+        (~15° per jam untuk semua objek), sehingga interpolasi linear untuk
+        mencari persilangan nol HA praktis eksak — errornya jauh di bawah
+        1 detik untuk step sampling 0.5 jam. Sebaliknya, altitude tidak
+        linear di sekitar puncak, sehingga interpolasi parabola di sana
+        justru kurang akurat.
 
         Parameter
         ---------
@@ -3009,46 +3034,24 @@ class JPLStyleTopocentricCorrections:
         ------
         Sampling jendela diperluas dari jam -12 sampai +36 relatif terhadap
         tengah malam lokal, dengan step 0.5 jam (97 titik). Perluasan ini
-        memastikan bahwa puncak altitude (transit) selalu berada di interior
-        jendela sampling — bukan di tepi — sehingga interpolasi parabola
-        tiga titik selalu dapat dilakukan, termasuk ketika transit jatuh
-        sangat dekat dengan tengah malam lokal.
+        memastikan bahwa transit dan rise/set selalu berada di interior
+        jendela, bukan di tepi, sehingga interpolasi selalu dapat dilakukan.
 
-        Langkah perhitungan transit:
-            1. Cari indeks altitude tertinggi pada seluruh array 97 titik
-               (argmax global di jendela diperluas).
-            2. Interpolasi parabola melalui titik puncak dan dua tetangganya
-               untuk mendapatkan waktu transit sub-step. Interpolasi hanya
-               dijalankan jika indeks puncak berada di interior array.
-            3. Saring hasil: transit hanya dilaporkan jika waktunya jatuh
-               di dalam [0, 24] jam lokal. Jika di luar, transit terjadi
-               di hari kalender lain, dan nilai `None` dikembalikan.
+        Transit:
+            1. Cari dua titik sampling berturut-turut di mana HA berubah
+               tanda dari negatif ke positif.
+            2. Interpolasi linear untuk mendapatkan waktu HA=0 secara presisi.
+            3. Interpolasi linear juga untuk altitude pada waktu tersebut.
+            4. Saring ke [0, 24] jam lokal; jika di luar, transit terjadi di
+               hari kalender lain dan dilaporkan sebagai None.
 
-        Langkah perhitungan moonrise/moonset:
-            1. Cari persilangan horizon (altitude = -0.25°, yaitu saat
-               piringan atas Bulan menyentuh horizon geometris; pusat Bulan
-               0.25° di bawah horizon karena semi-diameter 15 arcmin).
+        Moonrise/moonset:
+            1. Cari persilangan altitude apparent dengan horizon -0.25°
+               (piringan atas Bulan menyentuh horizon geometris; pusat Bulan
+               0.25° di bawah karena semi-diameter ~15 arcmin).
             2. Interpolasi linear di antara dua titik sampling yang mengapit
                persilangan.
-            3. Saring hasil ke [0, 24] jam lokal, sama seperti transit.
-
-        Alasan pemilihan -0.25° sebagai horizon
-        ----------------------------------------
-        Altitude apparent dari ephemeris sudah memperhitungkan paralaks
-        diurnal dan refraksi atmosfer. Saat piringan atas Bulan menyentuh
-        horizon geometris (0°), pusat Bulan berada di sekitar -0.25°,
-        karena semi-diameter Bulan sekitar 15 arcmin (0.25°). Nilai ini
-        adalah konvensi yang sama dengan yang dipakai untuk Matahari
-        (0.8333° di bawah horizon untuk terbit/terbenam).
-
-        Keterbatasan
-        ------------
-        Sampling step 0.5 jam memberikan resolusi koarse. Interpolasi
-        parabola/linear memperhalus ke sub-menit, tetapi akurasi absolut
-        masih dibatasi oleh non-linearitas altitude di sekitar horizon
-        (untuk rise/set) dan oleh variasi deklinasi Bulan sepanjang hari
-        (untuk transit). Untuk aplikasi arkeoastronomi Jolotundo, akurasi
-        orde menit sudah memadai.
+            3. Saring ke [0, 24] jam lokal.
 
         Returns
         -------
@@ -3059,14 +3062,15 @@ class JPLStyleTopocentricCorrections:
             - 'local_time' : float jam lokal (0-24), atau None jika tidak
                              terjadi dalam hari lokal
         Kunci 'transit' juga berisi 'altitude_deg' (float), altitude
-        puncak dalam derajat.
+        Bulan pada saat transit meridian.
         """
         # ------------------------------------------------------------------
-        # 1. Sampling altitude dengan jendela diperluas
+        # 1. Sampling altitude dan hour angle dengan jendela diperluas
         # ------------------------------------------------------------------
         hours = np.linspace(-12.0, 36.0, 97)   # step 0.5 jam
 
         alts = np.empty_like(hours)
+        has = np.empty_like(hours)
         for i, h in enumerate(hours):
             jd = jd_local_midnight_utc + (h / 24.0)
             moon_data = lunar_engine.calculate_position(
@@ -3077,50 +3081,38 @@ class JPLStyleTopocentricCorrections:
                 observer_elevation_m=observer_elevation_m
             )
             alts[i] = moon_data['horizontal']['altitude_apparent_deg']
+            has[i] = moon_data['horizontal']['hour_angle_deg']
 
-        # Horizon apparent untuk rise/set (piringan atas menyentuh geometris 0°)
         horizon = -0.25
 
         # ------------------------------------------------------------------
-        # 2. Transit — argmax di seluruh jendela, lalu interpolasi, lalu saring
+        # 2. Transit meridian: cari persilangan HA=0
         # ------------------------------------------------------------------
         transit_time = None
         transit_alt = None
 
-        idx_peak = int(np.argmax(alts))
-        t_peak = float(hours[idx_peak])
-        alt_peak = float(alts[idx_peak])
+        for i in range(len(has) - 1):
+            h1, h2 = has[i], has[i + 1]
+            if h1 < 0 and h2 >= 0:
+                frac = -h1 / (h2 - h1)
+                t = hours[i] + frac * (hours[i + 1] - hours[i])
 
-        # Interpolasi parabola di sekitar puncak — hanya jika puncak
-        # berada di interior array (punya dua tetangga).
-        if 1 <= idx_peak <= len(hours) - 2:
-            x = hours[idx_peak - 1:idx_peak + 2]
-            y = alts[idx_peak - 1:idx_peak + 2]
-            coeffs = np.polyfit(x, y, 2)
-            if coeffs[0] < 0:   # parabola membuka ke bawah
-                t_peak = -coeffs[1] / (2.0 * coeffs[0])
-                alt_peak = (coeffs[0] * t_peak * t_peak
-                            + coeffs[1] * t_peak
-                            + coeffs[2])
-
-        # Saring ke hari lokal [0, 24]
-        if 0.0 <= t_peak <= 24.0:
-            transit_time = float(t_peak)
-            transit_alt = float(alt_peak)
+                # Saring ke hari lokal
+                if 0.0 <= t <= 24.0:
+                    transit_time = float(t)
+                    # Interpolasi linear untuk altitude pada waktu transit
+                    transit_alt = float(alts[i] + frac * (alts[i + 1] - alts[i]))
+                    break
 
         # ------------------------------------------------------------------
-        # 3. Rise/set — cari persilangan horizon, interpolasi linear,
-        #    lalu saring ke [0, 24]
+        # 3. Rise/set: cari persilangan horizon di dalam [0, 24]
         # ------------------------------------------------------------------
         rise_time = None
         set_time = None
         for i in range(len(alts) - 1):
             h1, h2 = hours[i], hours[i + 1]
-
-            # Lewati segmen yang sepenuhnya di luar hari lokal
             if h2 < 0.0 or h1 > 24.0:
                 continue
-
             if alts[i] < horizon and alts[i + 1] >= horizon:
                 frac = (horizon - alts[i]) / (alts[i + 1] - alts[i])
                 t = h1 + frac * (h2 - h1)
