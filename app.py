@@ -1411,14 +1411,19 @@ elif nav == "📊 Database Damais":
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        filter_system = st.selectbox("Filter Sistem Zodiak", ["Semua", "Sayana", "Nirayana", "Both", "None"])
+        filter_system = st.selectbox("Filter Sistem Zodiak",
+                                     ["Semua", "Sayana", "Nirayana", "Both", "None"])
     with col2:
-        centuries = sorted(set([(ins["saka"] // 100) * 100 for ins in DAMAIS_INSCRIPTIONS if ins.get("saka")]))
+        _saka_vals = [ins["saka"] for ins in DAMAIS_INSCRIPTIONS if ins.get("saka")]
+        centuries = sorted(set([(s // 100) * 100 for s in _saka_vals]))
         century_options = ["Semua"] + [f"{c}-{c+99}" for c in centuries]
         filter_century = st.selectbox("Filter Abad", century_options)
     with col3:
         search_text = st.text_input("Cari (nama/ID)", "")
 
+    # ------------------------------------------------------------------
+    # Bangun DataFrame
+    # ------------------------------------------------------------------
     display_data = []
     for ins in DAMAIS_INSCRIPTIONS:
         row = {
@@ -1432,7 +1437,10 @@ elif nav == "📊 Database Damais":
             "Wara": ins.get("wara_string"),
             "Wuku": ins.get("wuku"),
             "Nakṣatra": ins.get("nakshatra"),
-            "Tanggal Damais": f"{ins['julian_date'][0]}-{ins['julian_date'][1]:02d}-{ins['julian_date'][2]:02d}" if ins.get("julian_date") else "",
+            "Tanggal Damais": (
+                f"{ins['julian_date'][0]}-{ins['julian_date'][1]:02d}-{ins['julian_date'][2]:02d}"
+                if ins.get("julian_date") else ""
+            ),
         }
         if not validation_df.empty:
             match = validation_df[validation_df["no"] == ins.get("no")]
@@ -1442,8 +1450,10 @@ elif nav == "📊 Database Damais":
                 row["Skor"] = match.iloc[0].get("score")
                 jrc = match.iloc[0].get("jrc_verification")
                 if jrc and isinstance(jrc, dict):
-                    row["Sistem Zodiak"] = jrc.get("system_detected") or "N/A"
-                    row["Sistem Zodiak (Tol ±1)"] = jrc.get("system_detected_tolerance") or "N/A"
+                    _s1 = jrc.get("system_detected") or "N/A"
+                    _s2 = jrc.get("system_detected_tolerance") or "N/A"
+                    row["Sistem Zodiak"] = _s1 if _s1 == "N/A" else str(_s1).title()
+                    row["Sistem Zodiak (Tol ±1)"] = _s2 if _s2 == "N/A" else str(_s2).title()
                 else:
                     row["Sistem Zodiak"] = "N/A"
                     row["Sistem Zodiak (Tol ±1)"] = "N/A"
@@ -1452,19 +1462,46 @@ elif nav == "📊 Database Damais":
                 row["KA"] = ""
                 row["Skor"] = ""
                 row["Sistem Zodiak"] = "N/A"
+                row["Sistem Zodiak (Tol ±1)"] = "N/A"
         display_data.append(row)
 
     df = pd.DataFrame(display_data)
 
+    # ------------------------------------------------------------------
+    # Normalisasi tipe kolom agar filter bekerja konsisten
+    # ------------------------------------------------------------------
+    if "Śaka" in df.columns:
+        df["Śaka"] = pd.to_numeric(df["Śaka"], errors="coerce")
+    if "Sistem Zodiak" in df.columns:
+        df["Sistem Zodiak"] = df["Sistem Zodiak"].astype(str)
+    if "Sistem Zodiak (Tol ±1)" in df.columns:
+        df["Sistem Zodiak (Tol ±1)"] = df["Sistem Zodiak (Tol ±1)"].astype(str)
+
+    # ------------------------------------------------------------------
+    # Terapkan filter
+    # ------------------------------------------------------------------
     if filter_system != "Semua":
-        df = df[df["Sistem Zodiak"] == filter_system]
+        df = df[df["Sistem Zodiak"].str.lower() == filter_system.lower()]
+
     if filter_century != "Semua":
         century_start = int(filter_century.split("-")[0])
-        df = df[(df["Śaka"] >= century_start) & (df["Śaka"] < century_start + 100)]
-    if search_text:
-        df = df[df.apply(lambda row: search_text.lower() in str(row["Nama"]).lower() or search_text.lower() in str(row["ID"]).lower(), axis=1)]
+        century_end = century_start + 99
+        df = df[(df["Śaka"] >= century_start) & (df["Śaka"] <= century_end)]
 
-    st.dataframe(df, width='stretch', hide_index=True)
+    if search_text.strip():
+        q = search_text.strip().lower()
+        df = df[
+            df["Nama"].fillna("").astype(str).str.lower().str.contains(q, regex=False)
+            | df["ID"].fillna("").astype(str).str.lower().str.contains(q, regex=False)
+        ]
+
+    # ------------------------------------------------------------------
+    # Tampilkan
+    # ------------------------------------------------------------------
+    if df.empty:
+        st.info("Tidak ada prasasti yang cocok dengan filter saat ini.")
+    else:
+        st.dataframe(df, width='stretch', hide_index=True)
 
     st.subheader("🔍 Detail Prasasti")
     if not df.empty:
