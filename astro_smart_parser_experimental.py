@@ -889,9 +889,17 @@ class AstronomicalSmartParser:
             d_nir = self._circular_distance(
                 t_naks, state['nakshatra_nirayana_idx'], 27
             )
-            d, sys_used = (
-                (d_say, 'sayana') if d_say <= d_nir else (d_nir, 'nirayana')
-            )
+            # Bila kedua sistem memberi jarak 0 (exact), catat sebagai 'both'.
+            # Bila hanya satu, catat yang exact.
+            # Bila keduanya > 0 dan seri, prefer nirayana (konvensi Jawa Kuno).
+            if d_say == 0 and d_nir == 0:
+                d, sys_used = 0, 'both'
+            elif d_say < d_nir:
+                d, sys_used = d_say, 'sayana'
+            elif d_nir < d_say:
+                d, sys_used = d_nir, 'nirayana'
+            else:
+                d, sys_used = d_nir, 'nirayana'
             v = 1.0 if d == 0 else (0.4 if d == 1 else 0.0)
             parts['nakshatra'] = {
                 'value': v,
@@ -910,9 +918,14 @@ class AstronomicalSmartParser:
             d_nir = self._circular_distance(
                 t_yoga, state['yoga_nirayana_idx'], 27
             )
-            d, sys_used = (
-                (d_say, 'sayana') if d_say <= d_nir else (d_nir, 'nirayana')
-            )
+            if d_say == 0 and d_nir == 0:
+                d, sys_used = 0, 'both'
+            elif d_say < d_nir:
+                d, sys_used = d_say, 'sayana'
+            elif d_nir < d_say:
+                d, sys_used = d_nir, 'nirayana'
+            else:
+                d, sys_used = d_nir, 'nirayana'
             v = 1.0 if d == 0 else (0.4 if d == 1 else 0.0)
             parts['yoga'] = {
                 'value': v,
