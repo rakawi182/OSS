@@ -1034,6 +1034,9 @@ elif nav == "📜 Konversi Prasasti":
         - **🌀 Wara-Wuku** — hanya wara/wuku. Jalur 1 (SPICA mekanik murni).
         - **☀️ Data Astronomi** — hanya tithi/nakshatra/yoga/karana. Jalur 2 (scan astronomis).
         - **🔀 Keduanya** — semua. Jalur 3 (SPICA + verifikasi astronomis silang).
+
+        **Catatan:** Bulan Śaka dipilih dari daftar kanonik dan tidak dinormalisasi.
+        Hanya field teks bebas (wuku, wara, nakshatra, yoga, karana) yang dinormalisasi.
         """)
 
     # ------------------------------------------------------------------
@@ -1070,14 +1073,14 @@ elif nav == "📜 Konversi Prasasti":
         nakshatra_raw = yoga_raw = karana_raw = ""
 
     # ------------------------------------------------------------------
-    # Normalisasi — bentuk kanonik yang akan dikirim ke SPICA
+    # Normalisasi — hanya untuk field teks bebas.
+    # `masa` tidak dinormalisasi karena berasal dari selectbox kanonik.
     # ------------------------------------------------------------------
     wuku_norm, wuku_orig = _norm(wuku_raw)
     wara_norm, wara_orig = _norm(wara_raw)
     naks_norm, naks_orig = _norm(nakshatra_raw)
     yoga_norm, yoga_orig = _norm(yoga_raw)
     kar_norm, kar_orig = _norm(karana_raw)
-    masa_norm, masa_orig = _norm(masa)
 
     preview_lines = []
     if wuku_orig and wuku_norm != wuku_orig:
@@ -1090,8 +1093,6 @@ elif nav == "📜 Konversi Prasasti":
         preview_lines.append(f"• yoga: <b>{yoga_orig}</b> → <code>{yoga_norm}</code>")
     if kar_orig and kar_norm != kar_orig:
         preview_lines.append(f"• karana: <b>{kar_orig}</b> → <code>{kar_norm}</code>")
-    if masa_orig and masa_norm != masa_orig:
-        preview_lines.append(f"• masa: <b>{masa_orig}</b> → <code>{masa_norm}</code>")
 
     if preview_lines:
         st.markdown(
@@ -1113,7 +1114,7 @@ elif nav == "📜 Konversi Prasasti":
                 try:
                     data = {
                         "saka_year": int(saka_year),
-                        "masa": masa_norm or masa,
+                        "masa": masa,
                     }
                     if wuku_norm:
                         data["wuku"] = wuku_norm
@@ -1255,6 +1256,7 @@ elif nav == "📜 Konversi Prasasti":
                     st.error(f"❌ Error: {str(e)}")
                     import traceback
                     st.code(traceback.format_exc())
+
 
 # ============================================================================
 # PAGE: DATABASE DAMAIS
