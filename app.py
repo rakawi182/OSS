@@ -9,10 +9,8 @@
 # - Dukungan tahun negatif (tahun astronomi) di deskripsi dan input
 # - Fitur Database Damais & Analisis Sistem Zodiak
 # - Plotly fallback (jika tidak terinstall)
-# - Ringkasan Panchanga Lengkap di Beranda
-# - Konversi Prasasti: mode adaptif (Wara-Wuku / Astronomi / Keduanya)
-#   Normalisasi input via OldJavaNormalizer sebelum dikirim ke SPICA
-# - Semua use_container_width diganti width='stretch'/'content'
+# - TAMBAHAN: Ringkasan Panchanga Lengkap di Beranda (Saka, Tithi, Naksatra, Wuku, Yoga, Karana, Parwesa, Dewata, Mandala, Muhurta, Tabeh)
+# - Semua use_container_width diganti width='stretch'/'content' (Streamlit 1.45+)
 # ============================================================================
 
 import sys
@@ -59,7 +57,7 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CUSTOM CSS
+# CUSTOM CSS (tidak berubah)
 # ============================================================================
 st.markdown("""
 <style>
@@ -105,9 +103,6 @@ st.markdown("""
     .description-box ul { margin: 8px 0 8px 20px; }
     .description-box li { margin: 4px 0; }
     .input-hint { color: #8899bb; font-size: 0.75rem; font-style: italic; margin-top: 2px; }
-    .norm-box { background:#252b3d; border-radius:6px; padding:10px 14px; margin:8px 0; color:#c0c8d8; font-size:0.85rem; line-height:1.7; }
-    .norm-box b { color:#d4b896; }
-    .norm-box code { background:#1a1e2a; color:#f0e6d0; padding:1px 6px; border-radius:3px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -235,7 +230,7 @@ offset_funcs = {
 }
 
 # ============================================================================
-# CACHE UNTUK SOLAR & LUNAR EVENTS
+# TAMBAHAN: CACHE UNTUK SOLAR & LUNAR EVENTS
 # ============================================================================
 @st.cache_resource
 def get_solar_events():
@@ -250,7 +245,7 @@ def get_lunar_events():
     return LunarEvents(LunarELP82Engine(), VSOP87SolarEngine(), time_sys)
 
 # ============================================================================
-# CACHE UNTUK PANCHANGA LENGKAP HARI INI
+# TAMBAHAN: CACHE UNTUK PANCHANGA LENGKAP HARI INI
 # ============================================================================
 @st.cache_data(ttl=3600)
 def get_today_panchanga_full():
@@ -495,6 +490,9 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
+    # =========================================================================
+    # RINGKASAN PANCHANGA LENGKAP DI ATAS DESKRIPSI
+    # =========================================================================
     st.markdown("---")
     st.subheader("📜 Swasti Śakawarsātīta")
 
@@ -546,6 +544,7 @@ if nav == "🏠 Beranda":
             muhurta = p.get('muhurta', {})
             tabeh = p.get('tabeh', {})
 
+            # Hitung waktu spesifik muhurta
             muhurta_start = muhurta.get('period_start', 'N/A')
             muhurta_end = muhurta.get('period_end', 'N/A')
             muhurta_durasi = muhurta.get('muhurta_length', 0)
@@ -567,10 +566,12 @@ if nav == "🏠 Beranda":
                 except:
                     pass
 
+            # Tabeh waktu
             tabeh_start = tabeh.get('start_time', 'N/A') if tabeh else 'N/A'
             tabeh_end = tabeh.get('end_time', 'N/A') if tabeh else 'N/A'
             tabeh_durasi = tabeh.get('duration_hours', 0) if tabeh else 0
 
+            # Gabungkan Ishta Kala dengan Nadi-Vinadi
             ishta_text = f"{ishta:.1f} menit"
             if nv and 'description' in nv:
                 ishta_text += f" ({nv['description']})"
@@ -594,6 +595,9 @@ if nav == "🏠 Beranda":
     except Exception as e:
         st.warning(f"Tidak dapat memuat panchanga: {str(e)}")
 
+    # =========================================================================
+    # DESKRIPSI ILMIAH LENGKAP (DENGAN SMART PARSING & TAHUN NEGATIF)
+    # =========================================================================
     st.markdown("""
     <div class="description-box">
         <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
@@ -682,6 +686,9 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
+    # =========================================================================
+    # TIGA KARTU (Matahari, Bulan, Prasasti)
+    # =========================================================================
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
@@ -956,44 +963,11 @@ elif nav == "📆 Wuku & Wara":
         """)
 
 # ============================================================================
-# PAGE: KONVERSI PRASASTI (mode adaptif + normalisasi OldJavaNormalizer)
+# PAGE: KONVERSI PRASASTI
 # ============================================================================
 elif nav == "📜 Konversi Prasasti":
     st.title("📜 Konversi Prasasti Saka → Masehi")
     st.caption("Ω-STHAPATI v301.4 – 4 komponen utama: Tahun, Bulan, Wara, Wuku")
-
-    # ------------------------------------------------------------------
-    # INSTANCE NORMALIZER (cached)
-    # ------------------------------------------------------------------
-    @st.cache_resource
-    def _get_normalizer():
-        return OldJavaNormalizer()
-
-    def _norm(v):
-        """Normalisasi string via OldJavaNormalizer. Return (kanonik, asli)."""
-        if not v or not v.strip():
-            return "", ""
-        raw = v.strip()
-        try:
-            return (_get_normalizer().normalize(raw) or raw), raw
-        except Exception:
-            return raw, raw
-
-    # ------------------------------------------------------------------
-    # MODE
-    # ------------------------------------------------------------------
-    mode_label = st.radio(
-        "Data yang dimiliki prasasti:",
-        ["🌀 Wara-Wuku", "☀️ Data Astronomi", "🔀 Keduanya"],
-        index=2, horizontal=True, key="pr_mode",
-    )
-
-    if mode_label.startswith("🌀"):
-        mode_key, show_wara, show_astro = "mech", True, False
-    elif mode_label.startswith("☀️"):
-        mode_key, show_wara, show_astro = "astro", False, True
-    else:
-        mode_key, show_wara, show_astro = "cross", True, True
 
     with st.expander("📖 Panduan Input", expanded=False):
         st.markdown("""
@@ -1010,23 +984,11 @@ elif nav == "📜 Konversi Prasasti":
         - Pausa: Śaka +78 atau +79 (ambigu)
         - Magha/Phalguna: Śaka +79
         - Lainnya: Śaka +78
-
-        **Mode:**
-        - **🌀 Wara-Wuku** — hanya field wara/wuku. Cocok untuk prasasti yang hanya menyebut wara dan wuku.
-        - **☀️ Data Astronomi** — hanya field tithi, nakshatra. Cocok untuk prasasti tanpa wara-wuku.
-        - **🔀 Keduanya** — semua field. Verifikasi astronomi dan wara-wuku dijalankan penuh.
-
-        **Normalisasi ejaan otomatis:** varian ejaan (contoh: `Pusya` → `Pausa`, `Bajra` → `Vajra`) akan dikonversi sebelum konversi.
         """)
 
-    # ------------------------------------------------------------------
-    # IDENTITAS
-    # ------------------------------------------------------------------
     col1, col2 = st.columns(2)
     with col1:
         saka_year = st.number_input("Tahun Śaka", value=851, step=1, format="%d")
-        wuku_raw = st.text_input("Wuku (opsional)", placeholder="Contoh: Wugu") if show_wara else ""
-    with col2:
         masa = st.selectbox(
             "Bulan Śaka (Masa)",
             ["Caitra", "Vaisakha", "Jyestha", "Asadha", "Sravana",
@@ -1034,68 +996,29 @@ elif nav == "📜 Konversi Prasasti":
              "Magha", "Phalguna"],
             index=8
         )
-        wara_raw = st.text_input("Wara (opsional, bisa parsial)",
-                                 placeholder="Contoh: Tungleh-Pahing-Sukra atau Jumat-Wage") if show_wara else ""
+        tithi = st.number_input("Tithi dalam Paksa (1-15)", value=1, min_value=1, max_value=15, step=1)
+        paksa = st.selectbox("Paksa (Sukla = waxing, Krsna = waning)", ["Sukla", "Krsna"], index=0)
 
-    # ------------------------------------------------------------------
-    # FIELD ASTRONOMI
-    # ------------------------------------------------------------------
-    if show_astro:
-        col1, col2 = st.columns(2)
-        with col1:
-            tithi = st.number_input("Tithi dalam Paksa (1-15)", value=1, min_value=1, max_value=15, step=1)
-            paksa = st.selectbox("Paksa (Sukla = waxing, Krsna = waning)", ["Sukla", "Krsna"], index=0)
-        with col2:
-            nakshatra_raw = st.text_input("Nakṣatra (opsional)", placeholder="Contoh: Aswini")
-    else:
-        tithi, paksa, nakshatra_raw = 1, "Sukla", ""
+    with col2:
+        wuku = st.text_input("Wuku (opsional)", placeholder="Contoh: Wugu")
+        wara = st.text_input("Wara (opsional, bisa parsial)", placeholder="Contoh: Tungleh-Pahing-Sukra atau Jumat-Wage")
+        nakshatra = st.text_input("Nakṣatra (opsional)", placeholder="Contoh: Aswini")
 
-    # ------------------------------------------------------------------
-    # NORMALISASI (dijalankan sebelum tombol ditekan supaya preview terlihat)
-    # ------------------------------------------------------------------
-    wuku_norm, wuku_orig = _norm(wuku_raw)
-    wara_norm, wara_orig = _norm(wara_raw)
-    naks_norm, naks_orig = _norm(nakshatra_raw)
-    masa_norm, masa_orig = _norm(masa)
-
-    preview_lines = []
-    if wuku_orig and wuku_norm != wuku_orig:
-        preview_lines.append(f"• wuku: <b>{wuku_orig}</b> → <code>{wuku_norm}</code>")
-    if wara_orig and wara_norm != wara_orig:
-        preview_lines.append(f"• wara: <b>{wara_orig}</b> → <code>{wara_norm}</code>")
-    if naks_orig and naks_norm != naks_orig:
-        preview_lines.append(f"• nakshatra: <b>{naks_orig}</b> → <code>{naks_norm}</code>")
-    if masa_orig and masa_norm != masa_orig:
-        preview_lines.append(f"• masa: <b>{masa_orig}</b> → <code>{masa_norm}</code>")
-
-    if preview_lines:
-        st.markdown(
-            '<div class="norm-box">🔤 <b>Normalisasi ejaan:</b><br>' +
-            "<br>".join(preview_lines) + "</div>",
-            unsafe_allow_html=True
-        )
-
-    # ------------------------------------------------------------------
-    # KONVERSI
-    # ------------------------------------------------------------------
     if st.button("🔄 Konversi Prasasti", width='stretch'):
         if not saka_year or not masa:
             st.warning("Masukkan tahun Śaka dan bulan.")
-        elif mode_key == "mech" and not (wara_norm or wuku_norm):
-            st.warning("Mode Wara-Wuku: isi minimal wuku atau wara.")
         else:
             with st.spinner("Memproses konversi..."):
                 try:
                     data = {
                         "saka_year": int(saka_year),
-                        "masa": masa_norm or masa,
-                        "wuku": wuku_norm,
-                        "wara_string": wara_norm,
+                        "masa": masa,
+                        "tithi": int(tithi),
+                        "paksa": paksa,
+                        "wuku": wuku if wuku else "",
+                        "wara_string": wara if wara else "",
+                        "nakshatra": nakshatra if nakshatra else ""
                     }
-                    if show_astro:
-                        data["tithi"] = int(tithi)
-                        data["paksa"] = paksa
-                        data["nakshatra"] = naks_norm
 
                     results = sthapati.convert_prasasti_with_smart_parsing(data, verbose=False)
 
@@ -1141,77 +1064,73 @@ elif nav == "📜 Konversi Prasasti":
                             })
                         st.dataframe(table_data, width='stretch')
 
-                        # --------------------------------------------------
-                        # VERIFIKASI ASTRONOMI
-                        # --------------------------------------------------
-                        if show_astro:
-                            st.markdown("""<div class="jae-card"><h3>🔍 Verifikasi Input</h3>""", unsafe_allow_html=True)
+                        st.markdown("""<div class="jae-card"><h3>🔍 Verifikasi Input</h3>""", unsafe_allow_html=True)
 
-                            tithi_input = data.get("tithi")
-                            paksa_input = data.get("paksa")
-                            if tithi_input and paksa_input:
-                                hh = 12
-                                try:
-                                    astro_engine = AstronomicalEngine()
-                                    jd_tt_calc = time_sys.wib_to_jd_tt_extended(int(y), int(m), int(d), hh, 0, 0)
-                                    sun_data = astro_engine.calculate_sun_position_ultra(jd_tt_calc)
-                                    moon_data = astro_engine.calculate_moon_position_ultra(jd_tt_calc, sun_data["longitude_deg"])
-                                    ayanamsa = astro_engine.calculate_ayanamsa_precise(jd_tt_calc)
-                                    sun_nirayana = (sun_data["longitude_deg"] - ayanamsa) % 360
-                                    moon_nirayana = (moon_data["longitude"] - ayanamsa) % 360
-                                    moon_tropical = moon_data["longitude"]
+                        tithi_input = data.get("tithi")
+                        paksa_input = data.get("paksa")
+                        if tithi_input and paksa_input:
+                            hh = 12
+                            try:
+                                astro_engine = AstronomicalEngine()
+                                jd_tt_calc = time_sys.wib_to_jd_tt_extended(int(y), int(m), int(d), hh, 0, 0)
+                                sun_data = astro_engine.calculate_sun_position_ultra(jd_tt_calc)
+                                moon_data = astro_engine.calculate_moon_position_ultra(jd_tt_calc, sun_data["longitude_deg"])
+                                ayanamsa = astro_engine.calculate_ayanamsa_precise(jd_tt_calc)
+                                sun_nirayana = (sun_data["longitude_deg"] - ayanamsa) % 360
+                                moon_nirayana = (moon_data["longitude"] - ayanamsa) % 360
+                                moon_tropical = moon_data["longitude"]
 
-                                    tithi_calc = astro_engine.calculate_tithi(sun_nirayana, moon_nirayana, "nirayana")
-                                    tithi_num = tithi_calc["tithi"]
-                                    paksa_calc = tithi_calc["paksa"]
-                                    tithi_display = tithi_num if paksa_calc == "Sukla" else tithi_num - 15
+                                tithi_calc = astro_engine.calculate_tithi(sun_nirayana, moon_nirayana, "nirayana")
+                                tithi_num = tithi_calc["tithi"]
+                                paksa_calc = tithi_calc["paksa"]
+                                if paksa_calc == "Sukla":
+                                    tithi_display = tithi_num
+                                else:
+                                    tithi_display = tithi_num - 15
 
-                                    st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
-                                    st.write(f"**Tithi hitung:** {tithi_display} {paksa_calc}")
+                                st.write(f"**Tithi input:** {tithi_input} {paksa_input}")
+                                st.write(f"**Tithi hitung:** {tithi_display} {paksa_calc}")
 
-                                    if tithi_input == tithi_display and paksa_input.lower() == paksa_calc.lower():
-                                        st.success("✅ Tithi cocok persis")
-                                    elif abs(tithi_input - tithi_display) <= 1 and paksa_input.lower() == paksa_calc.lower():
-                                        st.warning(f"⚠️ Tithi cocok dengan toleransi 1 (selisih {abs(tithi_input - tithi_display)})")
+                                if tithi_input == tithi_display and paksa_input.lower() == paksa_calc.lower():
+                                    st.success("✅ Tithi cocok persis")
+                                elif abs(tithi_input - tithi_display) <= 1 and paksa_input.lower() == paksa_calc.lower():
+                                    st.warning(f"⚠️ Tithi cocok dengan toleransi 1 (selisih {abs(tithi_input - tithi_display)})")
+                                else:
+                                    st.error("❌ Tithi tidak cocok")
+
+                                naks_input = data.get("nakshatra")
+                                if naks_input:
+                                    old_norm = OldJavaNormalizer()
+                                    naks_norm = old_norm.normalize(naks_input)
+
+                                    naks_nirayana = astro_engine.calculate_nakshatra(moon_nirayana, "nirayana")
+                                    naks_sayana = astro_engine.calculate_nakshatra(moon_tropical, "tropical")
+
+                                    st.write(f"**Nakṣatra input:** {naks_norm}")
+                                    st.write(f"**Nakṣatra hitung (Nirayana):** {naks_nirayana['nakshatra']}")
+                                    st.write(f"**Nakṣatra hitung (Sayana):** {naks_sayana['nakshatra']}")
+
+                                    if naks_norm == naks_nirayana["nakshatra"]:
+                                        st.success("✅ Nakṣatra cocok dengan Nirayana")
+                                    elif naks_norm == naks_sayana["nakshatra"]:
+                                        st.success("✅ Nakṣatra cocok dengan Sayana")
                                     else:
-                                        st.error("❌ Tithi tidak cocok")
+                                        st.warning("⚠️ Nakṣatra tidak cocok dengan kedua sistem (cek ejaan atau sistem)")
 
-                                    naks_input = data.get("nakshatra")
-                                    if naks_input:
-                                        naks_nirayana = astro_engine.calculate_nakshatra(moon_nirayana, "nirayana")
-                                        naks_sayana = astro_engine.calculate_nakshatra(moon_tropical, "tropical")
+                            except Exception as e:
+                                st.warning(f"Tidak dapat verifikasi tithi/naksatra: {str(e)}")
 
-                                        st.write(f"**Nakṣatra input (asli):** {naks_orig}")
-                                        if naks_orig != naks_norm:
-                                            st.write(f"**Nakṣatra input (normal):** {naks_norm}")
-                                        st.write(f"**Nakṣatra hitung (Nirayana):** {naks_nirayana['nakshatra']}")
-                                        st.write(f"**Nakṣatra hitung (Sayana):** {naks_sayana['nakshatra']}")
+                        st.markdown("</div>", unsafe_allow_html=True)
 
-                                        if naks_norm == naks_nirayana["nakshatra"]:
-                                            st.success("✅ Nakṣatra cocok dengan Nirayana")
-                                        elif naks_norm == naks_sayana["nakshatra"]:
-                                            st.success("✅ Nakṣatra cocok dengan Sayana")
-                                        else:
-                                            st.warning("⚠️ Nakṣatra tidak cocok dengan kedua sistem (cek ejaan atau sistem)")
-
-                                except Exception as e:
-                                    st.warning(f"Tidak dapat verifikasi tithi/naksatra: {str(e)}")
-
-                            st.markdown("</div>", unsafe_allow_html=True)
-
-                        # --------------------------------------------------
-                        # EVALUASI 4 KOMPONEN
-                        # --------------------------------------------------
-                        if show_wara:
-                            with st.expander("📊 Evaluasi 4 Komponen Utama", expanded=False):
-                                try:
-                                    import io, contextlib
-                                    f = io.StringIO()
-                                    with contextlib.redirect_stdout(f):
-                                        sthapati.display_main_components_evaluation(results)
-                                    st.code(clean_ansi(f.getvalue()), language="text")
-                                except Exception as e:
-                                    st.warning(f"Tidak dapat menampilkan evaluasi: {str(e)}")
+                        with st.expander("📊 Evaluasi 4 Komponen Utama", expanded=False):
+                            try:
+                                import io, contextlib
+                                f = io.StringIO()
+                                with contextlib.redirect_stdout(f):
+                                    sthapati.display_main_components_evaluation(results)
+                                st.code(clean_ansi(f.getvalue()), language="text")
+                            except Exception as e:
+                                st.warning(f"Tidak dapat menampilkan evaluasi: {str(e)}")
 
                 except Exception as e:
                     st.error(f"❌ Error: {str(e)}")
