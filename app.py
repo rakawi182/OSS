@@ -4,22 +4,27 @@
 # Streamlit Cloud Deployment Ready
 #
 # FINAL VERSION - LENGKAP
-# - Istilah "Sistem Zodiak" untuk Sayana/Nirayana
+# - Istilah "Sistem Zodiak" untuk Sayana/Nirayana (hanya di halaman Analisis)
 # - Referensi Damais (1955) dicantumkan di Beranda, Database, Footer
 # - Dukungan tahun negatif (tahun astronomi) di deskripsi dan input
 # - Fitur Database Damais & Analisis Sistem Zodiak
 # - Plotly fallback (jika tidak terinstall)
-# - TAMBAHAN: Ringkasan Panchanga Lengkap di Beranda (Saka, Tithi, Naksatra, Wuku, Yoga, Karana, Parwesa, Dewata, Mandala, Muhurta, Tabeh)
+# - Ringkasan Panchanga Lengkap di Beranda
+# - Konversi Prasasti: dispatcher 3-jalur adaptif (mekanik/astronomis/cross-verify)
 # - Semua use_container_width diganti width='stretch'/'content' (Streamlit 1.45+)
 # ============================================================================
 
 import sys
 import os
+import io
 import re
 import json
 import glob
-from datetime import datetime, timezone, timedelta
+import contextlib
+import traceback
 import warnings
+from datetime import datetime, timezone, timedelta
+
 warnings.filterwarnings("ignore")
 
 import streamlit as st
@@ -38,6 +43,7 @@ except ImportError:
     px = None
     go = None
 
+
 # ============================================================================
 # FUNGSI PEMBERSIH ANSI
 # ============================================================================
@@ -45,6 +51,7 @@ def clean_ansi(text):
     """Hapus semua escape sequence ANSI dari teks."""
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
     return ansi_escape.sub('', text)
+
 
 # ============================================================================
 # PAGE CONFIG
@@ -57,7 +64,7 @@ st.set_page_config(
 )
 
 # ============================================================================
-# CUSTOM CSS (tidak berubah)
+# CUSTOM CSS
 # ============================================================================
 st.markdown("""
 <style>
@@ -229,6 +236,7 @@ offset_funcs = {
     "tithi": mods["offset_tithi"]
 }
 
+
 # ============================================================================
 # HELPER: ASTRO INTEGRATION (untuk dispatcher 3-jalur)
 # ============================================================================
@@ -247,14 +255,14 @@ def get_astro_calc():
         return None
 
 
-def _tithi_from_abs(tithi_abs: int):
+def _tithi_from_abs(tithi_abs):
     """Konversi tithi absolut (1..30) -> (tithi, paksa)."""
     if tithi_abs <= 15:
         return tithi_abs, "Sukla"
     return tithi_abs - 15, "Krsna"
 
 
-def _confidence_badge(conf: str) -> str:
+def _confidence_badge(conf):
     """Normalisasi label confidence antar engine."""
     return {
         "TINGGI": "🟢 TINGGI",
@@ -279,8 +287,9 @@ def _astro_state_for_ka(astro_calc, ka):
     except Exception:
         return None
 
+
 # ============================================================================
-# TAMBAHAN: CACHE UNTUK SOLAR & LUNAR EVENTS
+# CACHE UNTUK SOLAR & LUNAR EVENTS
 # ============================================================================
 @st.cache_resource
 def get_solar_events():
@@ -288,37 +297,38 @@ def get_solar_events():
     from solar_lunar_events import SolarEvents
     return SolarEvents(VSOP87SolarEngine(), time_sys)
 
+
 @st.cache_resource
 def get_lunar_events():
     from JRC_Ephemeris import LunarELP82Engine, VSOP87SolarEngine
     from solar_lunar_events import LunarEvents
     return LunarEvents(LunarELP82Engine(), VSOP87SolarEngine(), time_sys)
 
+
 # ============================================================================
-# TAMBAHAN: CACHE UNTUK PANCHANGA LENGKAP HARI INI
+# CACHE UNTUK PANCHANGA LENGKAP HARI INI
 # ============================================================================
 @st.cache_data(ttl=3600)
 def get_today_panchanga_full():
     """Panchanga lengkap untuk hari ini – di-cache selama 1 jam."""
-    from datetime import datetime, timezone, timedelta
     wib_tz = timezone(timedelta(hours=7))
     now = datetime.now(wib_tz)
     year = now.year
     month = now.month
     day = now.day
-    hour = now.hour + now.minute/60.0 + now.second/3600.0
+    hour = now.hour + now.minute / 60.0 + now.second / 3600.0
 
     astro = get_astro_engine()
     vedic = get_vedic_engine()
     dewata = get_dewata_engine()
     time_sys_local = time_sys
 
-    jd_utc = time_sys_local.wib_to_jd_utc(year, month, day,
-                                          int(hour), int((hour-int(hour))*60),
-                                          int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-    jd_tt = time_sys_local.wib_to_jd_tt_extended(year, month, day,
-                                                 int(hour), int((hour-int(hour))*60),
-                                                 int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
+    hh = int(hour)
+    mm = int((hour - hh) * 60)
+    ss = int(((hour - hh) * 60 - mm) * 60)
+
+    jd_utc = time_sys_local.wib_to_jd_utc(year, month, day, hh, mm, ss)
+    jd_tt = time_sys_local.wib_to_jd_tt_extended(year, month, day, hh, mm, ss)
     ka = mech_engine.date_to_ka(year, month, day)
 
     ayanamsa = astro.calculate_ayanamsa_precise(jd_tt)
@@ -351,32 +361,30 @@ def get_today_panchanga_full():
     sunrise_info = astro.calculate_sunrise_sunset_precise(jd_utc)
     if sunrise_info and 'sunrise' in sunrise_info:
         sunrise_str = sunrise_info['sunrise']['wib']
-        def parse_time(tstr):
+
+        def _parse_time(tstr):
             parts = tstr.split(':')
-            return float(parts[0]) + float(parts[1])/60.0 + float(parts[2])/3600.0
-        sunrise_hour = parse_time(sunrise_str)
+            return float(parts[0]) + float(parts[1]) / 60.0 + float(parts[2]) / 3600.0
+
+        sunrise_hour = _parse_time(sunrise_str)
         if hour < sunrise_hour:
             ishta_kala = ((hour + 24) - sunrise_hour) * 60
         else:
             ishta_kala = (hour - sunrise_hour) * 60
     else:
         ishta_kala = 0.0
-        
-    nadi_vinadi = vedic.calculate_nadi_vinadi(ishta_kala) if ishta_kala > 0 else None        
+
+    nadi_vinadi = vedic.calculate_nadi_vinadi(ishta_kala) if ishta_kala > 0 else None
 
     day_length_hours = sunrise_info.get('day_length', 0) if sunrise_info else 0
     night_length_hours = sunrise_info.get('night_length', 0) if sunrise_info else 0
 
-    lagna_info = vedic.calculate_lagna_precise(
-        sun_nirayana,
-        ishta_kala,
-        jd_tt
-    )
+    lagna_info = vedic.calculate_lagna_precise(sun_nirayana, ishta_kala, jd_tt)
     moon_nakshatra_sayana = astro.calculate_nakshatra(moon_data['longitude'], "tropical")
 
     return {
         'date': f"{year}-{month:02d}-{day:02d}",
-        'time': f"{int(hour):02d}:{int((hour-int(hour))*60):02d}",
+        'time': f"{hh:02d}:{mm:02d}",
         'saka_year': saka_year,
         'saka_month': saka_month,
         'saka_adhika': saka_adhika,
@@ -394,11 +402,12 @@ def get_today_panchanga_full():
         'tabeh': tabeh,
         'lagna': lagna_info,
         'ishta_kala_minutes': ishta_kala,
-        'nadi_vinadi': nadi_vinadi,        
+        'nadi_vinadi': nadi_vinadi,
         'day_length_hours': day_length_hours,
         'night_length_hours': night_length_hours,
         'ka': ka
     }
+
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -406,10 +415,12 @@ def get_today_panchanga_full():
 def format_ka(ka):
     return f"{ka:,}".replace(",", ".")
 
+
 def get_wuku_display(ka):
     info = mech_engine.get_wuku_by_ka(ka)
     epoch = mech_engine.get_detailed_wuku_epoch_info(ka)
     return info, epoch
+
 
 def show_metric(label, value):
     st.markdown(f"""
@@ -418,6 +429,7 @@ def show_metric(label, value):
         <div class="metric-value">{value}</div>
     </div>
     """, unsafe_allow_html=True)
+
 
 def display_wuku_detail(info, epoch, ka):
     cols = st.columns(2)
@@ -457,11 +469,13 @@ def display_wuku_detail(info, epoch, ka):
         st.metric("TU-PA-Ā berikutnya", f"{epoch['days_to_next_tu_pa_a']} hari")
     st.markdown("</div>", unsafe_allow_html=True)
 
+
 def display_astronomical_year_help():
     st.caption("""
     ℹ️ **Tahun astronomi** – sistem penanggalan dengan dukungan tahun negatif:
     - `1` = 1 M | `0` = 1 SM | `-1` = 2 SM | `-3101` = 3102 SM
     """)
+
 
 # ============================================================================
 # SIDEBAR NAVIGATION
@@ -496,6 +510,7 @@ st.sidebar.caption("🏫 Sekolah Alam Penanggungan")
 st.sidebar.caption("📜 SAJAK (Sinau Aksara Jawa Kuno)")
 st.sidebar.caption("🔭 Jolotundo Obsv")
 st.sidebar.caption(f"📍 {ΩConst.LOC_LAT:.4f}°, {ΩConst.LOC_LON:.4f}°")
+
 
 # ============================================================================
 # PAGE: BERANDA
@@ -540,9 +555,6 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # =========================================================================
-    # RINGKASAN PANCHANGA LENGKAP DI ATAS DESKRIPSI
-    # =========================================================================
     st.markdown("---")
     st.subheader("📜 Swasti Śakawarsātīta")
 
@@ -594,34 +606,33 @@ if nav == "🏠 Beranda":
             muhurta = p.get('muhurta', {})
             tabeh = p.get('tabeh', {})
 
-            # Hitung waktu spesifik muhurta
             muhurta_start = muhurta.get('period_start', 'N/A')
             muhurta_end = muhurta.get('period_end', 'N/A')
             muhurta_durasi = muhurta.get('muhurta_length', 0)
             if muhurta and 'period_start' in muhurta and 'muhurta_length' in muhurta and 'index' in muhurta:
                 try:
-                    def parse_time(tstr):
+                    def _pt(tstr):
                         parts = tstr.split(':')
-                        return float(parts[0]) + float(parts[1])/60.0 + float(parts[2])/3600.0
-                    def format_hhmm(f):
+                        return float(parts[0]) + float(parts[1]) / 60.0 + float(parts[2]) / 3600.0
+
+                    def _fmt(f):
                         f_mod = f % 24.0
                         h = int(f_mod)
                         m = int((f_mod - h) * 60)
                         s = int(((f_mod - h) * 60 - m) * 60)
                         return f"{h:02d}:{m:02d}:{s:02d}"
-                    start_period = parse_time(muhurta['period_start'])
-                    muhurta_start = format_hhmm(start_period + muhurta['index'] * muhurta['muhurta_length'])
-                    muhurta_end = format_hhmm(start_period + (muhurta['index'] + 1) * muhurta['muhurta_length'])
+
+                    start_period = _pt(muhurta['period_start'])
+                    muhurta_start = _fmt(start_period + muhurta['index'] * muhurta['muhurta_length'])
+                    muhurta_end = _fmt(start_period + (muhurta['index'] + 1) * muhurta['muhurta_length'])
                     muhurta_durasi = muhurta['muhurta_length']
-                except:
+                except Exception:
                     pass
 
-            # Tabeh waktu
             tabeh_start = tabeh.get('start_time', 'N/A') if tabeh else 'N/A'
             tabeh_end = tabeh.get('end_time', 'N/A') if tabeh else 'N/A'
             tabeh_durasi = tabeh.get('duration_hours', 0) if tabeh else 0
 
-            # Gabungkan Ishta Kala dengan Nadi-Vinadi
             ishta_text = f"{ishta:.1f} menit"
             if nv and 'description' in nv:
                 ishta_text += f" ({nv['description']})"
@@ -645,9 +656,6 @@ if nav == "🏠 Beranda":
     except Exception as e:
         st.warning(f"Tidak dapat memuat panchanga: {str(e)}")
 
-    # =========================================================================
-    # DESKRIPSI ILMIAH LENGKAP (DENGAN SMART PARSING & TAHUN NEGATIF)
-    # =========================================================================
     st.markdown("""
     <div class="description-box">
         <b>🔭 EPHEMERIS PRESISI TINGGI – SUMBER RESMI &amp; VALIDASI</b>
@@ -736,9 +744,6 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
-    # =========================================================================
-    # TIGA KARTU (Matahari, Bulan, Prasasti)
-    # =========================================================================
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
@@ -759,6 +764,7 @@ if nav == "🏠 Beranda":
     </div>
     """, unsafe_allow_html=True)
 
+
 # ============================================================================
 # PAGE: REAL-TIME
 # ============================================================================
@@ -774,15 +780,18 @@ elif nav == "🌞 Real-time":
     year, month, day = now.year, now.month, now.day
     hour = now.hour + now.minute / 60.0 + now.second / 3600.0
 
+    hh = int(hour)
+    mm = int((hour - hh) * 60)
+    ss = int(((hour - hh) * 60 - mm) * 60)
+
     st.markdown(f"""
     <div style="background: #1a1e2a; border-radius: 10px; padding: 16px; margin: 8px 0 20px 0; border-left: 4px solid #d4b896;">
         <b style="color: #d4b896;">🕐 Waktu:</b> 
-        <span style="color: #f0e6d0;">{year:04d}-{month:02d}-{day:02d} {int(hour):02d}:{int((hour-int(hour))*60):02d}:{int(((hour-int(hour))*60-int((hour-int(hour))*60))*60):02d} WIB</span>
+        <span style="color: #f0e6d0;">{year:04d}-{month:02d}-{day:02d} {hh:02d}:{mm:02d}:{ss:02d} WIB</span>
     </div>
     """, unsafe_allow_html=True)
 
-    jd_utc = time_sys.wib_to_jd_utc(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-    jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
+    jd_utc = time_sys.wib_to_jd_utc(year, month, day, hh, mm, ss)
     ka = mech_engine.date_to_ka(year, month, day)
     wuku_info, epoch_info = get_wuku_display(ka)
 
@@ -796,7 +805,7 @@ elif nav == "🌞 Real-time":
         try:
             jrc_data = jrc_archaeo.get_complete_ephemeris(
                 year_astro=year, month=month, day=day,
-                hour=int(hour), minute=int((hour-int(hour))*60), second=int(((hour-int(hour))*60-int((hour-int(hour))*60))*60),
+                hour=hh, minute=mm, second=ss,
                 use_current_time=False
             )
             sun = jrc_data["sun"]
@@ -859,6 +868,7 @@ elif nav == "🌞 Real-time":
             **TU-PA-Ā berikutnya:** {epoch_info['days_to_next_tu_pa_a']} hari  
             """)
 
+
 # ============================================================================
 # PAGE: TANGGAL SPESIFIK
 # ============================================================================
@@ -880,16 +890,18 @@ elif nav == "📅 Tanggal Spesifik":
     if st.button("🔍 Hitung", width='stretch'):
         try:
             hour = parse_time(time_input)
+            hh = int(hour)
+            mm = int((hour - hh) * 60)
+            ss = int(((hour - hh) * 60 - mm) * 60)
+
             st.markdown(f"""
             <div style="background: #1a1e2a; border-radius: 10px; padding: 12px 16px; margin: 8px 0 16px 0; border-left: 4px solid #d4b896;">
                 <b style="color: #d4b896;">📅 Data untuk:</b> 
-                <span style="color: #f0e6d0;">{year:04d}-{month:02d}-{day:02d} {int(hour):02d}:{int((hour-int(hour))*60):02d} WIB</span>
+                <span style="color: #f0e6d0;">{year:04d}-{month:02d}-{day:02d} {hh:02d}:{mm:02d} WIB</span>
             </div>
             """, unsafe_allow_html=True)
 
             with st.spinner("Menghitung data astronomi..."):
-                jd_utc = time_sys.wib_to_jd_utc(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
-                jd_tt = time_sys.wib_to_jd_tt_extended(year, month, day, int(hour), int((hour-int(hour))*60), int(((hour-int(hour))*60-int((hour-int(hour))*60))*60))
                 ka = mech_engine.date_to_ka(year, month, day)
                 wuku_info, epoch_info = get_wuku_display(ka)
 
@@ -901,7 +913,7 @@ elif nav == "📅 Tanggal Spesifik":
 
                 jrc_data = jrc_archaeo.get_complete_ephemeris(
                     year_astro=year, month=month, day=day,
-                    hour=int(hour), minute=int((hour-int(hour))*60), second=int(((hour-int(hour))*60-int((hour-int(hour))*60))*60),
+                    hour=hh, minute=mm, second=ss,
                     use_current_time=False
                 )
                 sun = jrc_data["sun"]
@@ -926,7 +938,6 @@ elif nav == "📅 Tanggal Spesifik":
 
                 with st.expander("📖 Pancanga & Vedic Time (Old Java Astronomy)", expanded=True):
                     try:
-                        import io, contextlib
                         f = io.StringIO()
                         with contextlib.redirect_stdout(f):
                             display_info(year, month, day, hour)
@@ -936,6 +947,7 @@ elif nav == "📅 Tanggal Spesifik":
 
         except Exception as e:
             st.error(f"❌ Error: {str(e)}")
+
 
 # ============================================================================
 # PAGE: WUKU & WARA
@@ -1012,8 +1024,9 @@ elif nav == "📆 Wuku & Wara":
         Prangbakat, Bala, Wugu, Wayang, Kulawu, Dukut, Watugunung
         """)
 
+
 # ============================================================================
-# PAGE: KONVERSI PRASASTI  (v2: dispatcher 3-jalur adaptif)
+# PAGE: KONVERSI PRASASTI  (dispatcher 3-jalur adaptif)
 # ============================================================================
 elif nav == "📜 Konversi Prasasti":
     st.title("📜 Konversi Prasasti Saka → Masehi")
@@ -1035,7 +1048,6 @@ elif nav == "📜 Konversi Prasasti":
         **Opsional:** semua yang lain — isi yang ada di prasasti Anda.
         """)
 
-    # ---------------- IDENTITAS ----------------
     st.markdown("### 📋 Identitas Prasasti")
     col1, col2 = st.columns(2)
     with col1:
@@ -1047,7 +1059,6 @@ elif nav == "📜 Konversi Prasasti":
              "Bhadrapada", "Asvini", "Kartika", "Margasira", "Pausa",
              "Magha", "Phalguna"], index=8, key="pr_masa")
 
-    # ---------------- JALUR 1 ----------------
     st.markdown("### 🌀 Data Wara-Wuku — Jalur 1")
     col1, col2 = st.columns(2)
     with col1:
@@ -1058,7 +1069,6 @@ elif nav == "📜 Konversi Prasasti":
                              placeholder="Contoh: Tungleh-Pahing-Sukra atau Jumat-Wage",
                              key="pr_wara")
 
-    # ---------------- JALUR 2 ----------------
     st.markdown("### ☀️ Data Astronomi — Jalur 2")
     col1, col2 = st.columns(2)
     with col1:
@@ -1079,7 +1089,6 @@ elif nav == "📜 Konversi Prasasti":
         karana = st.text_input("Karana (opsional)",
                                placeholder="Contoh: Taitila", key="pr_karana")
 
-    # ---------------- DETEKSI MODE ----------------
     has_wara = bool(wara.strip()) or bool(wuku.strip())
     has_astro = use_tithi or bool(nakshatra.strip()) or bool(yoga.strip()) or bool(karana.strip())
 
@@ -1103,11 +1112,9 @@ elif nav == "📜 Konversi Prasasti":
     if mode_key == "none":
         st.warning("⚠️ Isi minimal salah satu: wara/wuku, atau tithi/nakṣatra/yoga/karana.")
 
-    # ---------------- TOMBOL ----------------
     if st.button("🔄 Konversi Prasasti", width='stretch', disabled=(mode_key == "none")):
         with st.spinner("Memproses konversi..."):
             try:
-                # Bangun data dict
                 data = {"saka_year": int(saka_year), "masa": masa}
                 if wuku.strip():      data["wuku"] = wuku.strip()
                 if wara.strip():      data["wara_string"] = wara.strip()
@@ -1118,7 +1125,6 @@ elif nav == "📜 Konversi Prasasti":
                 if yoga.strip():      data["yoga"] = yoga.strip()
                 if karana.strip():    data["karana"] = karana.strip()
 
-                # Dispatch
                 astro_calc = get_astro_calc()
                 engine_tag = "spica-only"
 
@@ -1136,7 +1142,6 @@ elif nav == "📜 Konversi Prasasti":
                     else:
                         results = []
 
-                # Jalur 2 tanpa astro_calc tidak bisa jalan
                 if mode_key == "astro" and astro_calc is None:
                     st.error("Modul astro tidak tersedia. Sertakan wara/wuku untuk jalur mekanik.")
                     st.stop()
@@ -1146,7 +1151,6 @@ elif nav == "📜 Konversi Prasasti":
                 else:
                     st.success(f"✅ {len(results)} kandidat · engine: {engine_tag}")
 
-                    # ------- Kandidat terbaik -------
                     best = results[0]
                     cand = best["candidate"]
                     y, m, d = cand["date"]
@@ -1170,7 +1174,6 @@ elif nav == "📜 Konversi Prasasti":
                     </div>
                     """, unsafe_allow_html=True)
 
-                    # ------- Peringatan ambiguitas -------
                     if len(results) >= 2:
                         top_score = results[0].get("score", 0.0)
                         tied = [r for r in results[1:]
@@ -1186,15 +1189,14 @@ elif nav == "📜 Konversi Prasasti":
                                 f"Lengkapi data wara jika tersedia."
                             )
 
-                    # ------- Tabel kandidat -------
                     table_data = []
                     for i, res in enumerate(results[:5]):
                         c = res["candidate"]
-                        yy, mm, dd = c["date"]
+                        yy, mm2, dd = c["date"]
                         wi = mech_engine.get_wuku_by_ka(c["ka"])
                         table_data.append({
                             "Rank": i + 1,
-                            "Tanggal": f"{int(yy)}-{int(mm):02d}-{int(dd):02d}",
+                            "Tanggal": f"{int(yy)}-{int(mm2):02d}-{int(dd):02d}",
                             "KA": format_ka(c["ka"]),
                             "Wuku": wi["wuku_name"],
                             "Wara": wi["wara_triple"],
@@ -1203,12 +1205,10 @@ elif nav == "📜 Konversi Prasasti":
                         })
                     st.dataframe(table_data, width='stretch')
 
-                    # ------- Pratinjau astronomi terpadu -------
                     with st.expander("🔭 Pratinjau astronomi kandidat terbaik", expanded=True):
-                        astro_state = best.get("astro_state")           # dari jalur 2
-                        astro_verif = best.get("astro_verification")    # dari jalur 3
+                        astro_state = best.get("astro_state")
+                        astro_verif = best.get("astro_verification")
 
-                        # Jalur 1: hitung on-the-fly
                         if astro_state is None and astro_calc is not None:
                             astro_state = _astro_state_for_ka(astro_calc, ka)
 
@@ -1223,39 +1223,70 @@ elif nav == "📜 Konversi Prasasti":
                                 tithi_line = f"Hitung: `{t_show} {p_show}`"
 
                             # --- Nakṣatra ---
-                            # Prasasti Jawa Kuno memakai sistem sidereal.
-                            # Bandingkan terhadap input, tapi jangan ekspos istilah teknis.
+                            # Prasasti Jawa Kuno memakai acuan sidereal. Tetapi
+                            # ephemeris juga menghasilkan nilai tropis; ditampilkan
+                            # sebagai pembanding agar pengguna dapat memverifikasi
+                            # mengapa input kadang tidak cocok.
                             naks_input = nakshatra.strip() if nakshatra.strip() else None
-                            naks_calc = astro_state.get("nakshatra_nirayana_name", "—")
-                            naks_say = astro_state.get("nakshatra_sayana_name", "—")
+                            naks_sid = astro_state.get("nakshatra_nirayana_name", "—")
+                            naks_tro = astro_state.get("nakshatra_sayana_name", "—")
 
                             if naks_input is None:
-                                naks_line = f"Hitung: `{naks_calc}`"
+                                naks_line = (
+                                    f"Hitung (sidereal): `{naks_sid}`  \n"
+                                    f"Hitung (tropis):  `{naks_tro}`"
+                                )
                             else:
                                 n_in = naks_input.lower().strip()
-                                if n_in == naks_calc.lower() or n_in == naks_say.lower():
-                                    naks_line = f"Input: `{naks_input}` · Hitung: `{naks_calc}` ✓"
+                                if n_in == naks_sid.lower():
+                                    naks_line = (
+                                        f"Input: `{naks_input}` · Hitung (sidereal): `{naks_sid}` ✓  \n"
+                                        f"Hitung (tropis): `{naks_tro}`"
+                                    )
+                                elif n_in == naks_tro.lower():
+                                    naks_line = (
+                                        f"Input: `{naks_input}` · Hitung (tropis): `{naks_tro}` ✓  \n"
+                                        f"Hitung (sidereal): `{naks_sid}`"
+                                    )
                                 else:
-                                    naks_line = f"Input: `{naks_input}` · Hitung: `{naks_calc}`"
+                                    naks_line = (
+                                        f"Input: `{naks_input}` · tidak cocok dengan kedua acuan  \n"
+                                        f"Hitung (sidereal): `{naks_sid}`  \n"
+                                        f"Hitung (tropis):  `{naks_tro}`"
+                                    )
 
                             # --- Yoga ---
                             yoga_input = yoga.strip() if yoga.strip() else None
-                            yoga_calc = astro_state.get("yoga_nirayana_name", "—")
-                            yoga_say = astro_state.get("yoga_sayana_name", "—")
+                            yoga_sid = astro_state.get("yoga_nirayana_name", "—")
+                            yoga_tro = astro_state.get("yoga_sayana_name", "—")
 
                             if yoga_input is None:
-                                yoga_line = f"Hitung: `{yoga_calc}`"
+                                yoga_line = (
+                                    f"Hitung (sidereal): `{yoga_sid}`  \n"
+                                    f"Hitung (tropis):  `{yoga_tro}`"
+                                )
                             else:
                                 y_in = yoga_input.lower().strip()
-                                if y_in == yoga_calc.lower() or y_in == yoga_say.lower():
-                                    yoga_line = f"Input: `{yoga_input}` · Hitung: `{yoga_calc}` ✓"
+                                if y_in == yoga_sid.lower():
+                                    yoga_line = (
+                                        f"Input: `{yoga_input}` · Hitung (sidereal): `{yoga_sid}` ✓  \n"
+                                        f"Hitung (tropis): `{yoga_tro}`"
+                                    )
+                                elif y_in == yoga_tro.lower():
+                                    yoga_line = (
+                                        f"Input: `{yoga_input}` · Hitung (tropis): `{yoga_tro}` ✓  \n"
+                                        f"Hitung (sidereal): `{yoga_sid}`"
+                                    )
                                 else:
-                                    yoga_line = f"Input: `{yoga_input}` · Hitung: `{yoga_calc}`"
+                                    yoga_line = (
+                                        f"Input: `{yoga_input}` · tidak cocok dengan kedua acuan  \n"
+                                        f"Hitung (sidereal): `{yoga_sid}`  \n"
+                                        f"Hitung (tropis):  `{yoga_tro}`"
+                                    )
 
                             # --- Karana ---
                             kar_input = karana.strip() if karana.strip() else None
                             kar_calc = astro_state.get("karana_name", "—")
-
                             if kar_input is None:
                                 kar_line = f"Hitung: `{kar_calc}`"
                             elif kar_input.lower().strip() == kar_calc.lower():
@@ -1285,7 +1316,6 @@ elif nav == "📜 Konversi Prasasti":
                                 {kar_line}
                                 """)
 
-                            # --- Verifikasi silang jalur 3 ---
                             if astro_verif:
                                 n_match = astro_verif.get("n_match", 0)
                                 n_avail = astro_verif.get("n_available", 0)
@@ -1294,7 +1324,6 @@ elif nav == "📜 Konversi Prasasti":
                                     f"dengan perhitungan mekanik."
                                 )
 
-                            # --- Boundary flags ---
                             bflags = best.get("boundary_flags", [])
                             if bflags:
                                 st.caption(
@@ -1304,12 +1333,10 @@ elif nav == "📜 Konversi Prasasti":
                         else:
                             st.info("Pratinjau astronomi tidak tersedia (modul astro belum termuat).")
 
-                    # ------- Evaluasi TPDP (jalur 1 & 3) -------
                     if mode_key in ("mech", "cross"):
                         with st.expander("📊 Evaluasi 4 Komponen Utama (SPICA TPDP)",
                                          expanded=False):
                             try:
-                                import io, contextlib
                                 f = io.StringIO()
                                 with contextlib.redirect_stdout(f):
                                     sthapati.display_main_components_evaluation(results)
@@ -1319,8 +1346,8 @@ elif nav == "📜 Konversi Prasasti":
 
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
-                import traceback
                 st.code(traceback.format_exc())
+
 
 # ============================================================================
 # PAGE: DATABASE DAMAIS
@@ -1449,6 +1476,7 @@ elif nav == "📊 Database Damais":
                 </div>
                 """, unsafe_allow_html=True)
 
+
 # ============================================================================
 # PAGE: ANALISIS SISTEM ZODIAK
 # ============================================================================
@@ -1457,7 +1485,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
     st.caption("Distribusi sistem zodiak berdasarkan hasil validasi 112 prasasti Damais (1955)")
 
     @st.cache_data
-    def load_validation_results():
+    def load_validation_results_zodiak():
         try:
             pattern = "quick_test_results_batch_*.json"
             files = sorted(glob.glob(pattern))
@@ -1475,7 +1503,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
         except Exception:
             return pd.DataFrame()
 
-    validation_df = load_validation_results()
+    validation_df = load_validation_results_zodiak()
 
     if validation_df.empty:
         st.warning("Belum ada data validasi. Jalankan quick_test_ijcc.py terlebih dahulu.")
@@ -1576,6 +1604,7 @@ elif nav == "📈 Analisis Sistem Zodiak":
         </div>
         """, unsafe_allow_html=True)
 
+
 # ============================================================================
 # PAGE: KONVERSI WAKTU
 # ============================================================================
@@ -1644,6 +1673,7 @@ elif nav == "🔄 Konversi Waktu":
             jd = CC.julian_to_jd(int(yj2), int(mj2), int(dj2))
             yg2, mg2, dg2 = CC.jd_to_gregorian(jd)
             st.write(f"**Gregorian:** {int(yg2):04d}-{int(mg2):02d}-{int(dg2):02d}")
+
 
 # ============================================================================
 # PAGE: OFFSET WAKTU
@@ -1718,6 +1748,7 @@ elif nav == "⏱️ Offset Waktu":
 
             except Exception as e:
                 st.error(f"❌ Error: {str(e)}")
+
 
 # ============================================================================
 # GLOBAL FOOTER
