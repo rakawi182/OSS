@@ -1191,7 +1191,13 @@ elif nav == "📜 Konversi Prasasti":
                         st.dataframe(table_data, width='stretch')
 
                         # --------------------------------------------------
-                        # Verifikasi astronomis (mode astro / cross)
+                        # Verifikasi astronomis — lengkap, mengikuti
+                        # konvensi calculate_nakshatra() di Old_Java_Astronomy:
+                        # nakshatra_span = 360/27
+                        # pada_span      = nakshatra_span / 4
+                        # degrees_in_nakshatra = moon_long % nakshatra_span
+                        # pada = int(degrees_in_nakshatra / pada_span) + 1
+                        # degrees_in_pada = degrees_in_nakshatra % pada_span
                         # --------------------------------------------------
                         if show_astro:
                             astro_verif = best.get("astro_verification")
@@ -1200,41 +1206,134 @@ elif nav == "📜 Konversi Prasasti":
                             if astro_verif or astro_state:
                                 st.markdown("""<div class="jae-card"><h3>🔍 Verifikasi Astronomis</h3>""", unsafe_allow_html=True)
 
-                                if astro_verif:
-                                    n_match = astro_verif.get("n_match", 0)
-                                    n_avail = astro_verif.get("n_available", 0)
-                                    brk = astro_verif.get("breakdown", {})
-                                    matched_sys = astro_verif.get("matched_systems", {})
-                                    boundary = astro_verif.get("boundary_flags", [])
+                                state = astro_state or (astro_verif.get("state") if astro_verif else None)
 
-                                    st.write(f"**Kecocokan field astronomi:** {n_match}/{n_avail}")
+                                if state is None:
+                                    st.info("State astronomi tidak tersedia.")
+                                else:
+                                    NAKS_SPAN = 360.0 / 27.0   # 13.3333°
+                                    PADA_SPAN = NAKS_SPAN / 4.0  # 3.3333°
 
-                                    for fname, info in brk.items():
-                                        val = info.get("value", 0)
-                                        sys_used = info.get("system")
-                                        icon = "✅" if val >= 1.0 else ("⚠️" if val > 0 else "❌")
-                                        line = f"- **{fname}**: {icon} (nilai {val:.2f})"
-                                        if sys_used:
-                                            line += f" — sistem: {sys_used}"
-                                        st.write(line)
+                                    if astro_verif:
+                                        n_match = astro_verif.get("n_match", 0)
+                                        n_avail = astro_verif.get("n_available", 0)
+                                        st.markdown(f"**Field astronomis terverifikasi:** {n_match}/{n_avail}")
 
-                                    if matched_sys:
-                                        st.caption("Sistem yang cocok: " + ", ".join(
-                                            f"{k}={v}" for k, v in matched_sys.items()
-                                        ))
-                                    if boundary:
-                                        st.warning("Field di peralihan hari: " + ", ".join(boundary))
-
-                                elif astro_state:
-                                    t_abs = astro_state["tithi_abs"]
+                                    # --------------------------------------------------
+                                    # TITHI
+                                    # --------------------------------------------------
+                                    t_abs = state["tithi_abs"]
                                     t_disp = t_abs if t_abs <= 15 else t_abs - 15
                                     t_paksa = "Sukla" if t_abs <= 15 else "Krsna"
-                                    st.write(f"**Tithi:** {t_disp} {t_paksa}")
-                                    st.write(f"**Nakṣatra (sidereal):** {astro_state['nakshatra_nirayana_name']}")
-                                    st.write(f"**Nakṣatra (tropis):** {astro_state['nakshatra_sayana_name']}")
-                                    st.write(f"**Yoga (sidereal):** {astro_state['yoga_nirayana_name']}")
-                                    st.write(f"**Yoga (tropis):** {astro_state['yoga_sayana_name']}")
-                                    st.write(f"**Karana:** {astro_state['karana_name']}")
+                                    t_pct = (state["elongation_deg"] % 12.0) / 12.0 * 100.0
+
+                                    st.markdown("**Tithi**")
+                                    if data.get("tithi"):
+                                        t_in = data["tithi"]
+                                        t_pk = data["paksa"]
+                                        if t_in == t_disp and t_pk == t_paksa:
+                                            t_mark = "✓"
+                                        elif abs(t_in - t_disp) <= 1 and t_pk == t_paksa:
+                                            t_mark = f"±{abs(t_in - t_disp)}"
+                                        else:
+                                            t_mark = "✗"
+                                        st.write(f"- Prasasti: `{t_in} {t_pk}`")
+                                        st.write(f"- Hitung: `{t_disp} {t_paksa}` {t_mark} · elongasi {state['elongation_deg']:.6f}° · {t_pct:.2f}% dalam tithi")
+                                    else:
+                                        st.write(f"- Hitung: `{t_disp} {t_paksa}` · elongasi {state['elongation_deg']:.6f}° · {t_pct:.2f}% dalam tithi")
+
+                                    # --------------------------------------------------
+                                    # NAKSHATRA
+                                    # --------------------------------------------------
+                                    moon_say = state["moon_sayana"]
+                                    moon_nir = state["moon_nirayana"]
+
+                                    naks_say_idx = state["nakshatra_sayana_idx"]
+                                    naks_nir_idx = state["nakshatra_nirayana_idx"]
+                                    naks_say_nam = state["nakshatra_sayana_name"]
+                                    naks_nir_nam = state["nakshatra_nirayana_name"]
+
+                                    deg_say = moon_say % NAKS_SPAN
+                                    deg_nir = moon_nir % NAKS_SPAN
+                                    pada_say = int(deg_say / PADA_SPAN) + 1
+                                    pada_nir = int(deg_nir / PADA_SPAN) + 1
+                                    deg_pada_say = deg_say % PADA_SPAN
+                                    deg_pada_nir = deg_nir % PADA_SPAN
+
+                                    naks_in = naks_norm if naks_norm else None
+                                    say_match = bool(naks_in) and (naks_in == naks_say_nam)
+                                    nir_match = bool(naks_in) and (naks_in == naks_nir_nam)
+
+                                    st.markdown("**Nakṣatra**")
+                                    if naks_orig:
+                                        st.write(f"- Prasasti: `{naks_orig}`" + (f" → `{naks_norm}`" if naks_orig != naks_norm else ""))
+                                    st.write(
+                                        f"- Sayana: `{naks_say_nam}` · index {naks_say_idx}/27 · "
+                                        f"pada {pada_say}/4 · {deg_say:.6f}° dalam nakṣatra · "
+                                        f"{deg_pada_say:.6f}° dalam pada"
+                                        + (" ✓" if say_match else "")
+                                    )
+                                    st.write(
+                                        f"- Nirayana: `{naks_nir_nam}` · index {naks_nir_idx}/27 · "
+                                        f"pada {pada_nir}/4 · {deg_nir:.6f}° dalam nakṣatra · "
+                                        f"{deg_pada_nir:.6f}° dalam pada"
+                                        + (" ✓" if nir_match else "")
+                                    )
+
+                                    # --------------------------------------------------
+                                    # YOGA — struktur identik dengan nakṣatra
+                                    # (yoga index = (sun + moon) % 360 / span)
+                                    # --------------------------------------------------
+                                    yoga_say = state["yoga_sayana_name"]
+                                    yoga_nir = state["yoga_nirayana_name"]
+                                    yoga_say_idx = state["yoga_sayana_idx"]
+                                    yoga_nir_idx = state["yoga_nirayana_idx"]
+
+                                    ysum_say = (state["sun_sayana"] + state["moon_sayana"]) % 360.0
+                                    ysum_nir = (state["sun_nirayana"] + state["moon_nirayana"]) % 360.0
+                                    ydeg_say = ysum_say % NAKS_SPAN
+                                    ydeg_nir = ysum_nir % NAKS_SPAN
+                                    ypada_say = int(ydeg_say / PADA_SPAN) + 1
+                                    ypada_nir = int(ydeg_nir / PADA_SPAN) + 1
+                                    ydeg_pada_say = ydeg_say % PADA_SPAN
+                                    ydeg_pada_nir = ydeg_nir % PADA_SPAN
+
+                                    yoga_in = yoga_norm if yoga_norm else None
+                                    ys_match = bool(yoga_in) and (yoga_in == yoga_say)
+                                    yn_match = bool(yoga_in) and (yoga_in == yoga_nir)
+
+                                    st.markdown("**Yoga**")
+                                    if yoga_orig:
+                                        st.write(f"- Prasasti: `{yoga_orig}`" + (f" → `{yoga_norm}`" if yoga_orig != yoga_norm else ""))
+                                    st.write(
+                                        f"- Sayana: `{yoga_say}` · index {yoga_say_idx}/27 · "
+                                        f"pada {ypada_say}/4 · {ydeg_say:.6f}° dalam yoga · "
+                                        f"{ydeg_pada_say:.6f}° dalam pada"
+                                        + (" ✓" if ys_match else "")
+                                    )
+                                    st.write(
+                                        f"- Nirayana: `{yoga_nir}` · index {yoga_nir_idx}/27 · "
+                                        f"pada {ypada_nir}/4 · {ydeg_nir:.6f}° dalam yoga · "
+                                        f"{ydeg_pada_nir:.6f}° dalam pada"
+                                        + (" ✓" if yn_match else "")
+                                    )
+
+                                    # --------------------------------------------------
+                                    # KARANA — invariant, tanpa pada
+                                    # --------------------------------------------------
+                                    kar_calc = state["karana_name"]
+                                    st.markdown("**Karana**")
+                                    if kar_orig:
+                                        st.write(f"- Prasasti: `{kar_orig}`" + (f" → `{kar_norm}`" if kar_orig != kar_norm else ""))
+                                    st.write(f"- Hitung: `{kar_calc}`" + (" ✓" if kar_norm and kar_norm == kar_calc else ""))
+
+                                    # --------------------------------------------------
+                                    # Field di peralihan hari
+                                    # --------------------------------------------------
+                                    if astro_verif:
+                                        boundary = astro_verif.get("boundary_flags", [])
+                                        if boundary:
+                                            st.warning("Field di peralihan hari: " + ", ".join(boundary))
 
                                 st.markdown("</div>", unsafe_allow_html=True)
 
