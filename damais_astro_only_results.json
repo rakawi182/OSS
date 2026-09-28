@@ -1,0 +1,4706 @@
+{
+  "1": {
+    "no": 1,
+    "id": "A.8",
+    "saka": 743,
+    "masa": "Vaisakha",
+    "tithi": 10,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1432582,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "821-04-01",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "821-04-01",
+        "ka": 1432553,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "821-05-01",
+        "ka": 1432583,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "821-04-02",
+        "ka": 1432554,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "2": {
+    "no": 2,
+    "id": "A.12",
+    "saka": 762,
+    "masa": "Sravana",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1439601,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "840-07-18",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "840-07-18",
+        "ka": 1439601,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "840-08-16",
+        "ka": 1439630,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "840-07-17",
+        "ka": 1439600,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "3": {
+    "no": 3,
+    "id": "A.15",
+    "saka": 765,
+    "masa": "Caitra",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1440575,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "843-04-18",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "843-04-18",
+        "ka": 1440605,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "843-03-19",
+        "ka": 1440575,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "843-03-20",
+        "ka": 1440576,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "4": {
+    "no": 4,
+    "id": "A.17_18",
+    "saka": 772,
+    "masa": "Asadha",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1443220,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "850-06-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "850-06-15",
+        "ka": 1443220,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "850-07-14",
+        "ka": 1443249,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "850-06-14",
+        "ka": 1443219,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "5": {
+    "no": 5,
+    "id": "A.19",
+    "saka": 776,
+    "masa": "Caitra",
+    "tithi": 14,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1444590,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "854-03-17",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "854-03-17",
+        "ka": 1444591,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "854-03-16",
+        "ka": 1444590,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "854-03-18",
+        "ka": 1444592,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "6": {
+    "no": 6,
+    "id": "A.20",
+    "saka": 778,
+    "masa": "Margasira",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1445562,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "856-11-12",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "856-11-12",
+        "ka": 1445562,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "856-11-11",
+        "ka": 1445561,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "856-11-13",
+        "ka": 1445563,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "7": {
+    "no": 7,
+    "id": "A.22",
+    "saka": 782,
+    "masa": "Vaisakha",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1446793,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "860-03-28",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "860-03-28",
+        "ka": 1446794,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "860-04-26",
+        "ka": 1446823,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "860-05-26",
+        "ka": 1446853,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "8": {
+    "no": 8,
+    "id": "A.23",
+    "saka": 782,
+    "masa": "Kartika",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Aswini",
+    "yoga": "Wyatipata",
+    "karana": "Taitila",
+    "ka_ref": 1447011,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "860-10-31",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "860-10-31",
+        "ka": 1447011,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "860-10-30",
+        "ka": 1447010,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "860-11-01",
+        "ka": 1447012,
+        "score": 0.3,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "9": {
+    "no": 9,
+    "id": "A.25",
+    "saka": 783,
+    "masa": "Magha",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1447442,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "862-01-05",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "862-01-05",
+        "ka": 1447442,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "862-02-03",
+        "ka": 1447471,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "862-01-04",
+        "ka": 1447441,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "10": {
+    "no": 10,
+    "id": "A.27_28",
+    "saka": 785,
+    "masa": "Jyestha",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1447963,
+    "rank_found": 5,
+    "status": "TOP5",
+    "top1_date": "863-05-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "863-05-11",
+        "ka": 1447933,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "863-06-09",
+        "ka": 1447962,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "863-05-10",
+        "ka": 1447932,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "11": {
+    "no": 11,
+    "id": "A.32",
+    "saka": 794,
+    "masa": "Bhadrapada",
+    "tithi": 4,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1451328,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "872-08-26",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "872-08-26",
+        "ka": 1451328,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "872-09-24",
+        "ka": 1451357,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "872-07-28",
+        "ka": 1451299,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "12": {
+    "no": 12,
+    "id": "A.33",
+    "saka": 794,
+    "masa": "Magha",
+    "tithi": 12,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1451469,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "873-01-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "873-01-14",
+        "ka": 1451469,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "873-02-12",
+        "ka": 1451498,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "873-02-13",
+        "ka": 1451499,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "13": {
+    "no": 13,
+    "id": "A.34",
+    "saka": 795,
+    "masa": "Vaisakha",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": "Mula",
+    "yoga": "Siddhiyoga",
+    "karana": null,
+    "ka_ref": 1451565,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "873-04-20",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "873-04-20",
+        "ka": 1451565,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "873-04-21",
+        "ka": 1451566,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "873-04-19",
+        "ka": 1451564,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "14": {
+    "no": 14,
+    "id": "A.35",
+    "saka": 796,
+    "masa": "Caitra",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": "Krittika",
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1451903,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "874-03-23",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "874-03-23",
+        "ka": 1451902,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "874-03-24",
+        "ka": 1451903,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "874-04-21",
+        "ka": 1451931,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "15": {
+    "no": 15,
+    "id": "A.37",
+    "saka": 796,
+    "masa": "Phalguna",
+    "tithi": 1,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1452241,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "875-02-25",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "875-02-25",
+        "ka": 1452241,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "875-03-26",
+        "ka": 1452270,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "875-02-24",
+        "ka": 1452240,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "16": {
+    "no": 16,
+    "id": "A.38",
+    "saka": 797,
+    "masa": "Vaisakha",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1452286,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "875-04-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "875-04-11",
+        "ka": 1452286,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "875-05-10",
+        "ka": 1452315,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "875-04-10",
+        "ka": 1452285,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "17": {
+    "no": 17,
+    "id": "A.39",
+    "saka": 798,
+    "masa": "Pausa",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1452915,
+    "rank_found": 5,
+    "status": "TOP5",
+    "top1_date": "876-12-01",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "876-12-01",
+        "ka": 1452886,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "876-12-31",
+        "ka": 1452916,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "876-11-30",
+        "ka": 1452885,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "18": {
+    "no": 18,
+    "id": "A.40",
+    "saka": 799,
+    "masa": "Margasira",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1453242,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "877-11-22",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "877-11-22",
+        "ka": 1453242,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "877-12-22",
+        "ka": 1453272,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "877-11-21",
+        "ka": 1453241,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "19": {
+    "no": 19,
+    "id": "A.43",
+    "saka": 800,
+    "masa": "Kartika",
+    "tithi": 3,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1453557,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "878-10-02",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "878-10-02",
+        "ka": 1453556,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "878-11-01",
+        "ka": 1453586,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "878-10-03",
+        "ka": 1453557,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "20": {
+    "no": 20,
+    "id": "A.44",
+    "saka": 800,
+    "masa": "Margasira",
+    "tithi": 10,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1453608,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "878-11-23",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "878-11-23",
+        "ka": 1453608,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "878-12-23",
+        "ka": 1453638,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "878-11-22",
+        "ka": 1453607,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "21": {
+    "no": 21,
+    "id": "A.46",
+    "saka": 801,
+    "masa": "Sravana",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1453854,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "879-06-28",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "879-06-28",
+        "ka": 1453825,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "879-07-27",
+        "ka": 1453854,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "879-08-25",
+        "ka": 1453883,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "22": {
+    "no": 22,
+    "id": "A.47",
+    "saka": 801,
+    "masa": "Sravana",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1453854,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "879-06-28",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "879-06-28",
+        "ka": 1453825,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "879-07-27",
+        "ka": 1453854,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "879-08-25",
+        "ka": 1453883,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "23": {
+    "no": 23,
+    "id": "A.49",
+    "saka": 802,
+    "masa": "Kartika",
+    "tithi": 3,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454295,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "880-10-10",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "880-10-10",
+        "ka": 1454295,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "880-10-09",
+        "ka": 1454294,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "880-10-11",
+        "ka": 1454296,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "24": {
+    "no": 24,
+    "id": "A.50",
+    "saka": 802,
+    "masa": "Kartika",
+    "tithi": 3,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454295,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "880-10-10",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "880-10-10",
+        "ka": 1454295,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "880-10-09",
+        "ka": 1454294,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "880-10-11",
+        "ka": 1454296,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "25": {
+    "no": 25,
+    "id": "A.51",
+    "saka": 802,
+    "masa": "Kartika",
+    "tithi": 3,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454295,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "880-10-10",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "880-10-10",
+        "ka": 1454295,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "880-10-09",
+        "ka": 1454294,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "880-10-11",
+        "ka": 1454296,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "26": {
+    "no": 26,
+    "id": "A.53",
+    "saka": 802,
+    "masa": "Phalguna",
+    "tithi": 3,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454428,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "881-02-21",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "881-02-21",
+        "ka": 1454429,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "881-03-22",
+        "ka": 1454458,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "881-02-20",
+        "ka": 1454428,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "27": {
+    "no": 27,
+    "id": "A.54",
+    "saka": 803,
+    "masa": "Caitra",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454455,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "881-03-19",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "881-03-19",
+        "ka": 1454455,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "881-04-18",
+        "ka": 1454485,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "881-03-18",
+        "ka": 1454454,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "28": {
+    "no": 28,
+    "id": "A.55",
+    "saka": 803,
+    "masa": "Sravana",
+    "tithi": 14,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454572,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "881-07-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "881-07-14",
+        "ka": 1454572,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "881-08-12",
+        "ka": 1454601,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "881-07-13",
+        "ka": 1454571,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "29": {
+    "no": 29,
+    "id": "A.56",
+    "saka": 803,
+    "masa": "Sravana",
+    "tithi": 14,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454572,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "881-07-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "881-07-14",
+        "ka": 1454572,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "881-08-12",
+        "ka": 1454601,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "881-07-13",
+        "ka": 1454571,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "30": {
+    "no": 30,
+    "id": "A.57",
+    "saka": 803,
+    "masa": "Bhadrapada",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1454589,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "881-08-01",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "881-08-01",
+        "ka": 1454590,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "881-08-30",
+        "ka": 1454619,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "881-07-30",
+        "ka": 1454588,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "31": {
+    "no": 31,
+    "id": "A.58",
+    "saka": 804,
+    "masa": "Caitra",
+    "tithi": 6,
+    "paksa": "Sukla",
+    "nakshatra": "Pushya",
+    "yoga": "Waidhrti",
+    "karana": null,
+    "ka_ref": 1454830,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "882-04-26",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "882-04-26",
+        "ka": 1454858,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "882-02-25",
+        "ka": 1454798,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "882-02-27",
+        "ka": 1454800,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "32": {
+    "no": 32,
+    "id": "A.61",
+    "saka": 808,
+    "masa": "Phalguna",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Pushya",
+    "yoga": "Sobhana",
+    "karana": null,
+    "ka_ref": 1456608,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "887-02-09",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "887-02-09",
+        "ka": 1456608,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "887-02-10",
+        "ka": 1456609,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "887-03-11",
+        "ka": 1456638,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "33": {
+    "no": 33,
+    "id": "A.63",
+    "saka": 813,
+    "masa": "Vaisakha",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1458132,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "891-04-13",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "891-04-13",
+        "ka": 1458132,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "891-05-12",
+        "ka": 1458161,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "891-04-12",
+        "ka": 1458131,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "34": {
+    "no": 34,
+    "id": "A.66",
+    "saka": 822,
+    "masa": "Pausa",
+    "tithi": 8,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1461683,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "900-12-02",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "900-12-02",
+        "ka": 1461653,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "901-01-01",
+        "ka": 1461683,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "900-12-01",
+        "ka": 1461652,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "35": {
+    "no": 35,
+    "id": "A.68",
+    "saka": 823,
+    "masa": "Caitra",
+    "tithi": 2,
+    "paksa": "Krsna",
+    "nakshatra": "Anuradha",
+    "yoga": "Wariyan",
+    "karana": "Taitila",
+    "ka_ref": 1461780,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "901-04-08",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "901-04-08",
+        "ka": 1461780,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "901-04-09",
+        "ka": 1461781,
+        "score": 0.75,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "901-04-07",
+        "ka": 1461779,
+        "score": 0.3,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "36": {
+    "no": 36,
+    "id": "A.69",
+    "saka": 823,
+    "masa": "Asvini",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": "Mrgasira",
+    "yoga": "Siwa",
+    "karana": null,
+    "ka_ref": 1461960,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "901-10-05",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "901-10-05",
+        "ka": 1461960,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "901-10-04",
+        "ka": 1461959,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "901-10-06",
+        "ka": 1461961,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "37": {
+    "no": 37,
+    "id": "A.72",
+    "saka": 824,
+    "masa": "Pausa",
+    "tithi": 10,
+    "paksa": "Krsna",
+    "nakshatra": "Jyeshtha",
+    "yoga": "Sukarmma",
+    "karana": null,
+    "ka_ref": 1462408,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "903-01-25",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "903-01-25",
+        "ka": 1462437,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "902-11-27",
+        "ka": 1462378,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "902-11-28",
+        "ka": 1462379,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "38": {
+    "no": 38,
+    "id": "A.74",
+    "saka": 825,
+    "masa": "Pausa",
+    "tithi": 6,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1462788,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "903-12-12",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "903-12-12",
+        "ka": 1462758,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "904-01-11",
+        "ka": 1462788,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "903-12-11",
+        "ka": 1462757,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "39": {
+    "no": 39,
+    "id": "A.76",
+    "saka": 827,
+    "masa": "Sravana",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Purva Ashadha",
+    "yoga": "Wiskambha",
+    "karana": null,
+    "ka_ref": 1463341,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "905-07-17",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "905-07-17",
+        "ka": 1463341,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "905-07-16",
+        "ka": 1463340,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "905-07-18",
+        "ka": 1463342,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "40": {
+    "no": 40,
+    "id": "A.77",
+    "saka": 827,
+    "masa": "Kartika",
+    "tithi": 1,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1463433,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "905-10-17",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "905-10-17",
+        "ka": 1463433,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "905-11-16",
+        "ka": 1463463,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "905-10-16",
+        "ka": 1463432,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "41": {
+    "no": 41,
+    "id": "A.78_79",
+    "saka": 827,
+    "masa": "Margasira",
+    "tithi": 14,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1463475,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "905-10-30",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "905-10-30",
+        "ka": 1463446,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "905-11-28",
+        "ka": 1463475,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "905-10-29",
+        "ka": 1463445,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "42": {
+    "no": 42,
+    "id": "A.81",
+    "saka": 828,
+    "masa": "Bhadrapada",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": "Swati",
+    "yoga": "Byatipada",
+    "karana": null,
+    "ka_ref": 1463762,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "906-08-12",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "906-08-12",
+        "ka": 1463732,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "906-08-14",
+        "ka": 1463734,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "906-09-08",
+        "ka": 1463759,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "43": {
+    "no": 43,
+    "id": "A.82",
+    "saka": 829,
+    "masa": "Caitra",
+    "tithi": 11,
+    "paksa": "Krsna",
+    "nakshatra": "Purva Bhadrapada",
+    "yoga": "Indra",
+    "karana": null,
+    "ka_ref": 1463974,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "907-04-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "907-04-11",
+        "ka": 1463974,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "907-04-10",
+        "ka": 1463973,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "907-03-13",
+        "ka": 1463945,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "44": {
+    "no": 44,
+    "id": "A.84",
+    "saka": 829,
+    "masa": "Vaisakha",
+    "tithi": 4,
+    "paksa": "Krsna",
+    "nakshatra": "Uttara Ashadha",
+    "yoga": "Sukla",
+    "karana": null,
+    "ka_ref": 1463997,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "907-05-04",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "907-05-04",
+        "ka": 1463997,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "907-05-05",
+        "ka": 1463998,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "907-05-03",
+        "ka": 1463996,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "45": {
+    "no": 45,
+    "id": "A.86",
+    "saka": 829,
+    "masa": "Margasira",
+    "tithi": 10,
+    "paksa": "Sukla",
+    "nakshatra": "Aswini",
+    "yoga": "Wariyan",
+    "karana": null,
+    "ka_ref": 1464195,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "907-11-17",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "907-11-17",
+        "ka": 1464194,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "907-11-18",
+        "ka": 1464195,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "907-11-19",
+        "ka": 1464196,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "46": {
+    "no": 46,
+    "id": "A.87",
+    "saka": 829,
+    "masa": "Margasira",
+    "tithi": 12,
+    "paksa": "Sukla",
+    "nakshatra": "Bharani",
+    "yoga": "Siddha",
+    "karana": null,
+    "ka_ref": 1464197,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "907-11-19",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "907-11-19",
+        "ka": 1464196,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "907-11-20",
+        "ka": 1464197,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "907-12-17",
+        "ka": 1464224,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "47": {
+    "no": 47,
+    "id": "A.88",
+    "saka": 831,
+    "masa": "Asadha",
+    "tithi": 8,
+    "paksa": "Sukla",
+    "nakshatra": "Hasta",
+    "yoga": "Siwa",
+    "karana": "Wisti",
+    "ka_ref": 1464782,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "909-06-27",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "909-06-27",
+        "ka": 1464782,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "909-05-30",
+        "ka": 1464754,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "909-06-28",
+        "ka": 1464783,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "48": {
+    "no": 48,
+    "id": "A.91",
+    "saka": 833,
+    "masa": "Phalguna",
+    "tithi": 2,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1465767,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "912-02-07",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "912-02-07",
+        "ka": 1465737,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "912-03-08",
+        "ka": 1465767,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "912-02-06",
+        "ka": 1465736,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "49": {
+    "no": 49,
+    "id": "A.93_94",
+    "saka": 836,
+    "masa": "Sravana",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1466656,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "914-07-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "914-07-15",
+        "ka": 1466626,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "914-08-14",
+        "ka": 1466656,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "914-07-14",
+        "ka": 1466625,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "50": {
+    "no": 50,
+    "id": "A.95",
+    "saka": 837,
+    "masa": "Asvini",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": "Chitra",
+    "yoga": "Wedhrti",
+    "karana": null,
+    "ka_ref": 1467051,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "915-09-13",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "915-09-13",
+        "ka": 1467051,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "915-09-14",
+        "ka": 1467052,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "915-10-11",
+        "ka": 1467079,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "51": {
+    "no": 51,
+    "id": "A.80",
+    "saka": 828,
+    "masa": "Sravana",
+    "tithi": 8,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1463735,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "906-07-16",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "906-07-16",
+        "ka": 1463705,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "906-08-15",
+        "ka": 1463735,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "906-07-15",
+        "ka": 1463704,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "52": {
+    "no": 52,
+    "id": "A.96",
+    "saka": 839,
+    "masa": "Kartika",
+    "tithi": 12,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1467844,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "917-10-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "917-10-15",
+        "ka": 1467814,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "917-11-14",
+        "ka": 1467844,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "917-10-14",
+        "ka": 1467813,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "53": {
+    "no": 53,
+    "id": "A.97",
+    "saka": 841,
+    "masa": "Sravana",
+    "tithi": 12,
+    "paksa": "Sukla",
+    "nakshatra": "Mula",
+    "yoga": "Waidhrti",
+    "karana": null,
+    "ka_ref": 1468449,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "919-07-12",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "919-07-12",
+        "ka": 1468449,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "919-07-13",
+        "ka": 1468450,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "919-07-11",
+        "ka": 1468448,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "54": {
+    "no": 54,
+    "id": "A.98",
+    "saka": 841,
+    "masa": "Kartika",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1468541,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "919-10-12",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "919-10-12",
+        "ka": 1468541,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "919-11-10",
+        "ka": 1468570,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "919-10-11",
+        "ka": 1468540,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "55": {
+    "no": 55,
+    "id": "A.99",
+    "saka": 843,
+    "masa": "Asvini",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Uttara Bhadrapada",
+    "yoga": "Dhruwa",
+    "karana": null,
+    "ka_ref": 1469249,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "921-09-18",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "921-09-18",
+        "ka": 1469248,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "921-09-19",
+        "ka": 1469249,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "921-09-20",
+        "ka": 1469250,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "56": {
+    "no": 56,
+    "id": "A.100",
+    "saka": 844,
+    "masa": "Vaisakha",
+    "tithi": 6,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1469462,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "922-04-20",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "922-04-20",
+        "ka": 1469462,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "922-05-19",
+        "ka": 1469491,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "922-04-19",
+        "ka": 1469461,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "57": {
+    "no": 57,
+    "id": "A.101",
+    "saka": 844,
+    "masa": "Jyestha",
+    "tithi": 7,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1469478,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "922-05-06",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "922-05-06",
+        "ka": 1469478,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "922-06-04",
+        "ka": 1469507,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "922-05-05",
+        "ka": 1469477,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "58": {
+    "no": 58,
+    "id": "A.105",
+    "saka": 849,
+    "masa": "Phalguna",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Krittika",
+    "yoga": "Wiskambha",
+    "karana": null,
+    "ka_ref": 1471602,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "928-02-28",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "928-02-28",
+        "ka": 1471602,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "928-02-27",
+        "ka": 1471601,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "928-01-31",
+        "ka": 1471574,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "59": {
+    "no": 59,
+    "id": "A.108",
+    "saka": 851,
+    "masa": "Jyestha",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Vishakha",
+    "yoga": "Wyatipata",
+    "karana": "Taitila",
+    "ka_ref": 1472053,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "929-05-24",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-05-24",
+        "ka": 1472053,
+        "score": 0.75,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-04-26",
+        "ka": 1472025,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-05-23",
+        "ka": 1472052,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "60": {
+    "no": 60,
+    "id": "A.109",
+    "saka": 851,
+    "masa": "Sravana",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Sravana",
+    "yoga": "Sobhagya",
+    "karana": null,
+    "ka_ref": 1472114,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "929-07-24",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-07-24",
+        "ka": 1472114,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-07-23",
+        "ka": 1472113,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-06-27",
+        "ka": 1472087,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "61": {
+    "no": 61,
+    "id": "A.110",
+    "saka": 851,
+    "masa": "Sravana",
+    "tithi": 12,
+    "paksa": "Krsna",
+    "nakshatra": "Pushya",
+    "yoga": "Siwa",
+    "karana": null,
+    "ka_ref": 1472126,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "929-08-05",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-08-05",
+        "ka": 1472126,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-08-06",
+        "ka": 1472127,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-07-06",
+        "ka": 1472096,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "62": {
+    "no": 62,
+    "id": "A.111",
+    "saka": 851,
+    "masa": "Bhadrapada",
+    "tithi": 12,
+    "paksa": "Krsna",
+    "nakshatra": "Magha",
+    "yoga": "Parigha",
+    "karana": null,
+    "ka_ref": 1472155,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "929-09-03",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-09-03",
+        "ka": 1472155,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-08-05",
+        "ka": 1472126,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-08-06",
+        "ka": 1472127,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "63": {
+    "no": 63,
+    "id": "A.113",
+    "saka": 851,
+    "masa": "Asvini",
+    "tithi": 12,
+    "paksa": "Sukla",
+    "nakshatra": "Shatabhisha",
+    "yoga": "Ganda",
+    "karana": null,
+    "ka_ref": 1472170,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "929-09-18",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-09-18",
+        "ka": 1472170,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-09-19",
+        "ka": 1472171,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-09-17",
+        "ka": 1472169,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "64": {
+    "no": 64,
+    "id": "A.114",
+    "saka": 851,
+    "masa": "Kartika",
+    "tithi": 8,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1472210,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "929-09-29",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "929-09-29",
+        "ka": 1472181,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "929-10-28",
+        "ka": 1472210,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "929-09-28",
+        "ka": 1472180,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "65": {
+    "no": 65,
+    "id": "A.117",
+    "saka": 855,
+    "masa": "Sravana",
+    "tithi": 6,
+    "paksa": "Krsna",
+    "nakshatra": "Hasta",
+    "yoga": "Dhrti",
+    "karana": null,
+    "ka_ref": 1473596,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "933-07-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "933-07-15",
+        "ka": 1473566,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "933-07-14",
+        "ka": 1473565,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "933-08-14",
+        "ka": 1473596,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "66": {
+    "no": 66,
+    "id": "A.118",
+    "saka": 855,
+    "masa": "Asvini",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": "Dhanishta",
+    "yoga": "Dhrti",
+    "karana": "Wisti",
+    "ka_ref": 1473645,
+    "rank_found": 5,
+    "status": "TOP5",
+    "top1_date": "933-09-03",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "933-09-03",
+        "ka": 1473616,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "933-09-04",
+        "ka": 1473617,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "933-09-30",
+        "ka": 1473643,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "67": {
+    "no": 67,
+    "id": "A.122",
+    "saka": 856,
+    "masa": "Magha",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1474108,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "935-01-08",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "935-01-08",
+        "ka": 1474108,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "935-02-07",
+        "ka": 1474138,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "935-01-09",
+        "ka": 1474109,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "68": {
+    "no": 68,
+    "id": "A.124",
+    "saka": 861,
+    "masa": "Vaisakha",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": "Hasta",
+    "yoga": "Bajra",
+    "karana": null,
+    "ka_ref": 1475683,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "939-05-02",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "939-05-02",
+        "ka": 1475683,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "939-04-05",
+        "ka": 1475656,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "939-04-04",
+        "ka": 1475655,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "69": {
+    "no": 69,
+    "id": "A.126",
+    "saka": 865,
+    "masa": "Sravana",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Hasta",
+    "yoga": "Siwa",
+    "karana": "Kolawa",
+    "ka_ref": 1477213,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "943-07-10",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "943-07-10",
+        "ka": 1477213,
+        "score": 0.75,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "943-07-11",
+        "ka": 1477214,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "943-07-09",
+        "ka": 1477212,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "70": {
+    "no": 70,
+    "id": "A.127",
+    "saka": 866,
+    "masa": "Caitra",
+    "tithi": 6,
+    "paksa": "Sukla",
+    "nakshatra": "Rohini",
+    "yoga": "Priti",
+    "karana": null,
+    "ka_ref": 1477450,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "944-03-03",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "944-03-03",
+        "ka": 1477450,
+        "score": 0.8,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "944-03-02",
+        "ka": 1477449,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "944-03-01",
+        "ka": 1477448,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "71": {
+    "no": 71,
+    "id": "A.130",
+    "saka": 913,
+    "masa": "Magha",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Purva Phalguni",
+    "yoga": "Aswini",
+    "karana": null,
+    "ka_ref": 1494939,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "992-02-19",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "992-02-19",
+        "ka": 1494969,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "992-02-20",
+        "ka": 1494970,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "992-01-20",
+        "ka": 1494939,
+        "score": 0.2,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "72": {
+    "no": 72,
+    "id": "A.131",
+    "saka": 918,
+    "masa": "Asvini",
+    "tithi": 15,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1496668,
+    "rank_found": 5,
+    "status": "TOP5",
+    "top1_date": "996-09-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "996-09-15",
+        "ka": 1496639,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "996-10-15",
+        "ka": 1496669,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "996-09-14",
+        "ka": 1496638,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "73": {
+    "no": 73,
+    "id": "A.132",
+    "saka": 918,
+    "masa": "Kartika",
+    "tithi": 14,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1496697,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "996-10-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "996-10-14",
+        "ka": 1496668,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "996-10-13",
+        "ka": 1496667,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "996-10-15",
+        "ka": 1496669,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "74": {
+    "no": 74,
+    "id": "A.135",
+    "saka": 943,
+    "masa": "Kartika",
+    "tithi": 4,
+    "paksa": "Krsna",
+    "nakshatra": "Punarvasu",
+    "yoga": "Subha",
+    "karana": "Wawa",
+    "ka_ref": 1505812,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1021-10-27",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1021-10-27",
+        "ka": 1505812,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1021-10-29",
+        "ka": 1505814,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1021-10-28",
+        "ka": 1505813,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "75": {
+    "no": 75,
+    "id": "A.136",
+    "saka": 944,
+    "masa": "Caitra",
+    "tithi": 14,
+    "paksa": "Krsna",
+    "nakshatra": "Krittika",
+    "yoga": "Ayusman",
+    "karana": "Wanija",
+    "ka_ref": 1505970,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "1022-04-05",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1022-04-05",
+        "ka": 1505972,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1022-04-04",
+        "ka": 1505971,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1022-04-02",
+        "ka": 1505969,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "76": {
+    "no": 76,
+    "id": "A.137",
+    "saka": 945,
+    "masa": "Asvini",
+    "tithi": 9,
+    "paksa": "Sukla",
+    "nakshatra": "Uttara Ashadha",
+    "yoga": "Dhrti",
+    "karana": "Kolawa",
+    "ka_ref": 1506511,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "1023-08-28",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1023-08-28",
+        "ka": 1506482,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1023-09-25",
+        "ka": 1506510,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1023-09-26",
+        "ka": 1506511,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "77": {
+    "no": 77,
+    "id": "A.139",
+    "saka": 954,
+    "masa": "Kartika",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Bharani",
+    "yoga": "Siddha",
+    "karana": "Walawa",
+    "ka_ref": 1509824,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1032-10-21",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1032-10-21",
+        "ka": 1509824,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1032-11-18",
+        "ka": 1509852,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1032-11-19",
+        "ka": 1509853,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "78": {
+    "no": 78,
+    "id": "A.141",
+    "saka": 963,
+    "masa": "Kartika",
+    "tithi": 10,
+    "paksa": "Sukla",
+    "nakshatra": "Uttara Bhadrapada",
+    "yoga": "Bajra",
+    "karana": "Garadi",
+    "ka_ref": 1513127,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1041-11-06",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1041-11-06",
+        "ka": 1513127,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1041-10-08",
+        "ka": 1513098,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1041-11-05",
+        "ka": 1513126,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "79": {
+    "no": 79,
+    "id": "A.142",
+    "saka": 964,
+    "masa": "Margasira",
+    "tithi": 9,
+    "paksa": "Sukla",
+    "nakshatra": "Uttara Bhadrapada",
+    "yoga": "Ahirbudhnya",
+    "karana": null,
+    "ka_ref": 1513510,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1042-11-24",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1042-11-24",
+        "ka": 1513510,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1042-10-26",
+        "ka": 1513481,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1042-10-27",
+        "ka": 1513482,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "80": {
+    "no": 80,
+    "id": "A.145",
+    "saka": 1038,
+    "masa": "Magha",
+    "tithi": 7,
+    "paksa": "Sukla",
+    "nakshatra": "Revati",
+    "yoga": "Wyatipata",
+    "karana": "Taitila",
+    "ka_ref": 1540587,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1117-01-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1117-01-11",
+        "ka": 1540587,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1117-01-12",
+        "ka": 1540588,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1117-02-10",
+        "ka": 1540617,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "81": {
+    "no": 81,
+    "id": "A.146",
+    "saka": 1042,
+    "masa": "Sravana",
+    "tithi": 6,
+    "paksa": "Sukla",
+    "nakshatra": "Swati",
+    "yoga": "Bajra",
+    "karana": "Wanija",
+    "ka_ref": 1541886,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1120-07-05",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1120-07-05",
+        "ka": 1541858,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1120-08-02",
+        "ka": 1541886,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1120-07-04",
+        "ka": 1541857,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "82": {
+    "no": 82,
+    "id": "A.148",
+    "saka": 1051,
+    "masa": "Vaisakha",
+    "tithi": 12,
+    "paksa": "Krsna",
+    "nakshatra": "Aswini",
+    "yoga": "Siwa",
+    "karana": "Wawa",
+    "ka_ref": 1545096,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "1129-05-16",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1129-05-16",
+        "ka": 1545095,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1129-05-15",
+        "ka": 1545094,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1129-04-16",
+        "ka": 1545065,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "83": {
+    "no": 83,
+    "id": "A.149",
+    "saka": 1052,
+    "masa": "Jyestha",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Ashlesha",
+    "yoga": null,
+    "karana": "Wisti",
+    "ka_ref": 1545458,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1130-05-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1130-05-14",
+        "ka": 1545458,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1130-05-13",
+        "ka": 1545457,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1130-05-15",
+        "ka": 1545459,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "84": {
+    "no": 84,
+    "id": "A.151",
+    "saka": 1057,
+    "masa": "Bhadrapada",
+    "tithi": 13,
+    "paksa": "Krsna",
+    "nakshatra": "Magha",
+    "yoga": "Subha",
+    "karana": "Wanija",
+    "ka_ref": 1547400,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1135-09-07",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1135-09-07",
+        "ka": 1547400,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1135-09-08",
+        "ka": 1547401,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1135-08-09",
+        "ka": 1547371,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "85": {
+    "no": 85,
+    "id": "A.152",
+    "saka": 1058,
+    "masa": "Sravana",
+    "tithi": 11,
+    "paksa": "Krsna",
+    "nakshatra": "Punarvasu",
+    "yoga": "Siddhi",
+    "karana": "Wawa",
+    "ka_ref": 1547752,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "1136-07-26",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1136-07-26",
+        "ka": 1547723,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1136-06-26",
+        "ka": 1547693,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1136-07-28",
+        "ka": 1547725,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "86": {
+    "no": 86,
+    "id": "A.154",
+    "saka": 1079,
+    "masa": "Asvini",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1555435,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1157-09-06",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1157-09-06",
+        "ka": 1555435,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1157-10-06",
+        "ka": 1555465,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1157-09-05",
+        "ka": 1555434,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "87": {
+    "no": 87,
+    "id": "A.155",
+    "saka": 1081,
+    "masa": "Asvini",
+    "tithi": 10,
+    "paksa": "Sukla",
+    "nakshatra": "Sravana",
+    "yoga": "Siwa",
+    "karana": null,
+    "ka_ref": 1556182,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "1159-09-24",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1159-09-24",
+        "ka": 1556183,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1159-08-25",
+        "ka": 1556153,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1159-08-26",
+        "ka": 1556154,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "88": {
+    "no": 88,
+    "id": "A.156",
+    "saka": 1082,
+    "masa": "Magha",
+    "tithi": 12,
+    "paksa": "Krsna",
+    "nakshatra": "Sravana",
+    "yoga": "Siwa",
+    "karana": "Kolawa",
+    "ka_ref": 1556701,
+    "rank_found": null,
+    "status": "MISS",
+    "top1_date": "1161-01-24",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1161-01-24",
+        "ka": 1556671,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1161-01-27",
+        "ka": 1556674,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1161-01-26",
+        "ka": 1556673,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "89": {
+    "no": 89,
+    "id": "A.158",
+    "saka": 1093,
+    "masa": "Caitra",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Krittika",
+    "yoga": "Priti",
+    "karana": "Wawa",
+    "ka_ref": 1560371,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1171-03-13",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1171-03-13",
+        "ka": 1560371,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1171-04-12",
+        "ka": 1560401,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1171-03-12",
+        "ka": 1560370,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "90": {
+    "no": 90,
+    "id": "A.159",
+    "saka": 1103,
+    "masa": "Margasira",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": "Mula",
+    "yoga": null,
+    "karana": "Walawa",
+    "ka_ref": 1564275,
+    "rank_found": 5,
+    "status": "TOP5",
+    "top1_date": "1181-11-16",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1181-11-16",
+        "ka": 1564272,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1181-11-18",
+        "ka": 1564274,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1181-12-18",
+        "ka": 1564304,
+        "score": 0.333,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "91": {
+    "no": 91,
+    "id": "A.160",
+    "saka": 1104,
+    "masa": "Asadha",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Aswini",
+    "yoga": "Brahma",
+    "karana": "Wisti",
+    "ka_ref": 1564485,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1182-07-17",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1182-07-17",
+        "ka": 1564515,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1182-06-17",
+        "ka": 1564485,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1182-06-18",
+        "ka": 1564486,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "92": {
+    "no": 92,
+    "id": "A.161",
+    "saka": 1107,
+    "masa": "Bhadrapada",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Purva Bhadrapada",
+    "yoga": "Wrddhi",
+    "karana": "Wisti",
+    "ka_ref": 1565667,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1185-09-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1185-09-11",
+        "ka": 1565667,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1185-08-13",
+        "ka": 1565638,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1185-09-09",
+        "ka": 1565665,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "93": {
+    "no": 93,
+    "id": "A.163",
+    "saka": 1116,
+    "masa": "Bhadrapada",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Sravana",
+    "yoga": "Dhrti",
+    "karana": "Taitila",
+    "ka_ref": 1568943,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1194-08-31",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1194-08-31",
+        "ka": 1568943,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1194-08-30",
+        "ka": 1568942,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1194-08-01",
+        "ka": 1568913,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "94": {
+    "no": 94,
+    "id": "A.165",
+    "saka": 1120,
+    "masa": "Kartika",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Bharani",
+    "yoga": "Wyatighata",
+    "karana": "Taitila",
+    "ka_ref": 1570451,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "1198-10-16",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1198-10-16",
+        "ka": 1570450,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1198-11-13",
+        "ka": 1570478,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1198-10-17",
+        "ka": 1570451,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "95": {
+    "no": 95,
+    "id": "A.166",
+    "saka": 1122,
+    "masa": "Vaisakha",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Punarvasu",
+    "yoga": "Subha",
+    "karana": "Wawa",
+    "ka_ref": 1571002,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1200-04-20",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1200-04-20",
+        "ka": 1571002,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1200-04-21",
+        "ka": 1571003,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1200-05-18",
+        "ka": 1571030,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "96": {
+    "no": 96,
+    "id": "A.172",
+    "saka": 1188,
+    "masa": "Magha",
+    "tithi": 13,
+    "paksa": "Sukla",
+    "nakshatra": "Pushya",
+    "yoga": "Sobhana",
+    "karana": "Taitila",
+    "ka_ref": 1595402,
+    "rank_found": 3,
+    "status": "TOP3",
+    "top1_date": "1267-02-09",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1267-02-09",
+        "ka": 1595403,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1267-01-12",
+        "ka": 1595375,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1267-02-08",
+        "ka": 1595402,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "97": {
+    "no": 97,
+    "id": "A.173",
+    "saka": 1191,
+    "masa": "Kartika",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Uttara Ashadha",
+    "yoga": "Ganda",
+    "karana": "Walawa",
+    "ka_ref": 1596398,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1269-10-31",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1269-10-31",
+        "ka": 1596398,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1269-10-30",
+        "ka": 1596397,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1269-10-03",
+        "ka": 1596370,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "98": {
+    "no": 98,
+    "id": "A.174",
+    "saka": 1211,
+    "masa": "Asvini",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": "Anuradha",
+    "yoga": "Saubhagya",
+    "karana": "Wisti",
+    "ka_ref": 1603663,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1289-09-20",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1289-09-20",
+        "ka": 1603662,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1289-09-21",
+        "ka": 1603663,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1289-09-22",
+        "ka": 1603664,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "99": {
+    "no": 99,
+    "id": "A.177",
+    "saka": 1216,
+    "masa": "Bhadrapada",
+    "tithi": 5,
+    "paksa": "Krsna",
+    "nakshatra": "Rohini",
+    "yoga": "Siddhi",
+    "karana": "Taitila",
+    "ka_ref": 1605479,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1294-09-11",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1294-09-11",
+        "ka": 1605479,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1294-09-12",
+        "ka": 1605480,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1294-08-13",
+        "ka": 1605450,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "100": {
+    "no": 100,
+    "id": "A.178",
+    "saka": 1218,
+    "masa": "Kartika",
+    "tithi": 2,
+    "paksa": "Sukla",
+    "nakshatra": "Ardra",
+    "yoga": "Atiganda",
+    "karana": "Walawa",
+    "ka_ref": 1606258,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1296-09-30",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1296-09-30",
+        "ka": 1606229,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1296-10-29",
+        "ka": 1606258,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1296-10-30",
+        "ka": 1606259,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "101": {
+    "no": 101,
+    "id": "A.180",
+    "saka": 1245,
+    "masa": "Margasira",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Ardra",
+    "yoga": "Brahma",
+    "karana": "Wawa",
+    "ka_ref": 1616164,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1323-12-13",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1323-12-13",
+        "ka": 1616164,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1323-12-12",
+        "ka": 1616163,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1323-11-15",
+        "ka": 1616136,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "102": {
+    "no": 102,
+    "id": "A.182",
+    "saka": 1251,
+    "masa": "Bhadrapada",
+    "tithi": 1,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": "Kolawa",
+    "ka_ref": 1618262,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1329-09-10",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1329-09-10",
+        "ka": 1618262,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1329-08-11",
+        "ka": 1618232,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1329-08-10",
+        "ka": 1618231,
+        "score": 0.2,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "103": {
+    "no": 103,
+    "id": "A.183",
+    "saka": 1252,
+    "masa": "Bhadrapada",
+    "tithi": 15,
+    "paksa": "Krsna",
+    "nakshatra": "Uttara Phalguni",
+    "yoga": null,
+    "karana": "Naga",
+    "ka_ref": 1618630,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1330-08-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1330-08-15",
+        "ka": 1618601,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1330-09-13",
+        "ka": 1618630,
+        "score": 0.667,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1330-09-12",
+        "ka": 1618629,
+        "score": 0.467,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "104": {
+    "no": 104,
+    "id": "A.185",
+    "saka": 1270,
+    "masa": "Asadha",
+    "tithi": 11,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1625137,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1348-06-08",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1348-06-08",
+        "ka": 1625108,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1348-07-07",
+        "ka": 1625137,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1348-06-07",
+        "ka": 1625107,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "105": {
+    "no": 105,
+    "id": "A.186",
+    "saka": 1272,
+    "masa": "Margasira",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1626027,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1350-11-14",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1350-11-14",
+        "ka": 1625997,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1350-12-14",
+        "ka": 1626027,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1350-11-13",
+        "ka": 1625996,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "106": {
+    "no": 106,
+    "id": "A.187",
+    "saka": 1273,
+    "masa": "Vaisakha",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": "Mrgasira",
+    "yoga": "Sobhana",
+    "karana": "Kistughna",
+    "ka_ref": 1626161,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1351-04-27",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1351-04-27",
+        "ka": 1626161,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1351-04-28",
+        "ka": 1626162,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1351-03-30",
+        "ka": 1626133,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "107": {
+    "no": 107,
+    "id": "A.188",
+    "saka": 1280,
+    "masa": "Sravana",
+    "tithi": 1,
+    "paksa": "Sukla",
+    "nakshatra": "Pushya",
+    "yoga": "Bajra",
+    "karana": "Naga",
+    "ka_ref": 1628789,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1358-07-07",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1358-07-07",
+        "ka": 1628789,
+        "score": 0.85,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1358-07-08",
+        "ka": 1628790,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1358-07-05",
+        "ka": 1628787,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "108": {
+    "no": 108,
+    "id": "A.204",
+    "saka": 1327,
+    "masa": "Asadha",
+    "tithi": 9,
+    "paksa": "Krsna",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1645940,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1405-05-23",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1405-05-23",
+        "ka": 1645911,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1405-06-21",
+        "ka": 1645940,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1405-07-20",
+        "ka": 1645969,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "109": {
+    "no": 109,
+    "id": "A.206",
+    "saka": 1340,
+    "masa": "Pausa",
+    "tithi": 5,
+    "paksa": "Sukla",
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1650853,
+    "rank_found": 4,
+    "status": "TOP4",
+    "top1_date": "1418-12-02",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1418-12-02",
+        "ka": 1650852,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1419-01-01",
+        "ka": 1650882,
+        "score": 1.0,
+        "confidence": "SEDANG",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1418-12-01",
+        "ka": 1650851,
+        "score": 0.4,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "110": {
+    "no": 110,
+    "id": "A.207",
+    "saka": 1369,
+    "masa": "Margasira",
+    "tithi": 15,
+    "paksa": "Sukla",
+    "nakshatra": "Rohini",
+    "yoga": "Sadhya",
+    "karana": "Wawa",
+    "ka_ref": 1661434,
+    "rank_found": 1,
+    "status": "TOP1",
+    "top1_date": "1447-11-22",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1447-11-22",
+        "ka": 1661434,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1447-12-22",
+        "ka": 1661464,
+        "score": 0.5,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1447-11-23",
+        "ka": 1661435,
+        "score": 0.45,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "111": {
+    "no": 111,
+    "id": "A.209",
+    "saka": 1395,
+    "masa": "Vaisakha",
+    "tithi": 3,
+    "paksa": "Krsna",
+    "nakshatra": "Mula",
+    "yoga": "Subha",
+    "karana": "Wanija",
+    "ka_ref": 1670739,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1473-04-15",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1473-04-15",
+        "ka": 1670710,
+        "score": 0.75,
+        "confidence": "SEDANG",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1473-05-14",
+        "ka": 1670739,
+        "score": 0.6,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1473-04-17",
+        "ka": 1670712,
+        "score": 0.35,
+        "confidence": "DITOLAK",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  },
+  "112": {
+    "no": 112,
+    "id": "A.210",
+    "saka": 1408,
+    "masa": "Jyestha",
+    "tithi": 10,
+    "paksa": "Sukla",
+    "nakshatra": "Chitra",
+    "yoga": null,
+    "karana": null,
+    "ka_ref": 1675515,
+    "rank_found": 2,
+    "status": "TOP2",
+    "top1_date": "1486-05-13",
+    "top3": [
+      {
+        "rank": 1,
+        "date": "1486-05-13",
+        "ka": 1675486,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": true
+      },
+      {
+        "rank": 2,
+        "date": "1486-06-11",
+        "ka": 1675515,
+        "score": 1.0,
+        "confidence": "TINGGI",
+        "is_strongest": false
+      },
+      {
+        "rank": 3,
+        "date": "1486-05-14",
+        "ka": 1675487,
+        "score": 0.7,
+        "confidence": "RENDAH",
+        "is_strongest": false
+      }
+    ],
+    "error": null
+  }
+}
